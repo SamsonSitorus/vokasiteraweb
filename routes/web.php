@@ -1,14 +1,37 @@
 <?php
-
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+// Halaman login (GET)
+Route::get('/login', function () {return view('login');})->name('login.form');
+// Proses login (POST)
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+// Logout (POST)
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/', function () {
-    return view('login');
+
+Route::middleware(['auth.api'])->group(function () {
+    Route::get('/dashboard/mahasiswa', function () {
+        return view('pages.mahasiswa.dashboard');
+    })->name('dashboard.mahasiswa')->middleware('role:Mahasiswa');
+
+    Route::get('/dashboard/dosen', function () {
+        return view('pages.kordinator.dashboard');
+    })->name('dashboard.dosen')->middleware('role:Dosen');
+
+    Route::get('/dashboard/BAAK', function () {
+        return view('pages.BAAK.dashboard');
+    })->name('dashboard.BAAK')->middleware('role:Staff');
 });
 
-Route::get('/dashboard',function(){
-    return view('pages/dashboard');
-});
+
+//
+Route::get('/kordinator',function() {
+    return view('pages.BAAK.kordinator.index');
+})->name('kordinator.index');
+
+
+
 //untuk tugas by kordinator
 Route::get('/tugas', function () {
     return view('pages/Kordinator/tugas.index'); // Menampilkan halaman tugas/index.blade.php

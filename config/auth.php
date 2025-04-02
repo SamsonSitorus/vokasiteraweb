@@ -40,7 +40,13 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'passport', // Atau 'sanctum' jika menggunakan Sanctum
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
+    
 
     /*
     |--------------------------------------------------------------------------
