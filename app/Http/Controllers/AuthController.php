@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
+use App\Models\DosenRole;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        
+      
         // Validasi input
         $request->validate([
             'username' => 'required|string',
@@ -65,14 +66,23 @@ class AuthController extends Controller
                     'email' => $responseDetailUser->details[0]->email ?? '',
                     'isLoggin' => true,
                 ];
-                session::put($userData); // Simpan data di session
-              //  Auth::loginUsingId($userTemp['user_id']); // Login menggunakan ID pengguna
-
+                session::put($userData); 
+              if ($userTemp['role'] == 'Dosen') {
+                $dosenRoles = DosenRole::where('user_id', $userTemp['user_id'])->pluck('role_id')->toArray();
+                session(['dosen_roles' => $dosenRoles]);
+                if (in_array('3', $dosenRoles)) {
+                    return redirect()->route('dashboard.koordinator');
+                } elseif (in_array('2', $dosenRoles)) {
+                    return redirect()->route('dashboard.penguji');
+                } elseif (in_array('1', $dosenRoles)) {
+                    return redirect()->route('dashboard.pembimbing');
+                } else {
+                    return redirect()->route('login.form')->withErrors(['login' => 'Role tidak valid.']);
+                }
+            }
                 // Redirect berdasarkan role pengguna
                 if ($userTemp['role'] == 'Mahasiswa') {
                     return redirect()->route('dashboard.mahasiswa');
-                } elseif ($userTemp['role'] == 'Dosen') {
-                    return redirect()->route('dashboard.dosen');
                 }elseif($userTemp['role'] == 'Staff') {
                     return  redirect()->route('dashboard.BAAK');
                 }else {

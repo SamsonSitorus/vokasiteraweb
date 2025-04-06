@@ -42,8 +42,7 @@
             <li ><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-columns"></i> <span>Nilai</span></a></li>
             @elseif (session('role') == 'Staff')
             <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
-          
-            <li ><a class="nav-link" href="{{route('kordinator.index')}}"><i class="fas fa-user"></i> <span>Kordinator</span></a></li>
+            <li ><a class="nav-link" href="{{route('koordinator.index')}}"><i class="fas fa-user"></i> <span>Kordinator</span></a></li>
             <li ><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
             @else 
             <li class="{{ request()->routeIs('siswa.dashboard.*') ? 'active' : '' }}"><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>

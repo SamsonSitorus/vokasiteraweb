@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role'=> \App\Http\Middleware\RoleMiddleware::class,
             'auth.api' => \App\Http\Middleware\AuthApiMiddleware::class,
+            'dosen_roles' =>\App\Http\Middleware\CheckDosenMiddleware::class,
         ]);
 
     }) 

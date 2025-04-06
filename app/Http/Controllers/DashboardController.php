@@ -14,11 +14,34 @@ class DashboardController extends Controller
     }
 
     // Menampilkan dashboard untuk Dosen
-    public function dosen()
+    public function koordinator()
     {
         // Logika untuk dosen, misalnya ambil data terkait dosen
-        return view('pages.kordinator.dashboard');  // Ganti dengan view yang sesuai
+        return view('pages.koordinator.dashboard');  // Ganti dengan view yang sesuai
     }
+
+    public function penguji1()
+    {
+        // Logika untuk dosen, misalnya ambil data terkait dosen
+        return view('pages.penguji1.dashboard');  // Ganti dengan view yang sesuai
+    }
+    public function penguji2()
+    {
+        // Logika untuk dosen, misalnya ambil data terkait dosen
+        return view('pages.penguji2.dashboard');  // Ganti dengan view yang sesuai
+    }
+    public function pembimbing1()
+    {
+        // Logika untuk dosen, misalnya ambil data terkait dosen
+        return view('pages.pembimbing1.dashboard');  // Ganti dengan view yang sesuai
+    }
+
+    public function pembimbing2()
+    {
+        // Logika untuk dosen, misalnya ambil data terkait dosen
+        return view('pages.pembimbing2.dashboard');  // Ganti dengan view yang sesuai
+    }
+
 
     public function BAAK()
     {

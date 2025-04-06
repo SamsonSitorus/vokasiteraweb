@@ -2,6 +2,8 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Dosen_RoleController;
+use App\Http\Controllers\KoordinatorController;
 // Halaman login (GET)
 Route::get('/login', function () {return view('login');})->name('login.form');
 // Proses login (POST)
@@ -11,27 +13,42 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::middleware(['auth.api'])->group(function () {
-    Route::get('/dashboard/mahasiswa', function () {
+        Route::get('/dashboard/mahasiswa', function () {
         return view('pages.mahasiswa.dashboard');
-    })->name('dashboard.mahasiswa')->middleware('role:Mahasiswa');
+        })->name('dashboard.mahasiswa')->middleware('role:Mahasiswa');
 
-    Route::get('/dashboard/dosen', function () {
-        return view('pages.kordinator.dashboard');
-    })->name('dashboard.dosen')->middleware('role:Dosen');
+        Route::get('/dashboard/pembimbing1', function () {
+            return view('pages.pembimbing1.dashboard');
+        })->name('dashboard.pembimbing2')->middleware('dosen_roles:1');
+    
+        Route::get('/dashboard/penguji2', function () {
+            return view('pages.penguji2.dashboard');
+        })->name('dashboard.penguji2')->middleware('dosen_roles:2');
 
-    Route::get('/dashboard/BAAK', function () {
-        return view('pages.BAAK.dashboard');
-    })->name('dashboard.BAAK')->middleware('role:Staff');
+        Route::get('/dashboard/koordinator', function () {
+            return view('pages.koordinator.dashboard');
+        })->name('dashboard.koordinator')->middleware('dosen_roles:3');
+
+        Route::get('/dashboard/pembimbing2', function () {
+            return view('pages.pembimbing2.dashboard');
+        })->name('dashboard.pembimbing2')->middleware('dosen_roles:6');
+
+        Route::get('/dashboard/penguji1', function () {
+            return view('pages.penguji1.dashboard');
+        })->name('dashboard.penguji1')->middleware('dosen_roles:7');
+    
+        Route::get('/dashboard/BAAK', function () {
+            return view('pages.BAAK.dashboard');
+        })->name('dashboard.BAAK')->middleware('role:Staff');
 });
 
 
-//
-Route::get('/kordinator',function() {
-    return view('pages.BAAK.kordinator.index');
-})->name('kordinator.index');
+Route::get('/koordinator',[KoordinatorController::class, 'create'])->name('koordinator.index');
+Route::post('/dosen-role',[Dosen_RoleController::class, 'store'])->name('dosen-role.store');
 
-
-
+Route::get('/tugas', function () {
+    return view('pages/Kordinator/tugas.index'); // Menampilkan halaman tugas/index.blade.php
+})->name('tugas.index');
 //untuk tugas by kordinator
 Route::get('/tugas', function () {
     return view('pages/Kordinator/tugas.index'); // Menampilkan halaman tugas/index.blade.php

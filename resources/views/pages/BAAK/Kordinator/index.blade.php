@@ -57,8 +57,8 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        {{-- <div class="modal-body">
-                            <form action="{{-- route('tugas.store') }}" method="POST" enctype="multipart/form-data">
+                         <div class="modal-body">
+                            <form action="" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-12">
@@ -68,9 +68,7 @@
                                                 <button class="close" data-dismiss="alert">
                                                     <span>&times;</span>
                                                 </button>
-                                                {{-- @foreach ($errors->all() as $error )
-                                                {{ $error }}
-                                                @endforeach }}
+                                               
                                             </div>
                                         </div>
                                         @endif
@@ -78,81 +76,19 @@
                                             <label for="kelas_id">Pilih Nomor Kelompok </label>
                                             <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
                                                 <option value="">-- Pilih Nomor Kelompok--</option>
-                                                {{-- @forelse ($jadwal as $data )
-                                                <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                                @empty
-                                                <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                                @endforelse }}
+                                                @foreach ($dosen as $item)
+                                                <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                                            @endforeach
                                             </select>
                                       </div>
-                                        <div class="form-group">
-                                            <label for="kelas_id">Pilih MahaSiswa 1 </label>
-                                            <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                                <option value="">-- Pilih MahaSiswa 1--</option>
-                                                {{-- @forelse ($jadwal as $data )
-                                                <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                                @empty
-                                                <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                                @endforelse }}
-                                            </select>
-                                            <label for="kelas_id">Pilih MahaSiswa 2</label>
-                                            <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                                <option value="">-- Pilih MahaSiswa 2 --</option>
-                                                {{-- @forelse ($jadwal as $data )
-                                                <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                                @empty
-                                                <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                                @endforelse }}
-                                            </select>
-                                   
-                                            <label for="kelas_id">Pilih MahaSiswa 3 </label>
-                                            <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                                <option value="">-- Pilih MahaSiswa  3--</option>
-                                                {{-- @forelse ($jadwal as $data )
-                                                <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                                @empty
-                                                <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                                @endforelse }}
-                                            </select>
-                                      
-                                            <label for="kelas_id">Pilih MahaSiswa 4</label>
-                                            <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                                <option value="">-- Pilih MahaSiswa  4--</option>
-                                                {{-- @forelse ($jadwal as $data )
-                                                <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                                @empty
-                                                <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                                @endforelse }}
-                                            </select>
-                                       
-                                            <label for="kelas_id">Pilih MahaSiswa 5</label>
-                                            <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                                <option value="">-- Pilih MahaSiswa 5 --</option>
-                                                {{-- @forelse ($jadwal as $data )
-                                                <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                                @empty
-                                                <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                                @endforelse }}
-                                            </select>
-                                 
-                                            <label for="kelas_id">Pilih MahaSiswa 6</label>
-                                            <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                                <option value="">-- Pilih MahaSiswa 6 --</option>
-                                                {{-- @forelse ($jadwal as $data )
-                                                <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                                @empty
-                                                <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                                @endforelse }}
-                                            </select>
-                                        </div>
-                                    </div>
+                                        
                                 </div>
                                 <div class="modal-footer br">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                 </div>
                             </form>
-                        </div> --}}
+                        </div> 
                     </div>
                 </div>
             </div>
