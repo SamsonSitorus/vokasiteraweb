@@ -1,123 +1,94 @@
 @extends('layouts.main')
-@section('title', 'Edit tugas')
+@section('title', 'Edit Koordinator')
 
 @section('content')
-    <section class="section">
-        <div class="section-body">
-            <div class="row">
-                <div class="col-12">
-                    @include('partials.alert')
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                            <h4>Edit Kelompok {{-- $tugas->judul --}}</h4>
-                            <a href="{{-- route('tugas.index') --}}" class="btn btn-primary">Kembali</a>
-                        </div>
-                        <div class="card-body">
-                            <form method="POST" action="{{-- route('tugas.update', $tugas->id) --}}" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                 {{-- <div class="form-group">
-                                    <label for="foto">File Tugas</label>
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input id="file" type="file" name="file" class="form-control @error('file') is-invalid @enderror" id="file" value="{{ $tugas->file ?? '' }}">
-                                            <label class="custom-file-label" for="file">{{ $tugas->file ?? '' }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                               <div class="form-group">
-                                    <label for="judul">Judul</label>
-                                    <input type="text" id="judul" name="judul" class="form-control @error('judul') is-invalid @enderror" placeholder="{{ __('Judul tugas') }}" value="{{ $tugas->judul ?? '' }}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Deskripsi</label>
-                                    <textarea id="deskripsi" name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" placeholder="{{ __('Deskripsi tugas') }}">{{ $tugas->deskripsi ?? '' }}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="kelas_id">Kelas</label>
-                                    <select id="kelas_id" name="kelas_id" class="select2bs4 form-control @error('kelas_id') is-invalid @enderror">
-                                        <option value="">-- Pilih Kelas --</option>
-                                        {{-- @foreach ($kelas as $data )
-                                            <option value="{{ $data->id }}"
-                                            @if ($tugas->kelas_id == $data->id)
-                                                selected
-                                            @endif
-                                        >{{ $data->nama_kelas ?? '' }}</option>
-                                        @endforeach 
-                                    </select>
-                                </div> --}}
-                                <div class="form-group">
-                                    <label for="judul">Nomor Kelompok</label>
-                                    <input type="text" id="nomor kelompok" name="nomor kelompok" class="form-control @error('nomor kelompok') is-invalid @enderror" placeholder="{{ __('Nomor Kelompok ') }}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="kelas_id">Pilih MahaSiswa 1 </label>
-                                    <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                        <option value="">-- Pilih MahaSiswa 1--</option>
-                                        {{-- @forelse ($jadwal as $data )
-                                        <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                        @empty
-                                        <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                        @endforelse --}}
-                                    </select>
-                                    <label for="kelas_id">Pilih MahaSiswa 2</label>
-                                    <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                        <option value="">-- Pilih MahaSiswa 2 --</option>
-                                        {{-- @forelse ($jadwal as $data )
-                                        <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                        @empty
-                                        <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                        @endforelse --}}
-                                    </select>
-                           
-                                    <label for="kelas_id">Pilih MahaSiswa 3 </label>
-                                    <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                        <option value="">-- Pilih MahaSiswa  3--</option>
-                                        {{-- @forelse ($jadwal as $data )
-                                        <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                        @empty
-                                        <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                        @endforelse --}}
-                                    </select>
-                              
-                                    <label for="kelas_id">Pilih MahaSiswa 4</label>
-                                    <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                        <option value="">-- Pilih MahaSiswa  4--</option>
-                                        {{-- @forelse ($jadwal as $data )
-                                        <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                        @empty
-                                        <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                        @endforelse --}}
-                                    </select>
-                               
-                                    <label for="kelas_id">Pilih MahaSiswa 5</label>
-                                    <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                        <option value="">-- Pilih MahaSiswa 5 --</option>
-                                        {{-- @forelse ($jadwal as $data )
-                                        <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                        @empty
-                                        <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                        @endforelse --}}
-                                    </select>
-                         
-                                    <label for="kelas_id">Pilih MahaSiswa 6</label>
-                                    <select id="kelas_id" name="kelas_id" class="select2 form-control @error('kelas_id') is-invalid @enderror">
-                                        <option value="">-- Pilih MahaSiswa 6 --</option>
-                                        {{-- @forelse ($jadwal as $data )
-                                        <option value="{{ $data->kelas_id }}">{{ $data->kelas->nama_kelas }}</option>
-                                        @empty
-                                        <option value="" disabled>Tidak ada kelas yang diajar</option>
-                                        @endforelse --}}
-                                    </select>
-                                </div>
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                @include('partials.alert')
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4>Edit Koordinator</h4>
+                        <a href="{{ route('koordinator.index') }}" class="btn btn-primary">Kembali</a>
+                    </div>
+                    <div class="card-body">
+
+                        <form method="POST" action="{{ route('koordinator.update', Crypt::encrypt($dosenRole['id'])) }}" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+
+                            {{-- Pilih Dosen --}}
+                            <div class="form-group">
+                                <label for="user_id">Pilih Dosen</label>
+                                <select id="user_id" name="user_id" class="select2 form-control" required>
+                                    <option value="">-- Pilih Dosen --</option>
+                                    @foreach ($dosen as $item)
+                                    <option 
+                                    value="{{ $item['user_id'] ?? '' }}"
+                                    data-nama="{{ $item['nama'] ?? 'Tanpa Nama' }}"
+                                    {{ $item['user_id'] == $dosenRole['user_id'] ? 'selected' : '' }}
+                                >
+                                    {{ $item['nama'] ?? 'Tanpa Nama' }}
+                                </option>
+                                @endforeach
+                                </select>
+                                {{-- Hidden input nama dosen --}}
+                            <input type="hidden" name="nama" id="nama_dosen" value="{{ $dosenRole['nama_dosen'] }}">
+
                             </div>
-                        </div>
-                                <button type="submit" class="btn btn-primary"><i class="nav-icon fas fa-save"></i> &nbsp; Simpan Perubahan</button>
-                            </form>
-                        </div>
+
+                              <div class="form-group">
+                                <input type="hidden" name="role_id" value="1">
+                                <input type="hidden" name="role_name" value="Koordinator">
+                            </div>
+
+                            {{-- Pilih Prodi --}}
+                            <div class="form-group">
+                                <label for="prodi_id">Pilih Prodi</label>
+                                <select id="prodi_id" name="prodi" class="select2 form-control" required>
+                                    <option value="">-- Pilih Prodi --</option>
+                                    <option value="TRPL" {{ $dosenRole['prodi'] == 'TRPL' ? 'selected' : '' }}>Teknologi Rekayasa Perangkat Lunak</option>
+                                    <option value="TI"   {{ $dosenRole['prodi'] == 'TI' ? 'selected' : '' }}>Teknologi Informasi</option>
+                                    <option value="TK"   {{ $dosenRole['prodi'] == 'TK' ? 'selected' : '' }}>Teknologi Komputer</option>
+                                </select>
+                            </div>
+
+                            {{-- Pilih Tingkat --}}
+                            <div class="form-group">
+                                <label for="tingkat_id">Pilih Tingkat</label>
+                                <select id="tingkat_id" name="tingkat" class="select2 form-control" required>
+                                    <option value="">-- Pilih Tingkat --</option>
+                                    <option value="1" {{ $dosenRole['tingkat'] == 1 ? 'selected' : '' }}>1</option>
+                                    <option value="2" {{ $dosenRole['tingkat'] == 2 ? 'selected' : '' }}>2</option>
+                                    <option value="3" {{ $dosenRole['tingkat'] == 3 ? 'selected' : '' }}>3</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        </form>
+
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 @endsection
+@push('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const select = document.getElementById('user_id');
+        const namaInput = document.getElementById('nama_dosen');
+
+        function updateNama() {
+            const selected = select.options[select.selectedIndex];
+            const nama = selected.getAttribute('data-nama') || '';
+            namaInput.value = nama;
+        }
+
+        updateNama(); // Set nama saat load
+        select.addEventListener('change', updateNama); // Update nama saat ganti dosen
+    });
+</script>
+@endpush

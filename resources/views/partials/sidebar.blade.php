@@ -7,11 +7,6 @@
 @else
     <p>Tidak ada pengguna yang login.</p>
 @endif
-@if (Auth::check())
-    <p>User Logged In as: {{ Auth::user()->role }}</p>
-@else
-    <p>Tidak ada pengguna yang login.</p>
-@endif
 
         </div>
         @if (session('isLoggin'))

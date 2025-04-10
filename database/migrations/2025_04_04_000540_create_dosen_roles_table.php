@@ -15,11 +15,17 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('user_id'); // ID user dari API eksternal
+            $table->string('nama_dosen'); 
+            $table->unsignedBigInteger('tingkat'); 
+            $table->string('prodi'); 
             $table->unsignedBigInteger('role_id'); // Harus unsigned agar cocok dengan id di roles
+            $table->string('nama_role');
 
             // Indexing
             $table->index('user_id');
             $table->index('role_id');
+            $table->index('prodi');
+            $table->index('tingkat');
 
             // Foreign Key Constraint
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
