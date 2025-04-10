@@ -53,26 +53,3 @@ Route::prefix('kelompok')->group(function () {
     Route::delete('/{id}', [Kelompok_Controller::class, 'destroy'])->name('kelompok.destroy');
 });
 
-// Tugas by koordinator
-Route::prefix('tugas')->group(function () {
-    Route::get('/', fn () => view('pages.Kordinator.tugas.index'))->name('tugas.index');
-    Route::get('/create', fn () => view('pages.kordinator.tugas.create'));
-    Route::get('/edit', fn () => view('pages.kordinator.tugas.edit'));
-    Route::get('/show', fn () => view('pages.kordinator.tugas.show'));
-});
-
-// Kelompok by koordinator
-Route::prefix('kelompok')->group(function () {
-    Route::get('/', fn () => view('pages.Kordinator.kelompok.index'))->name('kelompok.index.view');
-    Route::get('/create', fn () => view('pages.kordinator.kelompok.create'));
-    Route::get('/edit', fn () => view('pages.kordinator.kelompok.edit'));
-    Route::get('/show', fn () => view('pages.kordinator.kelompok.show'));
-});
-
-// Pembimbing by koordinator
-Route::prefix('Pembimbing')->group(function () {
-    Route::get('/', fn () => view('pages.Kordinator.pembimbing.index'))->name('pembimbing.index');
-    Route::get('/create', fn () => view('pages.kordinator.pembimbing.create'));
-    Route::get('/edit', fn () => view('pages.kordinator.pembimbing.edit'));
-    Route::get('/show', fn () => view('pages.kordinator.pembimbing.show'));
-});

@@ -20,11 +20,10 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>User ID</th>
-                                        {{-- <th>Nama</th> --}}
-                                        <th>Prodi</th>
-                                        <th>Tingkat</th>
-                                        <th>Role </th>
+                                        <th>Nomor Kelompok</th>
+                                        <th>Kategori Proyek</th>
+                                        <th>Angkatan</th>
+                                        <th>Program Studi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -33,13 +32,14 @@
                                         <tr>
                                             <td>{{ $item['id'] }}</td>
                                             <td>{{ $item['Nomor'] }}</td>
-                                            <td>{{ $item['Jenis PA'] }}</td>
+                                            <td>{{ $item['JenisPA'] }}</td>
                                             <td>{{ $item['Angkatan'] }}</td>
                                             <td>{{ $item['Prodi'] }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{--route('koordinator.edit', Crypt::encrypt($item['id']))--}}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
-                                                    <form method="POST" action="{{-- route('koordinator.destroy', $item['id'])--}}">
+                                                    <a href="" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Kelola</a>&nbsp;&nbsp;
+                                                    <a href="{{route('kelompok.edit', Crypt::encrypt($item['id']))}}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
+                                                    <form method="POST" action="{{route('kelompok.destroy', $item['id'])}}">
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 8px"><i class="nav-icon fas fa-trash-alt"></i> &nbsp; Hapus</button>

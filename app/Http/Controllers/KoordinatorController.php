@@ -57,40 +57,7 @@ public function create()
 
     return view('pages.BAAK.kordinator.create', compact('dosen', 'role', 'dosenRole'));
 }
-// public function store(Request $request)
-// {
-//     $token = session('token');
 
-//     if (!$token) {
-//         return response()->json(['error' => 'Unauthorized.'], 401);
-//     }
-//     $validated = $request->validate([
-//         'user_id'   => 'required|numeric',
-//         'nama'      => 'required|string',
-//         'role_id'   => 'required|integer',
-//         'role_name' => 'required|string',
-//         'prodi'     => 'required|string',
-//         'jenis_pa'   => 'required|string',
-//     ]);
-    
-//     $response = Http::withHeaders([
-//         'Authorization' => "Bearer $token",
-//         'Accept' => 'application/json'
-//     ])->post(env('API_URL2') . '/dosenroles', [
-//         'user_id'    => (int) $validated['user_id'],
-//         'nama_dosen' => $validated['nama'],
-//         'prodi'      => $validated['prodi'],
-//         'jenis_pa'    =>$validated['jenis_pa'],
-//         'role_id'    => (int) $validated['role_id'],
-//         'nama_role'  => $validated['role_name'],
-//     ]); 
-    
-//     if (!$response->successful()) {
-//         return back()->withErrors(['api' => 'Gagal menyimpan ke API: ' . $response->body()]);
-//     }
-
-//     return redirect()->route('koordinator.index')->with('success', 'Data berhasil disimpan.');
-// }
 public function store(Request $request)
 {
     $token = session('token');
