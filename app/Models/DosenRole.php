@@ -14,7 +14,7 @@ class DosenRole extends Model
         'role_id',
         'nama_role',
         'prodi',
-        'tingkat',
+        'jenis_pa',
     ];
     
 }

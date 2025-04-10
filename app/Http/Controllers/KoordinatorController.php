@@ -15,6 +15,18 @@ use Exception;
 
 class KoordinatorController extends Controller
 {
+    
+    public function index(Request $request){
+        try {
+            $response = Http::acceptJson()->get(env('API_URL2') . '/dosenroles/');
+      
+            $dosen_roles = $response->json(); 
+        return view('pages.BAAK.kordinator.index', compact('dosen_roles'));
+    } catch (\Exception $e) {
+        return back()->withErrors(['error' => 'Gagal mengambil data dosen role']);
+    }
+  }
+
 public function create()
 {
     $token = session('token');
@@ -40,11 +52,45 @@ public function create()
         'user_id' => '',
         'nama_dosen' => '',
         'prodi' => '',
-        'tingkat' => '',
+        'jenis_pa' => '',
     ];
 
     return view('pages.BAAK.kordinator.create', compact('dosen', 'role', 'dosenRole'));
 }
+// public function store(Request $request)
+// {
+//     $token = session('token');
+
+//     if (!$token) {
+//         return response()->json(['error' => 'Unauthorized.'], 401);
+//     }
+//     $validated = $request->validate([
+//         'user_id'   => 'required|numeric',
+//         'nama'      => 'required|string',
+//         'role_id'   => 'required|integer',
+//         'role_name' => 'required|string',
+//         'prodi'     => 'required|string',
+//         'jenis_pa'   => 'required|string',
+//     ]);
+    
+//     $response = Http::withHeaders([
+//         'Authorization' => "Bearer $token",
+//         'Accept' => 'application/json'
+//     ])->post(env('API_URL2') . '/dosenroles', [
+//         'user_id'    => (int) $validated['user_id'],
+//         'nama_dosen' => $validated['nama'],
+//         'prodi'      => $validated['prodi'],
+//         'jenis_pa'    =>$validated['jenis_pa'],
+//         'role_id'    => (int) $validated['role_id'],
+//         'nama_role'  => $validated['role_name'],
+//     ]); 
+    
+//     if (!$response->successful()) {
+//         return back()->withErrors(['api' => 'Gagal menyimpan ke API: ' . $response->body()]);
+//     }
+
+//     return redirect()->route('koordinator.index')->with('success', 'Data berhasil disimpan.');
+// }
 public function store(Request $request)
 {
     $token = session('token');
@@ -52,15 +98,50 @@ public function store(Request $request)
     if (!$token) {
         return response()->json(['error' => 'Unauthorized.'], 401);
     }
+
     $validated = $request->validate([
         'user_id'   => 'required|numeric',
         'nama'      => 'required|string',
         'role_id'   => 'required|integer',
         'role_name' => 'required|string',
         'prodi'     => 'required|string',
-        'tingkat'   => 'required|numeric',
+        'jenis_pa'  => 'required|string',
     ]);
+
+    // Cek apakah kombinasi prodi + jenis_pa sudah dimiliki dosen lain
+    $checkResponse = Http::withHeaders([
+        'Authorization' => "Bearer $token",
+        'Accept' => 'application/json'
+    ])->get(env('API_URL2') . '/dosenroles');
     
+    // Jika gagal ambil data
+    if (!$checkResponse->successful()) {
+        return back()->withErrors(['api' => 'Gagal mengecek data di API: ' . $checkResponse->body()]);
+    }
+    
+    $existing = collect($checkResponse->json());
+    
+    //  Cek apakah prodi + jenis_pa sudah dimiliki dosen lain
+    $alreadyTaken = $existing->first(function ($item) use ($validated) {
+        return $item['prodi'] == $validated['prodi'] &&
+               $item['jenis_pa'] == $validated['jenis_pa'] &&
+               $item['user_id'] != $validated['user_id'];
+    });
+    
+    if ($alreadyTaken) {
+        return back()->withErrors(['duplicate' => 'Kombinasi Prodi dan Jenis PA sudah dikelola oleh dosen lain.']);
+    }
+    
+    //  Cek apakah dosen ini sudah pegang PA manapun
+    $hasExistingByUser = $existing->first(function ($item) use ($validated) {
+        return $item['user_id'] == $validated['user_id'];
+    });
+    
+    if ($hasExistingByUser) {
+        return back()->withErrors(['user_duplicate' => 'Dosen ini sudah mengelola PA dan tidak boleh lebih dari satu.']);
+    }
+    
+    // Simpan ke API jika lolos validasi
     $response = Http::withHeaders([
         'Authorization' => "Bearer $token",
         'Accept' => 'application/json'
@@ -68,29 +149,17 @@ public function store(Request $request)
         'user_id'    => (int) $validated['user_id'],
         'nama_dosen' => $validated['nama'],
         'prodi'      => $validated['prodi'],
-        'tingkat'    => (int) $validated['tingkat'],
+        'jenis_pa'   => $validated['jenis_pa'],
         'role_id'    => (int) $validated['role_id'],
         'nama_role'  => $validated['role_name'],
     ]);
-    
+
     if (!$response->successful()) {
         return back()->withErrors(['api' => 'Gagal menyimpan ke API: ' . $response->body()]);
     }
 
     return redirect()->route('koordinator.index')->with('success', 'Data berhasil disimpan.');
 }
-
-    public function index(Request $request){
-        try {
-            $response = Http::acceptJson()->get(env('API_URL2') . '/dosenroles/');
-      
-            $dosen_roles = $response->json(); 
-        return view('pages.BAAK.kordinator.index', compact('dosen_roles'));
-    } catch (\Exception $e) {
-        return back()->withErrors(['error' => 'Gagal mengambil data dosen role']);
-    }
-  }
-
 
   public function destroy(Request $request,$id)
   {
@@ -139,7 +208,7 @@ public function store(Request $request)
               'user_id'    => $data[0]['user_id'],
               'nama_dosen' => $data[0]['nama_dosen'],
               'prodi'      => $data[0]['prodi'],
-              'tingkat'    => $data[0]['tingkat'],
+              'jenis_pa'    => $data[0]['jenis_pa'],
               'role_ids'   => array_column($data, 'role_id'),
               'role_names' => array_column($data, 'nama_role'),
           ];
@@ -170,7 +239,7 @@ public function store(Request $request)
               return back()->withErrors(['error' => 'Unauthorized']);
           }
   
-          // 🔧 Fix ini
+        
           $id = Crypt::decrypt($id);
   
           $validated = $request->validate([
@@ -179,9 +248,43 @@ public function store(Request $request)
             'role_id'   => 'required|integer',
             'role_name' => 'required|string',
             'prodi'     => 'required|string',
-            'tingkat'   => 'required|numeric',
+            'jenis_pa'   => 'required|string',
         ]);
-  
+            // Cek apakah kombinasi prodi + jenis_pa sudah dimiliki dosen lain
+            $checkResponse = Http::withHeaders([
+                'Authorization' => "Bearer $token",
+                'Accept' => 'application/json'
+            ])->get(env('API_URL2') . '/dosenroles');
+
+            // Jika gagal ambil data
+            if (!$checkResponse->successful()) {
+                return back()->withErrors(['api' => 'Gagal mengecek data di API: ' . $checkResponse->body()]);
+            }
+
+            $existing = collect($checkResponse->json());
+
+            //  Cek apakah prodi + jenis_pa sudah dimiliki dosen lain
+            $alreadyTaken = $existing->first(function ($item) use ($validated, $id) {
+                return $item['prodi'] == $validated['prodi'] &&
+                       $item['jenis_pa'] == $validated['jenis_pa'] &&
+                       $item['id'] != $id; // Abaikan entri dirinya sendiri
+            });
+            
+
+            if ($alreadyTaken) {
+                return back()->withErrors(['duplicate' => 'Kombinasi Prodi dan Jenis PA sudah dikelola oleh dosen lain.']);
+            }
+
+            //  Cek apakah dosen ini sudah pegang PA manapun
+            $hasExistingByUser = $existing->first(function ($item) use ($validated, $id) {
+                return $item['user_id'] == $validated['user_id'] &&
+                       $item['id'] != $id; // Abaikan entri dirinya sendiri
+            });
+            
+
+            if ($hasExistingByUser) {
+                return back()->withErrors(['user_duplicate' => 'Dosen ini sudah mengelola PA dan tidak boleh lebih dari satu.']);
+            }
           $response = Http::withHeaders([
               'Authorization' => "Bearer $token",
               'Accept' => 'application/json'
@@ -189,7 +292,7 @@ public function store(Request $request)
              'user_id'    => (int) $validated['user_id'],
             'nama_dosen' => $validated['nama'],
             'prodi'      => $validated['prodi'],
-            'tingkat'    => (int) $validated['tingkat'],
+            'jenis_pa'    => $validated['jenis_pa'],
             'role_id'    => (int) $validated['role_id'],
             'nama_role'  => $validated['role_name'],
               

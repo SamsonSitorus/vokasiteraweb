@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('user_id'); // ID user dari API eksternal
             $table->string('nama_dosen'); 
-            $table->unsignedBigInteger('tingkat'); 
+            $table->string('jenis_pa'); 
             $table->string('prodi'); 
             $table->unsignedBigInteger('role_id'); // Harus unsigned agar cocok dengan id di roles
             $table->string('nama_role');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->index('user_id');
             $table->index('role_id');
             $table->index('prodi');
-            $table->index('tingkat');
+            $table->index('jenis_pa');
 
             // Foreign Key Constraint
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
