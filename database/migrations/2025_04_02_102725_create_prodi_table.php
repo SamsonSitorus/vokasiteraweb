@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kelompoks', function (Blueprint $table) {
-            $table->id();
+        Schema::create('prodi', function (Blueprint $table) {
+            $table->id(); // = unsignedBigInteger auto increment
+            $table->string('nama_prodi');
+            $table->unsignedInteger('maks_project');
             $table->timestamps();
-        });
+        });        
+        
     }
 
     /**
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kelompoks');
+        Schema::dropIfExists('prodi');
     }
 };

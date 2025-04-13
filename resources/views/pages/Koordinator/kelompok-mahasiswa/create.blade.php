@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Tambah Kelompok</h4>
-                        <a class="btn btn-primary btn-sm" href="{{ route('kelompok.index') }}">Kembali</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('kelompokmahasiswa.index') }}">Kembali</a>
                     </div>  
                     <div class="card-body">
 
@@ -29,35 +29,22 @@
 
                         <form method="POST" action="{{ route('kelompok.store')}}" enctype="multipart/form-data">
                             @csrf
+                            <input type="hidden" name="kelompok_id" value="{{ $kelompok->id }}">
 
-                            {{-- Nomor Kelompok --}}
+                            @for ($i = 1; $i <= 6; $i++)
                             <div class="form-group">
-                                <label for="nomor_kelompok">Nomor Kelompok</label>
-                                <input type="text" name="nomor_kelompok" id="nomor_kelompok" class="form-control" required>
+                                <label for="user_id_{{ $i }}">Pilih Mahasiswa {{ $i }}</label>
+                                <select id="user_id_{{ $i }}" name="user_id[]" class="select2 form-control">
+                                    <option value="">-- Pilih Mahasiswa {{ $i }} --</option>
+                                    @foreach ($mahasiswa as $item)
+                                        <option value="{{ $item['user_id'] }}">
+                                            {{ $item['nama'] }} - {{ $item['nim'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
-
-                       {{-- Tahun Angkatan --}}
-                        <div class="form-group">
-                            <label for="TA_id">Tahun Angkatan</label>
-                            <input type="text" class="form-control" value="{{ $tahun_ajaran->Tahun_Ajaran ?? '-' }}" readonly>
-                            <input type="hidden" name="TA_id" value="{{ $tahun_ajaran->id }}">
-                        </div>
-
-                        {{-- Prodi --}}
-                        <div class="form-group">
-                            <label for="prodi_id">Program Studi</label>
-                            <input type="text" class="form-control" value="{{ $prodi->nama_prodi ?? '-' }}" readonly>
-                            <input type="hidden" name="prodi_id" value="{{ $prodi->id }}">
-                        </div>
-
-                        {{-- Jenis PA --}}
-                        <div class="form-group">
-                            <label for="KPA_id">Jenis PA</label>
-                            <input type="text" class="form-control" value="{{ $kategoripa->kategori_pa ?? '-' }}" readonly>
-                            <input type="hidden" name="KPA_id" value="{{ $kategoripa->id }}">
-                        </div>
-
-
+                        @endfor
+                        
                             <button type="submit" class="btn btn-primary">Tambah</button>
                         </form>
 

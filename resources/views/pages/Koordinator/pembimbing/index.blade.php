@@ -21,9 +21,8 @@
                                     <tr>
                                         <th>No</th>
                                         <th>User ID</th>
-                                        {{-- <th>Nama</th> --}}
                                         <th>Prodi</th>
-                                        <th>Tingkat</th>
+                                        <th>Kategori PA</th>
                                         <th>Role </th>
                                         <th>Aksi</th>
                                     </tr>
@@ -34,7 +33,7 @@
                                             <td>{{ $item['id'] }}</td>
                                             <td>{{ $item['nama_dosen'] }}</td>
                                             <td>{{ $item['prodi'] }}</td>
-                                            <td>{{ $item['tingkat'] }}</td>
+                                            <td>{{ $item['jenis_pa'] }}</td>
                                             <td>{{ $item['nama_role'] }}</td>
                                             <td>
                                                 <div class="d-flex">

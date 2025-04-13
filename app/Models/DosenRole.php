@@ -7,14 +7,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DosenRole extends Model
 {
+public function prodi()
+{
+    return $this->belongsTo(Prodi::class, 'prodi_id');
+}
+
+public function role()
+{
+    return $this->belongsTo(Role::class, 'role_id');
+}
+
+public function tahunAjaran()
+{
+    return $this->belongsTo(TahunAjaran::class, 'TA_id');
+}
+public function kategoriPA()
+{
+    return $this->belongsTo(KategoriPA::class, 'KPA_id');
+}
+
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'nama_dosen',
         'role_id',
-        'nama_role',
-        'prodi',
-        'jenis_pa',
+        'prodi_id',
+        'KPA_id',
+        'TA_id',
+        'status',
     ];
     
 }
