@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dosen_RoleController;
 use App\Http\Controllers\KoordinatorController;
 use App\Http\Controllers\Kelompok_Controller;
+use App\Http\Controllers\TugasController;
 
 // Default redirect ke login
 Route::get('/', fn () => redirect()->route('login.form'));
@@ -53,3 +54,9 @@ Route::prefix('kelompok')->group(function () {
     Route::delete('/{id}', [Kelompok_Controller::class, 'destroy'])->name('kelompok.destroy');
 });
 
+// Route tugas
+Route::prefix('tugas')->group(function(){
+    Route::get('/',[TugasController::class, 'index'])->name('tugas.tugas');
+    Route::get('/create', [TugasController::class, 'create'])->name('tugas.create');
+    Route::post('/', [TugasController::class, 'store'])->name('tugas.store');
+});

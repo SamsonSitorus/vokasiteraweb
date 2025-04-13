@@ -14,7 +14,7 @@
             @if (session('role') == 'Dosen')
             <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li class="menu-header">Kordinator</li>
-            <li ><a class="nav-link" href="{{--route('tugas.index')--}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
+            <li ><a class="nav-link" href="{{route('tugas.tugas')}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{route('kelompok.index')}}"><i class="fas fa-users"></i> <span>Kelompok</span></a></li>
             <li ><a class="nav-link" href=""><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
             <li ><a class="nav-link" href="{{--route('pembimbing.index')--}}"><i class="fas fa-user"></i> <span>Pembimbing</span></a></li>
