@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Edit Koordinator')
+@section('title', 'Edit Dosen Role')
 
 @section('content')
 <section class="section">
@@ -9,12 +9,12 @@
                 @include('partials.alert')
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4>Edit Koordinator</h4>
-                        <a href="{{ route('koordinator.index') }}" class="btn btn-primary">Kembali</a>
+                        <h4>Edit Dosen Role</h4>
+                        <a href="{{ route('manajemen-role.index') }}" class="btn btn-primary">Kembali</a>
                     </div>
                     <div class="card-body">
 
-                        <form method="POST" action="{{ route('koordinator.update', Crypt::encrypt($dosenRole['id'])) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('manajemen-role.update', Crypt::encrypt($dosenRole['id'])) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -33,38 +33,76 @@
                                 </option>
                                 @endforeach
                                 </select>
-                                {{-- Hidden input nama dosen --}}
-                            <input type="hidden" name="nama" id="nama_dosen" value="{{ $dosenRole['nama_dosen'] }}">
-
                             </div>
-
-                              <div class="form-group">
-                                <input type="hidden" name="role_id" value="1">
-                                <input type="hidden" name="role_name" value="Koordinator">
+                            <div class="form-group">
+                                <label for="role_id">Pilih Role</label>
+                                <select id="role_id" name="role_id" class="select2 form-control" required>
+                                    <option value="">-- Pilih Role --</option>
+                                    @foreach ($role as $item)
+                                        <option 
+                                            value="{{ $item['id'] }}" 
+                                            data-nama="{{ $item['role_name'] ?? 'Tanpa Nama' }}"
+                                            {{ old('role_id', $dosenRole['role_id']) == $item['id'] ? 'selected' : '' }}
+                                        >
+                                            {{ $item['role_name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
-
-                            {{-- Pilih Prodi --}}
+                            {{-- Prodi --}}
                             <div class="form-group">
                                 <label for="prodi_id">Pilih Prodi</label>
-                                <select id="prodi_id" name="prodi" class="select2 form-control" required>
+                                <select id="prodi_id" name="prodi_id" class="select2 form-control" required>
                                     <option value="">-- Pilih Prodi --</option>
-                                    <option value="DIV Teknologi Rekayasa Perangkat Lunak" {{ $dosenRole['prodi'] == 'DIV Teknologi Rekayasa Perangkat Lunak' ? 'selected' : '' }}>Teknologi Rekayasa Perangkat Lunak</option>
-                                    <option value="DIII Teknologi Informasi"   {{ $dosenRole['prodi'] == 'DIII Teknologi Informasi' ? 'selected' : '' }}>Teknologi Informasi</option>
-                                    <option value="DIII Teknologi Komputer"   {{ $dosenRole['prodi'] == 'DIII Teknologi Komputer' ? 'selected' : '' }}>Teknologi Komputer</option>
+                                    @foreach ($prodi as $item)
+                                        <option 
+                                            value="{{ $item['id'] }}" 
+                                            data-nama="{{ $item['nama_prodi'] ?? 'Tanpa Nama' }}"
+                                            {{ old('prodi_id', $dosenRole['prodi_id'] ?? '') == $item['id'] ? 'selected' : '' }}
+                                        >
+                                            {{ $item['nama_prodi'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
-
-                            {{-- Pilih Tingkat --}}
+                               {{-- Kategori Proyek Akhir --}}
+                               <div class="form-group">
+                                <label for="KPA_id">Kategori Proyek Akhir</label>
+                                <select id="KPA_id" name="KPA_id" class="select2 form-control" required>
+                                    <option value="">-- Pilih Kategori Proyek Akhir --</option>
+                                    @foreach ($kategoripa as $item)
+                                    <option 
+                                            value="{{ $item->id }}" 
+                                            {{ old('TA_id', $dosenRole->KPA_id) == $item->id ? 'selected' : '' }}
+                                        >
+                                            {{ $item->kategori_pa }}
+                                        </option>
+                                @endforeach
+                                </select>
+                            </div>
                             <div class="form-group">
-                                <label for="jenis_pa_id">Kategori PA</label>
-                                <select id="jenis_pa_id" name="jenis_pa" class="select2 form-control" required>
-                                    <option value="">-- Pilih Tingkat --</option>
-                                    <option value="PA-1" {{ $dosenRole['jenis_pa'] == 1 ? 'selected' : '' }}>PA-1</option>
-                                    <option value="PA-2" {{ $dosenRole['jenis_pa'] == 2 ? 'selected' : '' }}>PA-2</option>
-                                    <option value="PA-3" {{ $dosenRole['jenis_pa'] == 3 ? 'selected' : '' }}>PA-3</option>
+                                <label for="TA_id">Tahun Ajaran</label>
+                                <select name="TA_id" id="TA_id" class="select2 form-control" required>
+                                    <option value="">-- Pilih Tahun Masuk --</option>
+                                    @foreach ($tahun_ajaran as $item)
+                                        <option 
+                                            value="{{ $item->id }}" 
+                                            {{ old('TA_id', $dosenRole->TA_id) == $item->id ? 'selected' : '' }}
+                                        >
+                                            {{ $item->Tahun_Ajaran }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
-
+                            {{-- Status --}}
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select name="status" id="status" class="form-control">
+                                    <option value="Aktif" {{ old('status', $dosenRole->status) == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                    <option value="Tidak-Aktif" {{ old('status', $dosenRole->status) == 'Tidak-Aktif' ? 'selected' : '' }}>Tidak-Aktif</option>
+                                </select>
+                            </div>
+                            
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                         </form>
 

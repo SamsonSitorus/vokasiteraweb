@@ -5,16 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Role extends Model
+class Prodi extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id',
-        'role_name'
+        'nama_prodi',
+        'maks_project',
     ];
-    protected $table = 'roles';
+    protected $table = 'prodi';
     public function dosenRoles()
     {
         return $this->hasMany(DosenRole::class);
+    }
+    public function Kelompok()
+    {
+        return $this->hasMany(Kelompok::class);
     }
 }

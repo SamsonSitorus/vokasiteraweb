@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'List Kordinator')
+@section('title', 'List Dosen Role')
 
 @section('content')
 <section class="section custom-section">
@@ -8,9 +8,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4>List Koordinator</h4>
-                        <a href="{{ route('koordinator.create') }}" class="btn btn-primary">
-                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Koordinator
+                        <h4>List Role</h4>
+                        <a href="{{ route('manajemen-role.create') }}" class="btn btn-primary">
+                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Dosen Role
                         </a>
                     </div>                    
                     <div class="card-body">
@@ -20,25 +20,29 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>User ID</th>
+                                        <th>Nama Dosen</th>
                                         <th>Prodi</th>
                                         <th>Kategori PA</th>
                                         <th>Role </th>
+                                        <th>Tahun Ajaran</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($dosen_roles as $item)
+                                    @foreach($dosenroles as $item)
                                         <tr>
-                                            <td>{{ $item['id'] }}</td>
-                                            <td>{{ $item['nama_dosen'] }}</td>
-                                            <td>{{ $item['prodi'] }}</td>
-                                            <td>{{ $item['jenis_pa'] }}</td>
-                                            <td>{{ $item['nama_role'] }}</td>
+                                            <td>{{ $item->id }}</td>
+                                            <td>{{ $item->nama }}</td>
+                                            <td>{{ $item->prodi->nama_prodi ?? 'N/A'}}</td>                                           
+                                            <td>{{ $item->kategoripa->kategori_pa ?? 'N/A' }}</td>
+                                            <td>{{ $item->role->role_name ?? 'N/A' }}</td>
+                                            <td>{{ $item->tahunAjaran->Tahun_Ajaran ?? 'N/A' }}</td>    
+                                            <td>{{ $item->status }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{route('koordinator.edit', Crypt::encrypt($item['id']))}}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
-                                                    <form method="POST" action="{{ route('koordinator.destroy', $item['id'])}}">
+                                                    <a href="{{route('manajemen-role.edit', Crypt::encrypt($item->id))}}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
+                                                    <form method="POST" action="{{ route('manajemen-role.destroy', $item->id)}}">
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 8px"><i class="nav-icon fas fa-trash-alt"></i> &nbsp; Hapus</button>
