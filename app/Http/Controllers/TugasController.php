@@ -31,21 +31,19 @@ class TugasController extends Controller
     }
     public function create()
     {
-        $token = session('token');
         $userID = session('user_id');
 
-        if(!$token || !$userID){
+        if(!$userID){
             return response() ->json(['Error'=>'Pengguna tidak tersedia'], 401);
         }
         return view('pages.Koordinator.tugas.create');
     }
 
     public function store(Request $request){
-        $token = session('token');
+        // $token = session('token');
         $userID = session('user_id');
-        // $roleID = session('role_id');
     
-        if(!$token || !$userID ){
+        if(!$userID ){
             return response()->json(['error'=>'Pengguna tidak ditemukan'], 401);
         }
     
@@ -67,13 +65,65 @@ class TugasController extends Controller
             $tugas->file = $filePath ?? null;
             $tugas->batas = $validated['batas'];
             $tugas->user_id = $userID;
-            // $tugas->role_id = $roleID;
     
             $tugas->save();
     
             return redirect()->route('tugas.tugas')->with('success', 'Tugas berhasil disimpan.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors(['error' => 'Gagal menyimpan tugas: ' . $e->getMessage()]);
         }
-    }    
+    }
+
+    public function edit($id){
+        $tugas = Tugas::findOrFail($id);
+        return view('pages.Koordinator.tugas.edit', compact('tugas'));
+    }
+
+    public function update(Request $request, $id){
+        $userID = session('user_id');
+        if(!$userID ){
+            return response()->json(['error'=>'Pengguna tidak ditemukan'], 401);
+        }
+    
+        $validated = $request->validate([
+            'judul' => 'required|string',
+            'instruksi'=> 'required|string',
+            'file'=>'nullable|file|mimes:pdf,doc,docx,zip,rar|max:5120',
+            'batas'=>'required|date',
+        ]);
+    
+        $tugas = Tugas::findOrFail($id);
+    
+        if($request->hasFile('file')){
+            $fileName = time().'_'.$request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('tugas', $fileName, 'public');
+            $tugas->file = $filePath;
+        }
+    
+        $tugas->judul = $request->judul;
+        $tugas->instruksi = $request->instruksi;
+        $tugas->batas = $request->batas;
+        $tugas->save();
+    
+        return redirect()->route('tugas.tugas')->with('success', 'Tugas berhasil diperbarui!');
+    }
+    
+
+    public function delete($id)
+    {
+        $tugas = Tugas::findOrFail($id);
+        $userID = session('user_id');
+
+        if (!$userID) {
+            return response()->json(['error' => 'Pengguna tidak ditemukan'], 401);
+        }
+
+        $tugas->delete();
+        return redirect()->back()->with('success', 'Tugas berhasil dihapus.');
+    }
+
+    public function show($id){
+        $tugas = Tugas::findOrFail($id);
+        return view('pages.Koordinator.tugas.show', compact('tugas'));
+    }
 }

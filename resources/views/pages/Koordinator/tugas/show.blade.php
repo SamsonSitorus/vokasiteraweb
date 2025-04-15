@@ -1,50 +1,48 @@
 @extends('layouts.main')
-@section('title', 'List Tugas')
+@section('title', 'View')
 
 @section('content')
-    <section class="section custom-section">
-        <div class="section-body">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                            <h4>Pengumpulan Tugas {{-- $tugas->judul --}}</h4>
-                            <a class="btn btn-primary btn-sm" href="{{ route('tugas.index') }}">Kembali</a>
-                        </div>
-                        <div class="card-body">
-                            @include('partials.alert')
-                            <div class="table-responsive">
-                                <table class="table table-striped" id="table-2">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama Siswa</th>
-                                            <th>Kelas</th>
-                                            <th>Tgl Pengumpulan</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{-- @foreach ($jawaban as $result => $data)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $data->siswa->nama }}</td>
-                                                <td>{{ $data->siswa->kelas->nama_kelas }}</td>
-                                                <td>{{ date("d-m-Y", strtotime($data->created_at)) ?? '' }}</td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <a href="{{ route('guru.jawaban.download', $data->id) }}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-download"></i> &nbsp; Download Jawaban</a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach --}}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+<section class="section custom-section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4>Detail Tugas</h4>
+                        <a class="btn btn-primary btn-sm" href="{{ route('tugas.tugas') }}">Kembali</a>
+                    </div>
+                    <div class="card-body">
+                        @include('partials.alert')
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Judul</th>
+                                <td>{{ $tugas->judul }}</td>
+                            </tr>
+                            <tr>
+                                <th>Instruksi</th>
+                                <td>{{ $tugas->instruksi }}</td>
+                            </tr>
+                            <tr>
+                                <th>File</th>
+                                <td>
+                                    @if ($tugas->file)
+                                        <a href="{{ asset('storage/' . $tugas->file) }}" target="_blank" class="btn btn-info btn-sm">
+                                            Lihat File
+                                        </a>
+                                    @else
+                                        <span class="text-muted">Tidak ada file</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Batas Waktu</th>
+                                <td>{{ \Carbon\Carbon::parse($tugas->batas)->format('d-m-Y H:i') }}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-  </section>
+    </div>
+</section>
 @endsection
