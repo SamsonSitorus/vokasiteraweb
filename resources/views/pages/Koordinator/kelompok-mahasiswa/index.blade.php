@@ -11,19 +11,21 @@
                         <h4>List Kelompok Mahasiswa </h4>
                         <a href="{{ route('kelompokMahasiswa.create',['id' => $kelompok->id]) }}" class="btn btn-primary">
                             <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Anggota Kelompok
-                        </a>
-                    </div>                    
+                        </a><br>
+                        <a class="btn btn-primary btn-sm" href="{{ route('kelompok.index') }}">Kembali</a> 
+                    </div>  
+                                     
                     <div class="card-body">
+                        <h4>Kelompok: {{ $kelompok->nomor_kelompok ?? 'Tanpa Nomor' }}</h4>
                         @include('partials.alert')
                         <div class="table-responsive">
                             <table class="table table-striped" id="table-2">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nomor Kelompok</th>
-                                        {{-- <th>Kategori Proyek</th>
+                                        <th>NIM</th>
+                                        <th>Nama Mahasiswa</th>
                                         <th>Angkatan</th>
-                                        <th>Program Studi</th> --}}
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -31,15 +33,13 @@
                                      @foreach($mahasiswakelompoks as $item)
                                         <tr>
                                             <td>{{ $item->id }}</td>
-                                            <td>{{ $item->user_id }}</td>
-                                            
-                                            {{-- <td>{{ $item->kategoripa->kategori_pa ?? 'N/A' }}</td>
-                                            <td>{{ $item->tahunAjaran->Tahun_Ajaran ?? 'N/A' }}</td>    
-                                            <td>{{ $item->prodi->nama_prodi ?? 'N/A'}}</td>   --}}
+                                            <td>{{ $item->nim }}</td>
+                                            <td>{{ $item->nama }}</td>
+                                            <td>{{ $item->angkatan }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{--route('kelompok.edit', Crypt::encrypt($item->id))--}}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
-                                                    <form method="POST" action="{{--route('kelompok.destroy', $item->id)--}}">
+                                                    <a href="{{ route('kelompokMahasiswa.edit', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
+                                                    <form method="POST" action="{{ route('kelompokMahasiswa.destroy', $item->id) }}">
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 8px"><i class="nav-icon fas fa-trash-alt"></i> &nbsp; Hapus</button>

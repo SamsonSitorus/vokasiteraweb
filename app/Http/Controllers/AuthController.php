@@ -17,11 +17,8 @@ class AuthController extends Controller
     {
         return view('login'); // Mengarahkan ke view login
     }
-
     public function login(Request $request)
     {
-     
-        
         // Validasi input
         $request->validate([
             'username' => 'required|string',
@@ -30,10 +27,10 @@ class AuthController extends Controller
             'username.required' => 'Username wajib diisi.',
             'password.required' => 'Password wajib diisi.',
         ]);
-
+    
         $client = new Client();
         $url = env('API_URL') . "jwt-api/do-auth";
-
+    
         try {
             // Melakukan request ke API untuk otentikasi
             $response = $client->post($url, [
@@ -44,19 +41,19 @@ class AuthController extends Controller
                 'headers' => ['Accept' => 'application/json'],
                 'timeout' => 30,
             ]);
-
+    
             // Decode response body
             $body = json_decode($response->getBody(), true);
-
+    
             if (!$body['result']) {
                 return redirect()->back()->withErrors(['login' => 'Username dan password tidak sesuai.'])->withInput();
             }
-
+    
             // Ambil data user dan detail user
             $userTemp = $body['user'];
             $detailUserResponse = $this->getUserDetail($userTemp['user_id'], $userTemp['role'], $body['token']);
             $responseDetailUser = json_decode($detailUserResponse->getContent());
-
+    
             if ($responseDetailUser->success === 'User valid!') {
                 // Simpan data user di session
                 $userData = [
@@ -68,25 +65,47 @@ class AuthController extends Controller
                     'isLoggin' => true,
                 ];
                 session::put($userData); 
-              if ($userTemp['role'] == 'Dosen') {
-                $dosenRoles = DosenRole::where('user_id', $userTemp['user_id'])->pluck('role_id')->toArray();
-                session(['dosen_roles' => $dosenRoles]);
-                if (in_array('1', $dosenRoles)) {
-                    return redirect()->route('dashboard.koordinator');
-                } elseif (in_array('2', $dosenRoles)|| in_array('4', $dosenRoles)) {
-                    return redirect()->route('dashboard.penguji');
-                } elseif (in_array('3', $dosenRoles)|| in_array('5', $dosenRoles)) {
-                    return redirect()->route('dashboard.pembimbing');
-                } else {
-                    return redirect()->route('login.form')->withErrors(['login' => 'Role tidak valid.']);
+    
+                // Check if the role is 'Dosen' (Lecturer)
+                if ($userTemp['role'] == 'Dosen') {
+                    // Fetch the active DosenRole
+                    $dosenRole = DosenRole::where('user_id', $userTemp['user_id'])
+                                          ->where('status', 'Aktif')
+                                          ->first();
+    
+                    if ($dosenRole) {
+                        // Simpan ke session
+                        session([
+                            'prodi_id' => $dosenRole->prodi_id,
+                            'KPA_id' => $dosenRole->KPA_id,
+                            'TA_id' => $dosenRole->TA_id,
+                            'role_id' => $dosenRole->role_id,
+                        ]);
+    
+                        // Dosen roles logic for redirection
+                        $dosenRoles = DosenRole::where('user_id', $userTemp['user_id'])->pluck('role_id')->toArray();
+                        session(['dosen_roles' => $dosenRoles]);
+    
+                        if (in_array('1', $dosenRoles)) {
+                            return redirect()->route('dashboard.koordinator');
+                        } elseif (in_array('2', $dosenRoles) || in_array('4', $dosenRoles)) {
+                            return redirect()->route('dashboard.penguji');
+                        } elseif (in_array('3', $dosenRoles) || in_array('5', $dosenRoles)) {
+                            return redirect()->route('dashboard.pembimbing');
+                        } else {
+                            return redirect()->route('login.form')->withErrors(['login' => 'Role tidak valid.']);
+                        }
+                    } else {
+                        return redirect()->route('login.form')->withErrors(['login' => 'Role Dosen tidak ditemukan atau tidak aktif.']);
+                    }
                 }
-            }
+    
                 // Redirect berdasarkan role pengguna
                 if ($userTemp['role'] == 'Mahasiswa') {
                     return redirect()->route('dashboard.mahasiswa');
-                }elseif($userTemp['role'] == 'Staff') {
-                    return  redirect()->route('dashboard.BAAK');
-                }else {
+                } elseif ($userTemp['role'] == 'Staff') {
+                    return redirect()->route('dashboard.BAAK');
+                } else {
                     return redirect()->route('login.form')->withErrors(['login' => 'Role tidak valid.']);
                 }
             } else {
@@ -107,6 +126,7 @@ class AuthController extends Controller
         $client = new Client();
 
         try {
+     
             // Melakukan request ke API untuk mengambil detail user
             $response = $client->request('GET', $url, [
                 'headers' => ['Authorization' => 'Bearer ' . $token],

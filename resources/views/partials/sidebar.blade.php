@@ -17,13 +17,9 @@
             @if (in_array(1, $dosenRoles)) 
             <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li class="menu-header">Kordinator</li>
-<<<<<<< HEAD
             <li ><a class="nav-link" href="{{route('tugas.tugas')}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{route('kelompok.index')}}"><i class="fas fa-users"></i> <span>Kelompok</span></a></li>
-=======
             <li ><a class="nav-link" href="{{--route('tugas.index')--}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
-            <li ><a class="nav-link" href="{{ route('kelompok.index')}}"><i class="fas fa-users"></i> <span>Kelompok</span></a></li>
->>>>>>> 189000e81bc4a439446bf1462e0b261c9c9a810f
             <li ><a class="nav-link" href=""><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
             <li ><a class="nav-link" href="{{--route('pembimbing.index')--}}"><i class="fas fa-user"></i> <span>Pembimbing</span></a></li>
             <li ><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>

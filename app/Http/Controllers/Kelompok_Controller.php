@@ -18,16 +18,11 @@ class Kelompok_Controller extends Controller
     
     public function index(Request $request)
     {
-        // Pastikan session sudah ada (jika belum, arahkan ke create atau tampilkan pesan)
-        if (!session()->has('prodi_id') || !session()->has('KPA_id') || !session()->has('TA_id')) {
-            return redirect()->route('kelompok.create')->with('error', 'Silakan tentukan data terlebih dahulu.');
-        }
-    
-        // Ambil data dari session
-        $prodi_id = session('prodi_id');
-        $KPA_id = session('KPA_id');
-        $TA_id = session('TA_id');
-    
+          // Ambil data dari session
+          $prodi_id = session('prodi_id');
+          $KPA_id = session('KPA_id');
+          $TA_id = session('TA_id');
+
         // Filter berdasarkan session
         $kelompok = Kelompok::with(['prodi', 'tahunAjaran', 'kategoripa'])
             ->where('prodi_id', $prodi_id)
@@ -50,20 +45,19 @@ class Kelompok_Controller extends Controller
                 $dosenRole = DosenRole::where('user_id', $user_id)
                                        ->where('status', 'Aktif')
                                        ->first();
-        
                 if ($dosenRole) {
                     // Simpan ke session
-                    session([
-                        'prodi_id' => $dosenRole->prodi_id,
-                        'KPA_id' => $dosenRole->KPA_id,
-                        'TA_id' => $dosenRole->TA_id,
-                        'role_id' => $dosenRole->role_id,
-                    ]);
+                    // session([
+                    //     'prodi_id' => $dosenRole->prodi_id,
+                    //     'KPA_id' => $dosenRole->KPA_id,
+                    //     'TA_id' => $dosenRole->TA_id,
+                    //     'role_id' => $dosenRole->role_id,
+                    // ]);
                 } else {
                     return redirect()->back()->with('error', 'Anda tidak memiliki data role yang aktif.');
                 }
             }
-        
+            
             // Ambil data berdasarkan session
             $prodi = Prodi::find(session('prodi_id'));
             $kategoripa = KategoriPa::find(session('KPA_id'));
