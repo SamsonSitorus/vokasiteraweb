@@ -17,7 +17,9 @@
             @if (in_array(1, $dosenRoles)) 
             <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li class="menu-header">Kordinator</li>
-            <li ><a class="nav-link" href="{{route('tugas.index')}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
+            <li ><a class="nav-link" href="{{route('tugas.tugas')}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
+            <li ><a class="nav-link" href="{{route('kelompok.index')}}"><i class="fas fa-users"></i> <span>Kelompok</span></a></li>
+            <li ><a class="nav-link" href="{{--route('tugas.index')--}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{ route('kelompok.index')}}"><i class="fas fa-users"></i> <span>Kelompok</span></a></li>
             <li ><a class="nav-link" href=""><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
             <li ><a class="nav-link" href="{{--route('pembimbing.index')--}}"><i class="fas fa-user"></i> <span>Pembimbing</span></a></li>
@@ -44,6 +46,7 @@
              {{-- Untuk  Mahasiswa --}}
             @elseif (session('role') == 'Mahasiswa')
             <li class="menu-header">MahaSiswa</li>
+            <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li class="{{ request()->routeIs('siswa.dashboard.*') ? 'active' : '' }}"><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li ><a class="nav-link" href="{{ route('Artefak.index') }}"><i class="fas fa-file"></i> <span>Artefak</span></a></li>
             <li ><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-list"></i> <span>Bimbingan</span></a></li>
