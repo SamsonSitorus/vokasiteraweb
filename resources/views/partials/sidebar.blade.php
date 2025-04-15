@@ -19,10 +19,13 @@
             <li class="menu-header">Kordinator</li>
             <li ><a class="nav-link" href="{{route('tugas.tugas')}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{route('kelompok.index')}}"><i class="fas fa-users"></i> <span>Kelompok</span></a></li>
-<!-- ======= -->
             <li ><a class="nav-link" href="{{--route('tugas.index')--}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{ route('kelompok.index')}}"><i class="fas fa-users"></i> <span>Kelompok</span></a></li>
+<!-- <<<<<<< HEAD -->
 <!-- >>>>>>> 189000e81bc4a439446bf1462e0b261c9c9a810f -->
+<!-- ======= -->
+
+<!-- >>>>>>> cf7d857e12087feeaedcaed07ec91e15ffe06c14 -->
             <li ><a class="nav-link" href=""><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
             <li ><a class="nav-link" href="{{--route('pembimbing.index')--}}"><i class="fas fa-user"></i> <span>Pembimbing</span></a></li>
             <li ><a class="nav-link" href="{{ route('pengumuman.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
