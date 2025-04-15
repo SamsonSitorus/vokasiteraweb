@@ -87,6 +87,9 @@ class Kelompok_Controller extends Controller
             'TA_id'          => 'required|exists:tahun_ajaran,id',
         ]);
     
+        
+       
+
         // Validasi kombinasi unik dengan Eloquent langsung
         $exists = Kelompok::where('nomor_kelompok', $validated['nomor_kelompok'])
             ->where('prodi_id', $validated['prodi_id'])

@@ -6,9 +6,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dosen_RoleController;
 use App\Http\Controllers\Kelompok_Controller;
 use App\Http\Controllers\TugasController;
-
 use App\Http\Controllers\ManajemenroleController;
 use App\Http\Controllers\Kelompok_mahasiswa_Controller;
+use App\Http\Controllers\PengumumanController;
+
 
 // Default redirect ke login
 Route::get('/', fn () => redirect()->route('login.form'));
@@ -34,7 +35,7 @@ Route::middleware(['auth.api'])->group(function () {
 
     Route::get('/dashboard/BAAK', fn () => view('pages.BAAK.dashboard'))
         ->name('dashboard.BAAK')->middleware('role:Staff');
-});
+
 
 // Manajemen Role
 Route::prefix('manajemen role')->group(function () {
@@ -73,3 +74,19 @@ Route::prefix('tugas')->group(function(){
     Route::get('/create', [TugasController::class, 'create'])->name('tugas.create');
     Route::post('/', [TugasController::class, 'store'])->name('tugas.store');
 });
+
+    Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
+    Route::get('/pengumuman/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
+    Route::post('/pengumuman/store', [PengumumanController::class, 'store'])->name('pengumuman.store');
+    Route::get('/pengumuman/{id}/edit', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
+    Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
+    Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
+}); 
+
+//untuk mahasiswa 
+Route::get('/pengumuman/mahasiswa', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
+Route::get('mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
+//untuk pembimbing
+
+Route::get('/pengumuman/pembimbing', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
+Route::get('/pengumuman/pembimbing/{id}', [PengumumanController::class, 'showpembimbing'])->name('pembimbing.pengumuman.show');
