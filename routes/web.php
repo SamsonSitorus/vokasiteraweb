@@ -5,12 +5,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dosen_RoleController;
 use App\Http\Controllers\Kelompok_Controller;
-<<<<<<< HEAD
+// <<<<<<< HEAD
 use App\Http\Controllers\TugasController;
-=======
+// =======
 use App\Http\Controllers\ManajemenroleController;
 use App\Http\Controllers\Kelompok_mahasiswa_Controller;
->>>>>>> 189000e81bc4a439446bf1462e0b261c9c9a810f
+// >>>>>>> 189000e81bc4a439446bf1462e0b261c9c9a810f
 
 // Default redirect ke login
 Route::get('/', fn () => redirect()->route('login.form'));
@@ -36,6 +36,7 @@ Route::middleware(['auth.api'])->group(function () {
 
     Route::get('/dashboard/BAAK', fn () => view('pages.BAAK.dashboard'))
         ->name('dashboard.BAAK')->middleware('role:Staff');
+});
 
 
 // Manajemen Role
