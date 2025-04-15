@@ -26,6 +26,12 @@ class Tahun_AjaranSeeder extends Seeder
                 'updated_at' => now(),
                 'Status' => 'Tidak Aktif',
             ],
+            [
+                'Tahun_Ajaran' => '2019',
+                'created_at' => now(),
+                'updated_at' => now(),
+                'Status' => 'Aktif',
+            ],
         ]);
     }
 }

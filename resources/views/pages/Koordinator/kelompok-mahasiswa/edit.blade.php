@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Edit Kelompok')
+@section('title', 'Edit Anggota Kelompok')
 
 @section('content')
 <section class="section">
@@ -9,43 +9,29 @@
                 @include('partials.alert')
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4>Edit Kelompok</h4>
-                        <a href="{{ route('kelompok.index') }}" class="btn btn-primary">Kembali</a>
+                        <h4>Edit Anggota Kelompok</h4>
+                        <a href="{{route('kelompok.index') }}" class="btn btn-primary">Kembali</a>
                     </div>
                     <div class="card-body">
 
-                        <form method="POST" action="{{ route('kelompok.update', Crypt::encrypt($kelompok['id'])) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('kelompokMahasiswa.update', $kelompokMahasiswa->id) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-
-                            {{-- Nomor Kelompok --}}    
                             <div class="form-group">
-                                <label for="nomor_kelompok">Nomor Kelompok</label>
-                                <input type="text" class="form-control" id="nomor_kelompok" name="nomor_kelompok" value="{{ $kelompok->nomor_kelompok }}" required>
+                                <label for="user_id">Pilih Mahasiswa</label>
+                                <select id="user_id" name="user_id" class="select2 form-control" required>
+                                     <option value="">-- Pilih Mahasiswa --</option>
+                                     @foreach ($mahasiswabelummasuk as $item)
+                                    <option 
+                                    value="{{ $item['user_id'] ?? '' }}"
+                                    data-nama="{{ $item['nama'] ?? 'Tanpa Nama' }}"
+                                    {{ $item['user_id'] == $kelompokMahasiswa['user_id'] ? 'selected' : '' }}
+                                >
+                                   {{ $item['nim'] ?? 'Tanpa Nim' }} -{{ $item['nama'] ?? 'Tanpa Nama' }}
+                                </option> 
+                                @endforeach 
+                                </select>
                             </div>
-                             {{-- Jenis PA --}}
-                             <div class="form-group">
-                                <label for="KPA_id">Jenis PA (Readonly)</label>
-                                <input type="text" class="form-control" value="{{ $kelompok->kategoripa->kategori_pa ?? '-' }}" readonly>
-                                <input type="hidden" name="KPA_id" value="{{ $kelompok->KPA_id }}">
-                            </div>
-                            {{-- Prodi --}}
-                            <div class="form-group">
-                                <label for="prodi_id">Program Studi (Readonly)</label>
-                                <input type="text" class="form-control" value="{{ $kelompok->prodi->nama_prodi ?? '-' }}" readonly>
-                                <input type="hidden" name="prodi_id" value="{{ $kelompok->prodi_id }}">
-                            </div>
-
-                            {{-- Tahun Angkatan --}}
-                            <div class="form-group">
-                                <label for="TA_id">Tahun Angkatan (Readonly)</label>
-                                <input type="text" class="form-control" value="{{ $kelompok->tahunAjaran->Tahun_Ajaran ?? '-' }}" readonly>
-                                <input type="hidden" name="TA_id" value="{{ $kelompok->TA_id }}">
-                            </div>
-
-                            
-                           
-
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                         </form>
 

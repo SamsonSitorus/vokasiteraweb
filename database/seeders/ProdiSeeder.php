@@ -15,18 +15,20 @@ class ProdiSeeder extends Seeder
     {
         DB::table('Prodi')->insert([
             [
+                'id' => 4,
                 'nama_prodi' => 'DIV Teknologi Rekayasa Perangkat Lunak',
                 'maks_project' =>'3',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
+            ['id' => 1,
                 'nama_prodi' => 'DIII Teknologi Informasi',
                 'maks_project' =>'2',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
+                'id' => 3,
                 'nama_prodi' => 'DIII Teknologi Komputer',
                 'maks_project' =>'2',
                 'created_at' => now(),

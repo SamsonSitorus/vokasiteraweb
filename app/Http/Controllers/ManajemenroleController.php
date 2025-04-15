@@ -95,8 +95,8 @@ class ManajemenroleController extends Controller
         if (strtolower($role->role_name) === 'koordinator') {
             // Validasi agar dosen tidak menjadi koordinator ganda (per dosen)
             $existingPerDosen = DosenRole::where('user_id', $validated['user_id'])
-                ->where('prodi_id', $validated['prodi_id'])
-                ->where('KPA_id', $validated['KPA_id'])
+                // ->where('prodi_id', $validated['prodi_id'])
+                // ->where('KPA_id', $validated['KPA_id'])
                 ->where('TA_id', $validated['TA_id'])
                 ->where('role_id', $validated['role_id'])
                 ->first();
@@ -108,9 +108,10 @@ class ManajemenroleController extends Controller
             }
     
             // Validasi agar hanya satu koordinator untuk kombinasi jenis_pa dan tahun ajaran
-            $existingGlobal = DosenRole::where('KPA_id', $validated['KPA_id'])
+            $existingGlobal = DosenRole::where('role_id', $validated['role_id'])
                 ->where('TA_id', $validated['TA_id'])
-                ->where('role_id', $validated['role_id'])
+                ->where('prodi_id', $validated ['prodi_id'])
+                ->where('KPA_id', $validated['KPA_id'])
                 ->exists();
     
             if ($existingGlobal) {

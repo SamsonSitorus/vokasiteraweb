@@ -5,13 +5,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dosen_RoleController;
 use App\Http\Controllers\Kelompok_Controller;
-// <<<<<<< HEAD
+<<<<<<< HEAD
 use App\Http\Controllers\TugasController;
-use App\Http\Controllers\JadwalController;
-// =======
+=======
 use App\Http\Controllers\ManajemenroleController;
 use App\Http\Controllers\Kelompok_mahasiswa_Controller;
-// >>>>>>> 189000e81bc4a439446bf1462e0b261c9c9a810f
+>>>>>>> 189000e81bc4a439446bf1462e0b261c9c9a810f
 
 // Default redirect ke login
 Route::get('/', fn () => redirect()->route('login.form'));
@@ -37,7 +36,7 @@ Route::middleware(['auth.api'])->group(function () {
 
     Route::get('/dashboard/BAAK', fn () => view('pages.BAAK.dashboard'))
         ->name('dashboard.BAAK')->middleware('role:Staff');
-});
+
 
 // Manajemen Role
 Route::prefix('manajemen role')->group(function () {
@@ -66,7 +65,6 @@ Route::prefix('kelompokMahasiswa')->group(function () {
     Route::get('/{id}', [Kelompok_mahasiswa_Controller::class, 'edit'])->name('kelompokMahasiswa.edit');
     Route::put('/{id}', [Kelompok_mahasiswa_Controller::class, 'update'])->name('kelompokMahasiswa.update');
     Route::delete('/{id}', [Kelompok_mahasiswa_Controller::class, 'destroy'])->name('kelompokMahasiswa.destroy');
-    Route::get('/{id}', [Kelompok_mahasiswa_Controller::class, 'show'])->name('kelompokMahasiswa.show');
 });
 
 
@@ -80,10 +78,4 @@ Route::prefix('tugas')->group(function(){
     Route::put('/{id}', [TugasController::class, 'update'])->name('tugas.update');
     Route::delete('/{id}',[TugasController::class, 'delete'])->name('tugas.delete');
     Route::get('/{id}/show',[TugasController::class, 'show'])->name('tugas.show');
-});
-
-// Route Jadwal
-Route::prefix('jadwal')->group(function(){
-    Route::get('/',[JadwalController::class, 'index'])->name('jadwal.index');
-    Route::get('/',[JadwalController::class, 'create'])->name('jadwal.create');
 });

@@ -17,6 +17,10 @@
                         <div class="card-wrap">
                             <div class="card-header">
                                 <h4>Jumlah MahaSiswa</h4>
+                                <p>Prodi ID: {{ session('prodi_id') }}</p>
+                                <p>KPA ID: {{ session('KPA_id') }}</p>
+                                <p>TA ID: {{ session('TA_id') }}</p>
+                                <p>session token: {{ session('token'); }}</p>
                             </div>
                             <div class="card-body">
                                 {{-- {{ $siswa }} --}}
