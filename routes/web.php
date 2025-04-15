@@ -1,16 +1,17 @@
 <?php
 
+use App\Http\Controllers\Artefak_Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dosen_RoleController;
 use App\Http\Controllers\Kelompok_Controller;
-// <<<<<<< HEAD
+
 use App\Http\Controllers\TugasController;
-// =======
+
 use App\Http\Controllers\ManajemenroleController;
 use App\Http\Controllers\Kelompok_mahasiswa_Controller;
-// >>>>>>> 189000e81bc4a439446bf1462e0b261c9c9a810f
+
 
 // Default redirect ke login
 Route::get('/', fn () => redirect()->route('login.form'));
@@ -72,11 +73,17 @@ Route::prefix('kelompokMahasiswa')->group(function () {
 
 // Route tugas
 Route::prefix('tugas')->group(function(){
-    Route::get('/',[TugasController::class, 'index'])->name('tugas.tugas');
+    Route::get('/',[TugasController::class, 'index'])->name('tugas.index');
     Route::get('/create', [TugasController::class, 'create'])->name('tugas.create');
     Route::post('/', [TugasController::class, 'store'])->name('tugas.store');
     Route::get('/{id}', [TugasController::class, 'edit'])->name('tugas.edit');
     Route::put('/{id}', [TugasController::class, 'update'])->name('tugas.update');
-    Route::delete('/{id}',[TugasController::class, 'delete'])->name('tugas.delete');
+    Route::delete('/{id}',[TugasController::class, 'destroy'])->name('tugas.destroy');
     Route::get('/{id}/show',[TugasController::class, 'show'])->name('tugas.show');
+});
+
+
+//Route Mahasiswa
+Route::prefix('Artefak')->group(function(){
+    Route::get('/',[Artefak_Controller::class, 'index'])->name('Artefak.index');
 });

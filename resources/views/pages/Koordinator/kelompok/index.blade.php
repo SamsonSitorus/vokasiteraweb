@@ -24,6 +24,7 @@
                                         <th>Kategori Proyek</th>
                                         <th>Angkatan</th>
                                         <th>Program Studi</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -35,6 +36,7 @@
                                             <td>{{ $item->kategoripa->kategori_pa ?? 'N/A' }}</td>
                                             <td>{{ $item->tahunAjaran->Tahun_Ajaran ?? 'N/A' }}</td>    
                                             <td>{{ $item->prodi->nama_prodi ?? 'N/A'}}</td>  
+                                            <td>{{ $item->status }}</td>
                                             <td>
                                                 <div class="d-flex">
                                                     <a href="{{ route('kelompokMahasiswa.index',$item->id) }}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Kelola</a>&nbsp;&nbsp;

@@ -10,7 +10,8 @@ use Exception;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DosenRole;
-
+use App\Models\Kelompok;
+use App\Models\KelompokMahasiswa;
 class AuthController extends Controller
 {
     public function showLoginForm()
@@ -102,7 +103,28 @@ class AuthController extends Controller
     
                 // Redirect berdasarkan role pengguna
                 if ($userTemp['role'] == 'Mahasiswa') {
+                    $kelompokMahasiswa = KelompokMahasiswa ::where('user_id',$userTemp['user_id'])
+                    ->join('kelompok', 'kelompok_mahasiswa.kelompok_id', '=', 'kelompok.id')
+                    ->where('status','Aktif')
+                    ->select('kelompok_mahasiswa.*', 'kelompok.KPA_id', 'kelompok.prodi_id', 'kelompok.TA_id')
+                    ->first();
+                    if (!$kelompokMahasiswa) {
+                        return redirect()->route('login.form')->withErrors(['Login' => 'Anda belum tergabung dalam kelompok aktif.'])->withInput();;
+                    }
+                    
+                        session([
+                            'kelompok_id' => $kelompokMahasiswa->kelompok_id,
+                            'prodi_id' => $kelompokMahasiswa->prodi_id,
+                            'KPA_id' => $kelompokMahasiswa->KPA_id,
+                            'TA_id' => $kelompokMahasiswa->TA_id,
+                        ]);
+                    
+                    $kelompok = KelompokMahasiswa::where('user_id', $userTemp['user_id'])
+                    ->pluck('kelompok_id')
+                    ->toArray();
+    
                     return redirect()->route('dashboard.mahasiswa');
+                    
                 } elseif ($userTemp['role'] == 'Staff') {
                     return redirect()->route('dashboard.BAAK');
                 } else {

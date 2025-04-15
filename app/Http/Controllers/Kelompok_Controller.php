@@ -85,11 +85,9 @@ class Kelompok_Controller extends Controller
             'prodi_id'       => 'required|exists:prodi,id',
             'KPA_id'         => 'required|exists:kategori_pa,id',
             'TA_id'          => 'required|exists:tahun_ajaran,id',
+            'status'         => 'required|in:Aktif,Tidak-Aktif',
         ]);
     
-        
-       
-
         // Validasi kombinasi unik dengan Eloquent langsung
         $exists = Kelompok::where('nomor_kelompok', $validated['nomor_kelompok'])
             ->where('prodi_id', $validated['prodi_id'])
@@ -141,6 +139,7 @@ public function update(Request $request, $encryptedId)
     // Validasi input
     $request->validate([
         'nomor_kelompok' => 'required|string|max:255',  // Ganti numeric ke string jika nomor_kelompok berbentuk teks
+        'status'         => 'required|in:Aktif,Tidak-Aktif',
         // Tambah validasi lain sesuai kebutuhan
     ]);
     
@@ -159,6 +158,7 @@ public function update(Request $request, $encryptedId)
     
         // Update data
         $kelompok->nomor_kelompok = $request->nomor_kelompok;
+        $kelompok->status = $request->status;
         // Update field lainnya jika diperlukan
         $kelompok->save();
     
@@ -180,6 +180,11 @@ public function update(Request $request, $encryptedId)
                 $kelompok->TA_id != session('TA_id')
             ) {
                 return redirect()->back()->with('error', 'Data tidak sesuai dengan session Anda.');
+            }
+            if ($kelompok->status === 'Aktif'){
+                return back()->withErrors([
+                    'error' => 'Tidak dapat menghapus Kelompok yang Aktif.',
+                ]);
             }
     
             $kelompok->delete();
