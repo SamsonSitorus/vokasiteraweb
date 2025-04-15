@@ -5,11 +5,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dosen_RoleController;
 use App\Http\Controllers\Kelompok_Controller;
+// <<<<<<< HEAD
 use App\Http\Controllers\TugasController;
+// =======
 use App\Http\Controllers\ManajemenroleController;
 use App\Http\Controllers\Kelompok_mahasiswa_Controller;
-use App\Http\Controllers\PengumumanController;
-
+// >>>>>>> 189000e81bc4a439446bf1462e0b261c9c9a810f
 
 // Default redirect ke login
 Route::get('/', fn () => redirect()->route('login.form'));
@@ -35,6 +36,7 @@ Route::middleware(['auth.api'])->group(function () {
 
     Route::get('/dashboard/BAAK', fn () => view('pages.BAAK.dashboard'))
         ->name('dashboard.BAAK')->middleware('role:Staff');
+});
 
 
 // Manajemen Role
@@ -61,9 +63,9 @@ Route::prefix('kelompokMahasiswa')->group(function () {
     Route::get('/kelompok/{id}', [Kelompok_mahasiswa_Controller::class, 'index'])->name('kelompokMahasiswa.index');
     Route::get('/kelompok/create/{id}', [Kelompok_mahasiswa_Controller::class, 'create'])->name('kelompokMahasiswa.create');
     Route::post('/', [Kelompok_mahasiswa_Controller::class, 'store'])->name('kelompokMahasiswa.store');
-    Route::get('/kelompok-mahasiswa/{id}/edit', [Kelompok_mahasiswa_Controller::class, 'edit'])->name('kelompokMahasiswa.edit');
-    Route::put('/kelompok-mahasiswa/{id}', [Kelompok_mahasiswa_Controller::class, 'update'])->name('kelompokMahasiswa.update');
-    Route::delete('/kelompok-mahasiswa/{id}', [Kelompok_mahasiswa_Controller::class, 'destroy'])->name('kelompokMahasiswa.destroy');
+    Route::get('/{id}', [Kelompok_mahasiswa_Controller::class, 'edit'])->name('kelompokMahasiswa.edit');
+    Route::put('/{id}', [Kelompok_mahasiswa_Controller::class, 'update'])->name('kelompokMahasiswa.update');
+    Route::delete('/{id}', [Kelompok_mahasiswa_Controller::class, 'destroy'])->name('kelompokMahasiswa.destroy');
 });
 
 
@@ -73,20 +75,8 @@ Route::prefix('tugas')->group(function(){
     Route::get('/',[TugasController::class, 'index'])->name('tugas.tugas');
     Route::get('/create', [TugasController::class, 'create'])->name('tugas.create');
     Route::post('/', [TugasController::class, 'store'])->name('tugas.store');
+    Route::get('/{id}', [TugasController::class, 'edit'])->name('tugas.edit');
+    Route::put('/{id}', [TugasController::class, 'update'])->name('tugas.update');
+    Route::delete('/{id}',[TugasController::class, 'delete'])->name('tugas.delete');
+    Route::get('/{id}/show',[TugasController::class, 'show'])->name('tugas.show');
 });
-
-    Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
-    Route::get('/pengumuman/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
-    Route::post('/pengumuman/store', [PengumumanController::class, 'store'])->name('pengumuman.store');
-    Route::get('/pengumuman/{id}/edit', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
-    Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
-    Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
-}); 
-
-//untuk mahasiswa 
-Route::get('/pengumuman/mahasiswa', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
-Route::get('mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
-//untuk pembimbing
-
-Route::get('/pengumuman/pembimbing', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
-Route::get('/pengumuman/pembimbing/{id}', [PengumumanController::class, 'showpembimbing'])->name('pembimbing.pengumuman.show');

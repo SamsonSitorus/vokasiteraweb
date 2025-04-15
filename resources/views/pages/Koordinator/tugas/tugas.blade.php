@@ -1,7 +1,5 @@
 @extends('layouts.main')
-
 @section('title', 'Tugas')
-
 @section('content')
 <section class="section">
     <div class="section-header">
@@ -27,6 +25,13 @@
                             <a href="{{ route('tugas.show', $item->id) }}" class="btn btn-outline-secondary btn-sm">
                                 <i class="fas fa-eye"></i> View
                             </a>
+                            <form action="{{ route('tugas.delete', $item->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Yakin ingin menghapus tugas ini?')">
+                                    <i class="fas fa-trash-alt"></i> Delete Task
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
