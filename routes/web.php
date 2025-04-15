@@ -5,12 +5,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dosen_RoleController;
 use App\Http\Controllers\Kelompok_Controller;
-// <<<<<<< HEAD
 use App\Http\Controllers\TugasController;
-// =======
 use App\Http\Controllers\ManajemenroleController;
 use App\Http\Controllers\Kelompok_mahasiswa_Controller;
-// >>>>>>> 189000e81bc4a439446bf1462e0b261c9c9a810f
+use App\Http\Controllers\PengumumanController;
 
 // Default redirect ke login
 Route::get('/', fn () => redirect()->route('login.form'));
@@ -80,3 +78,17 @@ Route::prefix('tugas')->group(function(){
     Route::delete('/{id}',[TugasController::class, 'delete'])->name('tugas.delete');
     Route::get('/{id}/show',[TugasController::class, 'show'])->name('tugas.show');
 });
+
+Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
+Route::get('/pengumuman/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
+Route::post('/pengumuman/store', [PengumumanController::class, 'store'])->name('pengumuman.store');
+Route::get('/pengumuman/{id}/edit', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
+Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
+Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
+
+
+Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
+Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
+
+Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
+Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
