@@ -11,6 +11,8 @@ use App\Http\Controllers\TugasController;
 // =======
 use App\Http\Controllers\ManajemenroleController;
 use App\Http\Controllers\Kelompok_mahasiswa_Controller;
+use App\Http\Controllers\pembimbing_Controller;
+
 // >>>>>>> 189000e81bc4a439446bf1462e0b261c9c9a810f
 
 // Default redirect ke login
@@ -80,4 +82,14 @@ Route::prefix('tugas')->group(function(){
     Route::put('/{id}', [TugasController::class, 'update'])->name('tugas.update');
     Route::delete('/{id}',[TugasController::class, 'destroy'])->name('tugas.destroy');
     Route::get('/{id}/show',[TugasController::class, 'show'])->name('tugas.show');
+});
+
+Route::prefix('pembimbing')->group(function(){
+    Route::get('/',[pembimbing_Controller::class, 'index'])->name('pembimbing.index');
+    Route::get('/create', [pembimbing_Controller::class, 'create'])->name('pembimbing.create');
+    Route::post('/', [pembimbing_Controller::class, 'store'])->name('pembimbing.store');
+    Route::get('/{id}', [pembimbing_Controller::class, 'edit'])->name('pembimbing.edit');
+    Route::put('/{id}', [pembimbing_Controller::class, 'update'])->name('pembimbing.update');
+    Route::delete('/{id}',[pembimbing_Controller::class, 'destroy'])->name('pembimbing.destroy');
+    Route::get('/{id}/show',[pembimbing_Controller::class, 'show'])->name('pembimbing.show');
 });

@@ -59,7 +59,6 @@ class Kelompok_mahasiswa_Controller extends Controller
         $TahunAjaranId =session('TA_id');
         $TahunAjaran =TahunAjaran::where('id', $TahunAjaranId)->value('Tahun_Ajaran');
 
-        // dd($namaProdi   );
         $responseMahasiswa = Http::withHeaders([
             'Authorization' => "Bearer $token"
         ])->get(env('API_URL') . "library-api/mahasiswa", [
