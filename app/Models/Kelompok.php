@@ -28,6 +28,6 @@ class Kelompok extends Model
         'KPA_id',
         'prodi_id',
         'TA_id',
-        'status',
+        // 'status',
     ];
 }

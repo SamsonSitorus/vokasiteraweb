@@ -97,3 +97,13 @@ Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMaha
 
 Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
 Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
+
+Route::prefix('jadwal')->group(function(){
+    Route::get('/',[JadwalController::class, 'index'])->name('jadwal.index');
+    Route::get('/create', [JadwalController::class, 'create'])->name('jadwal.create');
+    Route::post('/', [JadwalController::class, 'store'])->name('jadwal.store');
+    Route::get('/{id}', [JadwalController::class, 'edit'])->name('jadwal.edit');
+    Route::put('/{id}', [JadwalController::class, 'update'])->name('jadwal.update');
+    Route::delete('/{id}',[JadwalController::class, 'destroy'])->name('jadwal.destroy');
+    // Route::get('/{id}/show',[JadwalController::class, 'show'])->name('jadwal.show');
+});
