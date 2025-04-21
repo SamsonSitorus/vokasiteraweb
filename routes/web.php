@@ -93,17 +93,22 @@ Route::prefix('pembimbing')->group(function(){
 });
 
 
-Route::prefix('pengumuman')->group(function(){
-    Route::get('/',[PengumumanController::class, 'index'])->name('pengumuman.index');
-    Route::get('/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
-    Route::post('/', [PengumumanController::class, 'store'])->name('pengumuman.store');
-    Route::get('/{id}', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
-    Route::put('/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
-    Route::delete('/{id}',[PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
-    Route::get('/{id}/show',[PengumumanController::class, 'show'])->name('pengumuman.show');
-    Route::get('/pengumuman/mahasiswa',[PengumumanController::class, 'showMahasiswa'])->name('pengumuman.mahasiswa.index');
-});
+Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
+Route::get('/pengumuman/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
+Route::post('/pengumuman/store', [PengumumanController::class, 'store'])->name('pengumuman.store');
+Route::get('/pengumuman/{id}/edit', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
+Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
+Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
+
+
+Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
+Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
+
+Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
+Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
 // request bimbingan oleh mahasiswa
+
+
 Route::prefix('bimbingan')->group(function(){
     Route::get('/',[BimbinganController::class, 'index'])->name('bimbingan.index');
     Route::get('/create', [BimbinganController::class, 'create'])->name('bimbingan.create');
