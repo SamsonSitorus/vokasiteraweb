@@ -84,20 +84,36 @@ Route::prefix('tugas')->group(function(){
     Route::get('/{id}/show',[TugasController::class, 'show'])->name('tugas.show');
 });
 
-Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
-Route::get('/pengumuman/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
-Route::post('/pengumuman/store', [PengumumanController::class, 'store'])->name('pengumuman.store');
-Route::get('/pengumuman/{id}/edit', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
-Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
-Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
+//pembimbing oleh koordinator
+Route::prefix('pembimbing')->group(function(){
+    Route::get('/',[pembimbing_Controller::class, 'index'])->name('pembimbing.index');
+    Route::get('/create', [pembimbing_Controller::class, 'create'])->name('pembimbing.create');
+    Route::post('/', [pembimbing_Controller::class, 'store'])->name('pembimbing.store');
+    Route::get('/{id}', [pembimbing_Controller::class, 'edit'])->name('pembimbing.edit');
+    Route::put('/{id}', [pembimbing_Controller::class, 'update'])->name('pembimbing.update');
+    Route::delete('/{id}',[pembimbing_Controller::class, 'destroy'])->name('pembimbing.destroy');
+    Route::get('/{id}/show',[pembimbing_Controller::class, 'show'])->name('pembimbing.show');
+});
 
+//Pengumuman by Koordinator
+Route::prefix('pengumuman')->group(function(){
+    Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
+    Route::get('/pengumuman/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
+    Route::post('/pengumuman/store', [PengumumanController::class, 'store'])->name('pengumuman.store');
+    Route::get('/pengumuman/{id}/edit', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
+    Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
+    Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
+    
+    });
 
-Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
-Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
+    //Pengumuman send Mahasiswa
+    Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
+    Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
+    //Pengumuman send Pembimbing 
+    Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
+    Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
 
-Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
-Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
-
+// Jadwal dari dosen 
 Route::prefix('jadwal')->group(function(){
     Route::get('/',[JadwalController::class, 'index'])->name('jadwal.index');
     Route::get('/create', [JadwalController::class, 'create'])->name('jadwal.create');
@@ -106,4 +122,33 @@ Route::prefix('jadwal')->group(function(){
     Route::put('/{id}', [JadwalController::class, 'update'])->name('jadwal.update');
     Route::delete('/{id}',[JadwalController::class, 'destroy'])->name('jadwal.destroy');
     // Route::get('/{id}/show',[JadwalController::class, 'show'])->name('jadwal.show');
+});
+
+// Jadwal mahasiswa
+Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
+
+// request bimbingan oleh mahasiswa
+Route::prefix('bimbingan')->group(function(){
+    Route::get('/',[BimbinganController::class, 'index'])->name('bimbingan.index');
+    Route::get('/create', [BimbinganController::class, 'create'])->name('bimbingan.create');
+    Route::post('/', [BimbinganController::class, 'store'])->name('bimbingan.store');
+    Route::get('/{id}', [BimbinganController::class, 'edit'])->name('bimbingan.edit');
+    Route::put('/{id}', [BimbinganController::class, 'update'])->name('bimbingan.update');
+    Route::delete('/{id}',[BimbinganController::class, 'destroy'])->name('bimbingan.destroy');
+    Route::get('/{id}/show',[BimbinganController::class, 'show'])->name('bimbingan.show');
+});
+
+//request bimbingan dosen pembimbing
+Route::prefix('dosenpembimbing')->group(function(){
+    Route::get('/',[BimbinganController::class, 'indexpembimbing'])->name('pembimbing.bimbingan.index');
+    Route::get('/{id}', [BimbinganController::class, 'setuju'])->name('pembimbing.bimbingan.setujui');
+    Route::put('/{id}', [BimbinganController::class, 'tolak'])->name('pembimbing.bimbingan.tolak');
+});
+
+
+// artefak oleh mahasiswa
+Route::prefix('artefak')->group(function(){
+    Route::get('/',[Artefak_Controller::class, 'index'])->name('artefak.index');
+    Route::get('/{id}', [Artefak_Controller::class, 'submit'])->name('artefak.submit');
+    Route::put('/{id}', [Artefak_Controller::class, 'delete'])->name('artefak.delete');
 });
