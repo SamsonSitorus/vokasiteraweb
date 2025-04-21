@@ -8,47 +8,46 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4>List Koordinator</h4>
-                        <a href="{{ route('koordinator.create') }}" class="btn btn-primary">
-                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Koordinator
+                        <h4>Pembimbing</h4>
+                        <a href="{{route('pembimbing.create')}}" class="btn btn-primary">
+                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Pembimbing
                         </a>
                     </div>                    
                     <div class="card-body">
                         @include('partials.alert')
                         <div class="table-responsive">
-                            <table class="table table-striped" id="table-2">
+                            <h4>Data Kelompok</h4>
+                            <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
-                                        <th>User ID</th>
-                                        <th>Prodi</th>
-                                        <th>Kategori PA</th>
-                                        <th>Role </th>
+                                        <th>ID</th>
+                                        <th>Nama Pembimbing</th>
+                                        <th>Role</th>
+                                        <th>Nomor Kelompok</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($dosen_roles as $item)
-                                        <tr>
-                                            <td>{{ $item['id'] }}</td>
-                                            <td>{{ $item['nama_dosen'] }}</td>
-                                            <td>{{ $item['prodi'] }}</td>
-                                            <td>{{ $item['jenis_pa'] }}</td>
-                                            <td>{{ $item['nama_role'] }}</td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <a href="{{route('koordinator.edit', Crypt::encrypt($item['id']))}}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
-                                                    <form method="POST" action="{{ route('koordinator.destroy', $item['id'])}}">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 8px"><i class="nav-icon fas fa-trash-alt"></i> &nbsp; Hapus</button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    @foreach($pembimbing as $item)
+                                    <tr>
+                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $item->nama}}</td>
+                                       <td>belum ada</td>
+                                       <td>{{ $item->kelompok->nomor_kelompok }}</td>
+                                       <td>
+                                        <div class="d-flex">
+                                            <a href="{{ route('pembimbing.edit', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
+                                            <form method="POST" action="{{ route('pembimbing.destroy',$item->id)}}">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 8px"><i class="nav-icon fas fa-trash-alt"></i> &nbsp; Hapus</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
-                            </table>
+                            </table>        
                         </div>
                     </div>
                 </div>

@@ -13,7 +13,7 @@ class PengumumanController extends Controller
  
 public function index()
 {
-    $pengumuman = Pengumuman::all(); // atau bisa juga paginate(), latest(), dsb.
+    $pengumuman = Pengumuman::all(); 
     
     return view('pages.Koordinator.pengumuman.index', compact('pengumuman'));
 }

@@ -23,14 +23,11 @@ class Kelompok extends Model
     {
         return $this->belongsTo(KategoriPA::class, 'KPA_id');
     }
-    public function jadwal()
-    {
-        return $this->hasOne(Jadwal::class);
-    }
     protected $fillable = [
         'nomor_kelompok',
         'KPA_id',
         'prodi_id',
         'TA_id',
+        'status',
     ];
 }

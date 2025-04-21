@@ -42,9 +42,14 @@
                                 <input type="text" class="form-control" value="{{ $kelompok->tahunAjaran->Tahun_Ajaran ?? '-' }}" readonly>
                                 <input type="hidden" name="TA_id" value="{{ $kelompok->TA_id }}">
                             </div>
-
-                            
-                           
+                           {{-- Status --}}
+                           <div class="form-group">
+                            <label for="status">Status</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="Aktif" {{ old('status', $kelompok->status) == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                <option value="Tidak-Aktif" {{ old('status', $kelompok->status) == 'Tidak-Aktif' ? 'selected' : '' }}>Tidak-Aktif</option>
+                            </select>
+                        </div>
 
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                         </form>

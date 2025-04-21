@@ -17,9 +17,11 @@ return new class extends Migration
             $table->foreignId('KPA_id')->constrained('kategori_pa')->onDelete('cascade');
             $table->foreignId('prodi_id')->constrained('prodi')->onDelete('cascade'); // foreign key
             $table->foreignId('TA_id')->constrained('tahun_ajaran')->onDelete('cascade'); //foreign key
+            $table->enum('status',['Aktif','Tidak-Aktif']);
             $table->timestamps();
         
             $table->unique(['nomor_kelompok', 'KPA_id', 'prodi_id', 'TA_id'], 'kelompok_unique');
+            $table->index('status');
         });
         
         

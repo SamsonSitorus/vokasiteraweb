@@ -1,18 +1,21 @@
 <?php
 
+use App\Http\Controllers\Artefak_Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dosen_RoleController;
 use App\Http\Controllers\Kelompok_Controller;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\ManajemenroleController;
 use App\Http\Controllers\Kelompok_mahasiswa_Controller;
+use App\Http\Controllers\pembimbing_Controller;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JadwalMahasiswaController;
 
-// Default redirect ke login
+
 Route::get('/', fn () => redirect()->route('login.form'));
 
 // Login routes
@@ -70,14 +73,14 @@ Route::prefix('kelompokMahasiswa')->group(function () {
 
 
 
-// Route tugas
+// Route tugas olwh koordinator
 Route::prefix('tugas')->group(function(){
-    Route::get('/',[TugasController::class, 'index'])->name('tugas.tugas');
+    Route::get('/',[TugasController::class, 'index'])->name('tugas.index');
     Route::get('/create', [TugasController::class, 'create'])->name('tugas.create');
     Route::post('/', [TugasController::class, 'store'])->name('tugas.store');
     Route::get('/{id}', [TugasController::class, 'edit'])->name('tugas.edit');
     Route::put('/{id}', [TugasController::class, 'update'])->name('tugas.update');
-    Route::delete('/{id}',[TugasController::class, 'delete'])->name('tugas.delete');
+    Route::delete('/{id}',[TugasController::class, 'destroy'])->name('tugas.destroy');
     Route::get('/{id}/show',[TugasController::class, 'show'])->name('tugas.show');
 });
 
@@ -88,20 +91,9 @@ Route::get('/pengumuman/{id}/edit', [PengumumanController::class, 'edit'])->name
 Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
 Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
 
-Route::get('/mahasiswa/jadwal', [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
+
 Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
 Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
 
 Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
 Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
-
-// Route Jadwal
-Route::prefix('jadwal')->group(function(){
-    Route::get('/', [JadwalController::class ,'index'])->name('jadwal.index');
-    Route::get('/create', [JadwalController::class, 'create'])->name('jadwal.create');
-    Route::post('/', [JadwalController::class, 'store'])->name('jadwal.store');
-    Route::get('/{id}/show',[JadwalController::class, 'show'])->name('jadwal.show');
-    Route::get('/{id}', [JadwalController::class, 'edit'])->name('jadwal.edit');
-    Route::put('/{id}', [JadwalController::class, 'update'])->name('jadwal.update');
-    Route::delete('/{id}',[JadwalController::class, 'destroy'])->name('jadwal.destroy');
-});

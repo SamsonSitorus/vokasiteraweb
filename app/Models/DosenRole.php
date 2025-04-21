@@ -16,7 +16,6 @@ public function role()
 {
     return $this->belongsTo(Role::class, 'role_id');
 }
-
 public function tahunAjaran()
 {
     return $this->belongsTo(TahunAjaran::class, 'TA_id');
@@ -24,6 +23,9 @@ public function tahunAjaran()
 public function kategoriPA()
 {
     return $this->belongsTo(KategoriPA::class, 'KPA_id');
+}
+public function pembimbing(){
+    return $this->belongsTo(Pembimbing::class, 'pembimbing_id');
 }
 
     use HasFactory;

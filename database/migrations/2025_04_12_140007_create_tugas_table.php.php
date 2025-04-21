@@ -11,19 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tugas', function (Blueprint $table) {
-            $table->id();
-            $table->string('judul',255) ;
-            $table->string('instruksi');
-            $table->string('file')->nullable();
-            $table->datetime('batas');
-            $table->unsignedBigInteger('user_id');
-            // $table->unsignedBigInteger('role_id');
-            $table->timestamps();
-
-            $table->index('user_id');
-            // $table->index('role_id');
-        });
+            Schema::create('tugas', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('user_id');
+                $table->string('Judul_Tugas', 500);
+                $table->string('Deskripsi_Tugas', 1000);
+                $table->foreignId('KPA_id')->constrained('kategori_pa')->onDelete('cascade');
+                $table->foreignId('prodi_id')->constrained('prodi')->onDelete('cascade'); // foreign key
+                $table->foreignId('TA_id')->constrained('tahun_ajaran')->onDelete('cascade');
+                $table->dateTime('tanggal_pengumpulan');
+                $table->string('file')->nullable();
+                $table->enum('status',['selesai','berlangsung']);
+                $table->timestamps();
+            });
+        
     }
 
     /**
