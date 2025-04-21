@@ -9,7 +9,6 @@ class Kelompok extends Model
 {
     use HasFactory;
 
-    // Beritahu Laravel bahwa tabelnya bernama 'kelompok'
     protected $table = 'kelompok';
 
     public function prodi()
@@ -24,17 +23,15 @@ class Kelompok extends Model
     {
         return $this->belongsTo(KategoriPA::class, 'KPA_id');
     }
-    public function pembimbing(){
-        return $this->hasMany(Pembimbing::class, 'kelompok_id');
-    }
-    public function request_bimbingan(){
-        return $this->hasMany(Bimbingan::class,'kelompok_id');
+    public function jadwal()
+    {
+        return $this->hasOne(Jadwal::class);
     }
     protected $fillable = [
         'nomor_kelompok',
         'KPA_id',
         'prodi_id',
         'TA_id',
-        'status',
+        // 'status',
     ];
 }

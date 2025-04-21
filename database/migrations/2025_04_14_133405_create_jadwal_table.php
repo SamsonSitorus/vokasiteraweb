@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('jadwal', function (Blueprint $table) {
             $table->id();
-            $table->datetime('tanggal');
+            $table->foreignId('kelompok_id')->constrained('kelompok')->onDelete('cascade');
             $table->string('ruangan',255);
-            $table->time('jam');
+            $table->dateTime('waktu');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('penguji1');
+            $table->unsignedBigInteger('penguji2');
             $table->timestamps();
-
+            
             $table->index('user_id');
+            $table->index('penguji1');
+            $table->index('penguji2');
         });
     }
 

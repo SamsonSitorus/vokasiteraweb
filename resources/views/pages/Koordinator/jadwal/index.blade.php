@@ -1,57 +1,80 @@
 @extends('layouts.main')
-@section('title','Jadwal')
-@section('content')
-<section class="section">
-    <div class="section-header">
-        <h1>Data Jadwal Seminar</h1>
-    </div>
+@section('title', 'Jadwal')
 
-    <div class="card border-primary">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Data Jadwal Seminar</h5>
-            <a href="{{ route('jadwal.create') }}" class="btn btn-outline-primary btn-sm">
-                <i class="fas fa-plus-square"></i> Tambah Jadwal
-            </a>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered">
-                <thead class="thead-light">
-                    <tr>
-                        <th>No</th>
-                        <th>Kelompok</th>
-                        <th>Tanggal</th>
-                        <th>Dosen Penguji</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($jadwal as $index => $item)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $item->judul ?? 'Kelompok '.$index + 1 }}</td>
-                            <td>{{ \Carbon\Carbon::parse($item->tanggal)->isoFormat('dddd, D MMMM Y, HH.mm') }} - {{ $item->jam }}</td>
-                            <td>
-                                1. {{ $item->penguji1 }} <br>
-                                2. {{ $item->penguji2 }} <br>
-                                3. {{ $item->penguji3 }}
-                            </td>
-                            <td>
-                                <a href="{{ route('jadwal.edit', $item->id) }}" class="btn btn-success btn-sm">Edit</a>
-                                <form action="{{ route('jadwal.destroy', $item->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center">Belum ada data jadwal</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+@section('content')
+<section class="section custom-section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4>Jadwal</h4>
+                        <a href="{{ route('jadwal.create') }}" class="btn btn-primary">
+                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Jadwal
+                        </a>
+                    </div>                    
+                    <div class="card-body">
+                        @include('partials.alert')
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="table-2">
+                                <thead>
+                                    <tr>
+                                        <!-- <th>No</th> -->
+                                        <th>Kelompok</th>
+                                        <th>Tanggal</th>
+                                        <th>Dosen Penguji</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                     @foreach($jadwal as $item)
+                                        <tr>
+                                            <!-- <td>{{ $item->id }}</td> -->
+                                            <td>{{ $item->kelompok_id }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($item->waktu)->format('d M Y H:i') }}</td>    
+                                            <td>{{ $item->penguji1_nama }}, {{ $item->penguji2_nama }}</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <a href="{{route('jadwal.edit', Crypt::encrypt($item->id))}}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
+                                                    <form method="POST" action="{{route('jadwal.destroy', $item->id)}}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 8px"><i class="nav-icon fas fa-trash-alt"></i> &nbsp; Hapus</button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 @endsection
+
+@push('script')
+<script type="text/javascript">
+    $('.show_confirm').click(function(event) {
+        var form = $(this).closest("form");
+        var name = $(this).data("name");
+        event.preventDefault();
+        swal({
+                title: `Yakin ingin menghapus data ini?`
+                , text: "Data akan terhapus secara permanen!"
+                , icon: "warning"
+                , buttons: true
+                , dangerMode: true
+            , })
+            .then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                }
+            });
+    });
+
+</script>
+@endpush
