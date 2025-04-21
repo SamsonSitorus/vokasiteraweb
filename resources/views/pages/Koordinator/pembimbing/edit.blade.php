@@ -10,11 +10,11 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Edit Pembimbing</h4>
-                        <a href="{{--  --}}" class="btn btn-primary">Kembali</a>
+                        <a href="{{route('pembimbing.index')}}" class="btn btn-primary">Kembali</a>
                     </div>
                     <div class="card-body">
 
-                        <form method="POST" action="{{-- route('pembimbing.update', Crypt::encrypt($dosenRole['id'])) --}}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('pembimbing.update', Crypt::encrypt($pembimbing['id'])) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -23,15 +23,31 @@
                                 <label for="user_id">Pilih Dosen</label>
                                 <select id="user_id" name="user_id" class="select2 form-control" required>
                                     <option value="">-- Pilih Dosen --</option>
-                                    @foreach ($pembimbing as $item)
-                                    <option 
-                                        value="{{$item->id }}" 
-                                    >
-                                        {{ $item['user_id'] }}
-                                    </option>
-                                @endforeach
-                               
-
+                                    @foreach ($dosen as $item)
+                                        <option 
+                                            value="{{ $item['user_id'] ?? '' }}"
+                                            {{ $item['user_id'] == $pembimbing['user_id'] ? 'selected' : '' }}
+                                        >
+                                            {{ $item['nama'] ?? 'Tanpa Nama' }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label for="kelompok_id">Pilih Kelompok</label>
+                                <select id="kelompok_id" name="kelompok_id" class="select2 form-control" required>
+                                    <option value="">-- Pilih Kelompok --</option>
+                                    @foreach ($Kelompok as $item)
+                                        <option 
+                                            value="{{ $item->id }}"
+                                            {{ $item->id == $pembimbing['kelompok_id'] ? 'selected' : '' }}
+                                        >
+                                            {{ $item->nomor_kelompok ?? 'Tanpa Nama' }}
+                                        </option>
+                                    @endforeach 
+                                </select>
+                            </div>
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                         </form>
 

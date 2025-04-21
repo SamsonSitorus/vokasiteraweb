@@ -11,31 +11,15 @@ class Bimbingan extends Model
     use HasFactory;
 
     protected $table = 'request_bimbingan'; // Sesuai nama tabel di database
-
-    protected $primaryKey = 'bimbingan_id'; // Primary key yang bukan default 'id'
-
     protected $fillable = [
-        'keperluan',
-        'deskripsi',
-        'rencana_bimbingan',
-        'status',
-        'user_id',
-        'dosen_id',
         'kelompok_id',
+        'user_id',
+        'keperluan',
+        'rencana_mulai',
+        'rencana_selesai',
+        'lokasi',
+        'status',
     ];
-
-    // Relasi ke User (mahasiswa)
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    // Relasi ke Dosen
-    public function dosen()
-    {
-        return $this->belongsTo(User::class, 'dosen_id');
-    }
-
     // Relasi ke Kelompok
     public function kelompok()
     {

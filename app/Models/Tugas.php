@@ -36,4 +36,7 @@ class Tugas extends Model
     {
         return $this->belongsTo(KategoriPA::class, 'KPA_id');
     }
+    public function pengumpulan(){
+        return $this->hasMany(pengumpulan_tugas::class);
+    }
 }

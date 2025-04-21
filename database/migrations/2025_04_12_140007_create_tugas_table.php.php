@@ -20,7 +20,7 @@ return new class extends Migration
                 $table->foreignId('prodi_id')->constrained('prodi')->onDelete('cascade'); // foreign key
                 $table->foreignId('TA_id')->constrained('tahun_ajaran')->onDelete('cascade');
                 $table->dateTime('tanggal_pengumpulan');
-                $table->binary('file')->nullable(); 
+                $table->string('file')->nullable();
                 $table->enum('status',['selesai','berlangsung']);
                 $table->timestamps();
             });

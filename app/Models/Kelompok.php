@@ -27,6 +27,9 @@ class Kelompok extends Model
     public function pembimbing(){
         return $this->hasMany(Pembimbing::class, 'kelompok_id');
     }
+    public function request_bimbingan(){
+        return $this->hasMany(Bimbingan::class,'kelompok_id');
+    }
     protected $fillable = [
         'nomor_kelompok',
         'KPA_id',

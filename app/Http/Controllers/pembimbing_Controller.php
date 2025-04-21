@@ -63,7 +63,7 @@ class pembimbing_Controller extends Controller
     ])->get(env('API_URL') . "library-api/dosen", ['limit' => 100]);
 
     $dosenApiMap = collect();
-      // Buat map user_id => nam
+      // Buat map user_id => nama
       if ($responseDosen->successful()){
         $dosenlist = $responseDosen->json()['data']['dosen'] ?? [];
         $dosenApiMap =  collect($dosenlist)->keyBy('user_id');
@@ -125,19 +125,108 @@ class pembimbing_Controller extends Controller
       }
       return redirect()->route('pembimbing.index')->with('succes', 'Data Berhasil disimpan');
   }
-  public function edit ($encryptedId){
-     try{
-          // Dekripsi ID
-          $id = Crypt::decrypt($encryptedId);
+  public function edit($encryptedId)
+{
+    try {
+        // Dekripsi ID dan ambil token
+        $token = session('token');
+        $id = Crypt::decrypt($encryptedId);
 
-          $pembimbing = pembimbing::all();
-          
-        return view('pages.Koordinator.pembimbing.edit',compact('pembimbing'));
-        
+        $pembimbing = pembimbing::findOrFail($id);
+
+        // Ambil data dosen dari API eksternal
+        $responseDosen = Http::withHeaders([
+            'Authorization' => "Bearer $token"
+        ])->get(env('API_URL') . "library-api/dosen", ['limit' => 100]);
+
+        $dosenApiMap = collect();
+        if ($responseDosen->successful()) {
+            $dosenlist = $responseDosen->json()['data']['dosen'] ?? [];
+            $dosenApiMap = collect($dosenlist)->keyBy('user_id'); // keyBy agar bisa dicari pakai user_id
+        }
+
+        // Ambil data session
+        $prodi_id = session('prodi_id');
+        $KPA_id = session('KPA_id');
+        $TA_id = session('TA_id');
+
+        // Ambil dosen dari tabel dosen_role berdasarkan session dan role 'pembimbing 1'
+        $dosen = DosenRole::with(['prodi', 'tahunAjaran', 'kategoripa', 'role'])
+            ->where('prodi_id', $prodi_id)
+            ->where('KPA_id', $KPA_id)
+            ->where('TA_id', $TA_id)
+            ->whereHas('role', function ($query) {
+                $query->where('role_name', 'pembimbing 1');
+            })
+            ->get();
+
+        // Format data dosen final
+        $dosenFinal = $dosen->map(function ($dr) use ($dosenApiMap) {
+            return [
+                'user_id' => $dr->user_id,
+                'nama' => $dosenApiMap[$dr->user_id]['nama'] ?? 'Nama Tidak Diketahui',
+                'prodi' => $dr->prodi->nama_prodi ?? '',
+                'role' => $dr->role->role_name ?? '',
+                'tahun_ajaran' => $dr->tahunAjaran->tahun ?? '',
+                'kategori' => $dr->kategoripa->nama_kategori ?? '',
+            ];
+        });
+
+        // Ambil semua kelompok
+        $Kelompok = Kelompok::with(['prodi', 'tahunAjaran', 'kategoripa'])
+    ->where('prodi_id', $prodi_id)
+    ->where('KPA_id', $KPA_id)
+    ->where('TA_id', $TA_id)
+    ->get();
+    $kelompokIdsudahpunyapembimbing = DB ::table('pembimbing')->pluck('kelompok_id')->toArray();
+    $kelompokbelummasuk =  $Kelompok->filter(function($klmpk)use($kelompokIdsudahpunyapembimbing){
+        return !in_array($klmpk['id'],$kelompokIdsudahpunyapembimbing);
+    })->values();
+
+        // Kirim ke view
+        return view('pages.Koordinator.pembimbing.edit', [
+          'dosen' => $dosenFinal,
+          'Kelompok' => $kelompokbelummasuk,
+          'pembimbing' => $pembimbing
+      ]);
+
     } catch (Exception $e) {
-      return redirect()->back()->with('error', 'Gagal menampilkan data: ' . $e->getMessage());
-  }
-  }
+        return redirect()->back()->with('error', 'Gagal menampilkan data: ' . $e->getMessage());
+    }
+}
+public function update(Request $request, $encryptedId)
+{
+  $id = Crypt::decrypt($encryptedId);
+    $validated = $request->validate([
+        'user_id' => 'required|integer',
+        'kelompok_id' => 'required|integer|exists:kelompok,id',
+    ], [
+        "user_id.required" => "Pilih minimal satu dosen.",
+        "kelompok_id.required" => "Kelompok wajib dipilih.",
+        "kelompok_id.exists" => "Kelompok tidak valid.",
+    ]);
+
+    // Ambil data pembimbing berdasarkan ID
+    $pembimbing = Pembimbing::findOrFail($id); // Gantilah ini sesuai nama model kamu
+
+    // Cek apakah kelompok sudah dibimbing oleh dosen lain
+    $sudahAda = Pembimbing::where('kelompok_id', $request->kelompok_id)
+        ->where('id', '!=', $id)
+        ->exists();
+
+    if ($sudahAda) {
+        return back()->withErrors(['kelompok_id' => 'Kelompok sudah dibimbing oleh dosen lain.'])->withInput();
+    }
+
+    // Update pembimbing
+    $pembimbing->user_id = $request->user_id;
+    $pembimbing->kelompok_id = $request->kelompok_id;
+    $pembimbing->save();
+
+    return redirect()->route('pembimbing.index')
+        ->with('success', 'Data pembimbing berhasil diperbarui.');
+}
+
   public Function destroy ($id){
       try {
 

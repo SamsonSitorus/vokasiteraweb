@@ -9,9 +9,6 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>List Bimbingan</h4>
-                        <a href="{{ route('bimbingan.create') }}" class="btn btn-primary">
-                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Request Bimbingan
-                        </a>
                     </div>                    
                     <div class="card-body">
                         @include('partials.alert')
@@ -32,7 +29,7 @@
                                 <tbody>
                                      @foreach($bimbingan as $item)
                                         <tr>
-                                            <td>{{ $item->id }}</td>
+                                            <td>{{ $loop->iteration}}</td>
                                             <td>{{ $item->kelompok_id }}</td>
                                             <td>{{ $item->keperluan }}</td>
                                             <td>{{ $item->rencana_mulai }}</td>    
@@ -41,11 +38,13 @@
                                             <td>{{ $item->status }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{route('bimbingan.edit', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
-                                                    <form method="POST" action="{{route('bimbingan.destroy',$item->id)}}">
+                                                    <a href="{{route('pembimbing.bimbingan.setujui', Crypt::encrypt($item->id)) }}" class="btn btn-info btn-sm"><i class="nav-icon fas fa-check"></i> &nbsp; Setujui</a>
+                                                    <form action="{{ route('pembimbing.bimbingan.tolak', Crypt::encrypt($item->id)) }}" method="POST" style="display: inline">
                                                         @csrf
-                                                        @method('delete')
-                                                        <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 8px"><i class="nav-icon fas fa-trash-alt"></i> &nbsp; Hapus</button>
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <i class="nav-icon fas fa-times"></i> &nbsp; Tolak
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>

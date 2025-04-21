@@ -15,6 +15,7 @@ use App\Models\TahunAjaran;
 use App\Models\kategoriPA;
 use GuzzleHttp\Client;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 
 
 class TugasController extends Controller
@@ -145,11 +146,15 @@ public function update(Request $request, $encryptedId)
 
     // Handle file upload if exists
     if ($request->hasFile('file')) {
+        // Hapus file lama jika ada
+        if ($tugas->file && Storage::disk('public')->exists($tugas->file)) {
+            Storage::disk('public')->delete($tugas->file);
+        }
+    
         $file = $request->file('file');
-        $filePath = $file->store('tugas_files', 'public'); // Save file to 'tugas_files' directory in the public disk
+        $filePath = $file->store('tugas_files', 'public');
         $validated['file'] = $filePath;
     }
-
     // Update the tugas attributes
     $tugas->update($validated);
     
@@ -158,20 +163,24 @@ public function update(Request $request, $encryptedId)
 
     
 
-    public function destroy($id)
-    {
-            $tugas = Tugas::findOrFail($id);
+public function destroy($id)
+{
+    $tugas = Tugas::findOrFail($id);
 
-            if ($tugas->status === 'berlangsung') {
-                // Tampilkan pesan kesalahan jika status masih Aktif
-                return back()->withErrors([
-                    'error' => 'Tidak dapat menghapus Tugas yang sedang Berlangsung.',
-                ]);
-            }
-            $tugas->delete();
-            return redirect()->back()->with('success', 'Data kelompok berhasil dihapus.');
-      
-        }
+    if ($tugas->status === 'berlangsung') {
+        return back()->withErrors([
+            'error' => 'Tidak dapat menghapus Tugas yang sedang Berlangsung.',
+        ]);
+    }
+
+    // Hapus file dari storage jika ada
+    if ($tugas->file && Storage::disk('public')->exists($tugas->file)) {
+        Storage::disk('public')->delete($tugas->file);
+    }
+
+    $tugas->delete();
+    return redirect()->back()->with('success', 'Data tugas berhasil dihapus.');
+}
     
 
     public function show($id){
