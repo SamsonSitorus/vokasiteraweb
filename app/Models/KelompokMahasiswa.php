@@ -13,5 +13,8 @@ class KelompokMahasiswa extends Model
     ];
     protected $table = 'kelompok_mahasiswa';
 
+    public function kelompok(){
+        return $this -> belongsTo(Kelompok::class,'kelompok_id');
+    }
     
 }
