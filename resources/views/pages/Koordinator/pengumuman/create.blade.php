@@ -1,4 +1,6 @@
+
 @extends('layouts.main')
+
 @section('title', 'Tambah Pengumuman')
 
 @section('content')
@@ -22,9 +24,9 @@
                         <textarea name="deskripsi" class="form-control" rows="5" required></textarea>
                     </div>
                     <div class="form-group">
-             <label>Tanggal dan Waktu</label>
-            <input type="datetime-local" name="created_at" class="form-control">
-</div>
+                        <label>Tanggal dan Waktu</label>
+                        <input type="datetime-local" name="created_at" class="form-control">
+                    </div>
 
                     <div class="form-group">
                         <label>Status</label>
@@ -33,6 +35,10 @@
                             <option value="nonaktif">Nonaktif</option>
                         </select>
                     </div>
+
+                    <!-- Menyembunyikan input prodi_id yang dikirim melalui session -->
+                    <input type="hidden" name="prodi_id" value="{{ session('prodi_id') }}">
+
                 </div>
                 <div class="card-footer text-end">
                     <button class="btn btn-primary" type="submit">Simpan</button>
@@ -42,3 +48,4 @@
     </div>
 </section>
 @endsection
+

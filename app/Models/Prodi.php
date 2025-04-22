@@ -21,4 +21,10 @@ class Prodi extends Model
     {
         return $this->hasMany(Kelompok::class);
     }
+
+    public function pengumuman()
+    {
+        return $this->hasMany(Pengumuman::class, 'prodi_id');
+    }
 }
+

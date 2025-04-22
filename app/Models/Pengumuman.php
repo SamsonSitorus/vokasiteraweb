@@ -21,6 +21,7 @@ class Pengumuman extends Model
         'pengirim', 
         'deskripsi', 
         'status', 
+        'prodi_id',
         'user_id',
         'created_at',
     ];
@@ -33,4 +34,11 @@ class Pengumuman extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
+
+    // Relasi dengan model Prodi
+    public function prodi()
+    {
+        return $this->belongsTo(Prodi::class, 'prodi_id');
+    }
 }
+   
