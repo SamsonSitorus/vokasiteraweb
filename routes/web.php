@@ -15,6 +15,12 @@ use App\Http\Controllers\Pembimbing_tugas_Controller;
 use App\Http\Controllers\pengumpulan_tugasController;
 use App\Http\Controllers\PengumumanController;
 
+use App\Models\pengumpulan_tugas;
+
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\JadwalMahasiswaController;
+
+
 
 Route::get('/', fn () => redirect()->route('login.form'));
 
@@ -84,6 +90,17 @@ Route::prefix('tugas')->group(function(){
     Route::delete('/{id}',[TugasController::class, 'destroy'])->name('tugas.destroy');
     Route::get('/{id}/show',[TugasController::class, 'show'])->name('tugas.show');
 });
+
+Route::prefix('submitan')->group(function(){
+        // untuk pembimbing
+        Route::get('/pembimbing',[Pembimbing_tugas_Controller::class, 'indexpembimbing'])->name('pembimbing.tugas.index');
+        Route::get('pembimbing/tugas/{id}',[Pembimbing_tugas_Controller::class, 'showpembimbing'])->name('pembimbing.tugas.show'); 
+        Route::get('/pembimbing/{id}',[Pembimbing_tugas_Controller::class,'index_pembimbing'])->name('pembimbing.show.submitan');
+     
+});
+
+
+
 //pembimbing oleh koordinator
 Route::prefix('pembimbing')->group(function(){
     Route::get('/',[pembimbing_Controller::class, 'index'])->name('pembimbing.index');
@@ -108,7 +125,7 @@ Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMaha
 
 Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
 Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
-=======
+
 //Pengumuman by Koordinator
 Route::prefix('pengumuman')->group(function(){
     Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
@@ -141,7 +158,7 @@ Route::prefix('jadwal')->group(function(){
 // Jadwal mahasiswa
 Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
 
->>>>>>> c1bd7d3d5913fc546758bd8b259663ae76d9e6d5
+
 // request bimbingan oleh mahasiswa
 
 
@@ -166,8 +183,13 @@ Route::prefix('dosenpembimbing')->group(function(){
 // artefak oleh mahasiswa
 Route::prefix('artefak')->group(function(){
     Route::get('/',[Artefak_Controller::class, 'index'])->name('artefak.index');
-    Route::get('/{id}', [Artefak_Controller::class, 'submit'])->name('artefak.submit');
-    Route::put('/{id}', [Artefak_Controller::class, 'delete'])->name('artefak.delete');
+    Route::get('/create/{id}', [Artefak_Controller::class, 'create'])->name('artefak.create');
+    Route::post('/{id}', [Artefak_Controller::class, 'submit'])->name('artefak.submit');
+    Route::get('/edit/{id}',[Artefak_Controller::class, 'edit'])->name('artefak.edit');
+    Route::put('/{id}',[Artefak_Controller::class, 'update'])->name('artefak.update');
+
+    //untuk menampilkan kepada dosen koordinator
+    Route::get('/koordinator/{id}',[Artefak_Controller::class,'index_koordinator'])->name('artefak.index.koordinator');
+    //untuk menampilkan kepada dosen pembimbing
+   
 });
-
-
