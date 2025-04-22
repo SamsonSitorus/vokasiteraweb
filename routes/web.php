@@ -14,7 +14,7 @@ use App\Http\Controllers\pembimbing_Controller;
 use App\Http\Controllers\Pembimbing_tugas_Controller;
 use App\Http\Controllers\pengumpulan_tugasController;
 use App\Http\Controllers\PengumumanController;
-use App\Models\pengumpulan_tugas;
+
 
 Route::get('/', fn () => redirect()->route('login.form'));
 
@@ -84,14 +84,6 @@ Route::prefix('tugas')->group(function(){
     Route::delete('/{id}',[TugasController::class, 'destroy'])->name('tugas.destroy');
     Route::get('/{id}/show',[TugasController::class, 'show'])->name('tugas.show');
 });
-Route::prefix('submitan')->group(function(){
-        // untuk pembimbing
-        Route::get('/pembimbing',[Pembimbing_tugas_Controller::class, 'indexpembimbing'])->name('pembimbing.tugas.index');
-        Route::get('pembimbing/tugas/{id}',[Pembimbing_tugas_Controller::class, 'showpembimbing'])->name('pembimbing.tugas.show'); 
-        Route::get('/pembimbing/{id}',[Pembimbing_tugas_Controller::class,'index_pembimbing'])->name('pembimbing.show.submitan');
-     
-});
-
 //pembimbing oleh koordinator
 Route::prefix('pembimbing')->group(function(){
     Route::get('/',[pembimbing_Controller::class, 'index'])->name('pembimbing.index');
@@ -103,18 +95,56 @@ Route::prefix('pembimbing')->group(function(){
     Route::get('/{id}/show',[pembimbing_Controller::class, 'show'])->name('pembimbing.show');
 });
 
+Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
+Route::get('/pengumuman/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
+Route::post('/pengumuman/store', [PengumumanController::class, 'store'])->name('pengumuman.store');
+Route::get('/pengumuman/{id}/edit', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
+Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
+Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
 
+
+Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
+Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
+
+Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
+Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
+=======
+//Pengumuman by Koordinator
 Route::prefix('pengumuman')->group(function(){
-    Route::get('/',[PengumumanController::class, 'index'])->name('pengumuman.index');
-    Route::get('/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
-    Route::post('/', [PengumumanController::class, 'store'])->name('pengumuman.store');
-    Route::get('/{id}', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
-    Route::put('/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
-    Route::delete('/{id}',[PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
-    Route::get('/{id}/show',[PengumumanController::class, 'show'])->name('pengumuman.show');
-    Route::get('/pengumuman/mahasiswa',[PengumumanController::class, 'showMahasiswa'])->name('pengumuman.mahasiswa.index');
+    Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
+    Route::get('/pengumuman/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
+    Route::post('/pengumuman/store', [PengumumanController::class, 'store'])->name('pengumuman.store');
+    Route::get('/pengumuman/{id}/edit', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
+    Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
+    Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
+    
+    });
+
+    //Pengumuman send Mahasiswa
+    Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
+    Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
+    //Pengumuman send Pembimbing 
+    Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
+    Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
+
+// Jadwal dari dosen 
+Route::prefix('jadwal')->group(function(){
+    Route::get('/',[JadwalController::class, 'index'])->name('jadwal.index');
+    Route::get('/create', [JadwalController::class, 'create'])->name('jadwal.create');
+    Route::post('/', [JadwalController::class, 'store'])->name('jadwal.store');
+    Route::get('/{id}', [JadwalController::class, 'edit'])->name('jadwal.edit');
+    Route::put('/{id}', [JadwalController::class, 'update'])->name('jadwal.update');
+    Route::delete('/{id}',[JadwalController::class, 'destroy'])->name('jadwal.destroy');
+    // Route::get('/{id}/show',[JadwalController::class, 'show'])->name('jadwal.show');
 });
+
+// Jadwal mahasiswa
+Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
+
+>>>>>>> c1bd7d3d5913fc546758bd8b259663ae76d9e6d5
 // request bimbingan oleh mahasiswa
+
+
 Route::prefix('bimbingan')->group(function(){
     Route::get('/',[BimbinganController::class, 'index'])->name('bimbingan.index');
     Route::get('/create', [BimbinganController::class, 'create'])->name('bimbingan.create');
@@ -124,6 +154,7 @@ Route::prefix('bimbingan')->group(function(){
     Route::delete('/{id}',[BimbinganController::class, 'destroy'])->name('bimbingan.destroy');
     Route::get('/{id}/show',[BimbinganController::class, 'show'])->name('bimbingan.show');
 });
+
 //request bimbingan dosen pembimbing
 Route::prefix('dosenpembimbing')->group(function(){
     Route::get('/',[BimbinganController::class, 'indexpembimbing'])->name('pembimbing.bimbingan.index');
@@ -131,19 +162,12 @@ Route::prefix('dosenpembimbing')->group(function(){
     Route::put('/{id}', [BimbinganController::class, 'tolak'])->name('pembimbing.bimbingan.tolak');
 });
 
-//artefak untuk mahasiswa
+
+// artefak oleh mahasiswa
 Route::prefix('artefak')->group(function(){
     Route::get('/',[Artefak_Controller::class, 'index'])->name('artefak.index');
-    Route::get('/create/{id}', [Artefak_Controller::class, 'create'])->name('artefak.create');
-    Route::post('/{id}', [Artefak_Controller::class, 'submit'])->name('artefak.submit');
-    Route::get('/edit/{id}',[Artefak_Controller::class, 'edit'])->name('artefak.edit');
-    Route::put('/{id}',[Artefak_Controller::class, 'update'])->name('artefak.update');
-
-    //untuk menampilkan kepada dosen koordinator
-    Route::get('/koordinator/{id}',[Artefak_Controller::class,'index_koordinator'])->name('artefak.index.koordinator');
-    //untuk menampilkan kepada dosen pembimbing
-   
+    Route::get('/{id}', [Artefak_Controller::class, 'submit'])->name('artefak.submit');
+    Route::put('/{id}', [Artefak_Controller::class, 'delete'])->name('artefak.delete');
 });
-
 
 

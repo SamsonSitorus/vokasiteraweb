@@ -9,13 +9,22 @@ class Jadwal extends Model
     protected $table = 'jadwal';
 
     protected $fillable = [
-        'tangal',
+        'kelompok_id',
         'ruangan',
-        'jam',
-        'user_id'
+        'waktu',
+        'penguji1',
+        'penguji2',
+        'user_id',
     ];
 
     protected $casts = [
-        'batas'=>'datetime',
+        'waktu' => 'datetime',
     ];
+
+    public function kelompok(){
+        return $this->belongsTo(Kelompok::class);
+    }
+    // public function role(){
+    //     return $this->belongsTo(Role::class);
+    // }
 }
