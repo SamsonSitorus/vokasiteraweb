@@ -30,7 +30,7 @@
                                      @foreach($jadwal as $item)
                                         <tr>
                                             <!-- <td>{{ $item->id }}</td> -->
-                                            <td>{{ $item->kelompok_id }}</td>
+                                            <td>{{ $item->kelompok->nomor_kelompok ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->waktu)->format('d M Y H:i') }}</td>    
                                             <td>{{ $item->penguji1_nama }}, {{ $item->penguji2_nama }}</td>
                                             <td>
