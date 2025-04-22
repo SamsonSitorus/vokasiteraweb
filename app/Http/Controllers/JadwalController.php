@@ -52,37 +52,43 @@ class JadwalController extends Controller
         }
     }
 
-
     public function create()
-    {
-        try {
-            $userID = session('user_id');
-            $token = session('token');
+        {
+            try {
+                $userID = session('user_id');
+                $token = session('token');
+                $KPA_id = session('KPA_id');
+                $prodi_id = session('prodi_id');
+                $TA_id = session('TA_id');
+                $role_id = session('role_id');
 
-            if (!$userID || !$token) {
-                return redirect()->route('login')->with('error', 'Sesi telah berakhir');
+                if (!$userID || !$token) {
+                    return redirect()->route('login')->with('error', 'Sesi telah berakhir');
+                }
+
+                $responseDosen = Http::withHeaders([
+                    'Authorization' => "Bearer $token"
+                ])->get(env('API_URL') . "library-api/dosen", ['limit' => 100]);
+
+                $dosen = $responseDosen->successful() 
+                    ? ($responseDosen->json()['data']['dosen'] ?? []) 
+                    : [];
+
+                $kelompok = Kelompok::where('KPA_id', $KPA_id)
+                                    ->where('prodi_id', $prodi_id)
+                                    ->where('TA_id', $TA_id)
+                                    ->get();
+
+                $role = Role::all();
+
+                return view('pages.Koordinator.jadwal.create', compact('kelompok', 'dosen', 'role'));
+
+            } catch (Exception $e) {
+                Log::error('Error loading create form: ' . $e->getMessage());
+                return back()->with('error', 'Gagal memuat form');
             }
-
-            $responseDosen = Http::withHeaders([
-                'Authorization' => "Bearer $token"
-            ])->get(env('API_URL') . "library-api/dosen", ['limit' => 100]);
-
-            $dosen = $responseDosen->successful() 
-                ? ($responseDosen->json()['data']['dosen'] ?? []) 
-                : [];
-
-            $kelompok = Kelompok::all();
-            $role = Role::all();
-
-            return view('pages.Koordinator.jadwal.create', compact('kelompok', 'dosen', 'role'));
-
-        } catch (Exception $e) {
-            Log::error('Error loading create form: ' . $e->getMessage());
-            return back()->with('error', 'Gagal memuat form');
         }
-    }
-
-        public function store(Request $request)
+    public function store(Request $request)
     {
         try {
             $userID = session('user_id');
@@ -97,7 +103,7 @@ class JadwalController extends Controller
                     }
                 }],
                 'ruangan' => 'required|string|max:50',
-                'waktu' => 'required|date',
+                'waktu' => 'required|date|after:now',
                 'penguji1' => 'required|integer|different:penguji2',
                 'penguji2' => 'required|integer|different:penguji1',
             ], [
@@ -132,22 +138,24 @@ class JadwalController extends Controller
         try {
             $id = Crypt::decrypt($id);
             $token = session('token');
-            // $userID = session('user_id');
-
-            // if (!$userID || !$token) {
-            //     return redirect()->route('login')->with('error', 'Sesi telah berakhir');
-            // }
+            $KPA_id = session('KPA_id');
+            $prodi_id = session('prodi_id');
+            $TA_id = session('TA_id');
 
             $jadwal = Jadwal::findOrFail($id);
-            $kelompok = Kelompok::all();
+
+            $kelompok = Kelompok::where('KPA_id', $KPA_id)
+                                ->where('prodi_id', $prodi_id)
+                                ->where('TA_id', $TA_id)
+                                ->get();
 
             $responseDosen = Http::withHeaders([
                 'Authorization' => "Bearer $token"
             ])->get(env('API_URL') . "library-api/dosen", ['limit' => 100]);
 
             $dosen = $responseDosen->successful() 
-                ? ($responseDosen->json()['data']['dosen'] ?? []) 
-                : [];
+                        ? ($responseDosen->json()['data']['dosen'] ?? []) 
+                        : [];
 
             $role = Role::all();
 
@@ -168,7 +176,7 @@ class JadwalController extends Controller
             $validated = $request->validate([
                 'kelompok_id' => 'required|exists:kelompok,id',
                 'ruangan' => 'required|string|max:50',
-                'waktu' => 'required|date',
+                'waktu' => 'required|date|after:now',
                 'penguji1' => 'required|integer|different:penguji2',
                 'penguji2' => 'required|integer|different:penguji1',
             ], [
