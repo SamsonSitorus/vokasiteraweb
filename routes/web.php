@@ -15,6 +15,9 @@ use App\Http\Controllers\Pembimbing_tugas_Controller;
 use App\Http\Controllers\pengumpulan_tugasController;
 use App\Http\Controllers\PengumumanController;
 use App\Models\pengumpulan_tugas;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\JadwalMahasiswaController;
+
 
 Route::get('/', fn () => redirect()->route('login.form'));
 
@@ -120,11 +123,14 @@ Route::prefix('pengumuman')->group(function(){
     Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
 
 
+
+
 Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
 Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
 
 Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
 Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
+
 
 
 //Pengumuman by Koordinator
@@ -137,7 +143,9 @@ Route::prefix('pengumuman')->group(function()
     Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
     Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
     
+});
 
+//Pengumuman by Koordinator
 
 Route::prefix('pengumuman')->group(function(){
     Route::get('/',[PengumumanController::class, 'index'])->name('pengumuman.index');
@@ -195,6 +203,12 @@ Route::prefix('jadwal')->group(function(){
 Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
 
 
+
+
+// request bimbingan oleh mahasiswa
+
+
+
 Route::prefix('bimbingan')->group(function(){
     Route::get('/',[BimbinganController::class, 'index'])->name('bimbingan.index');
     Route::get('/create', [BimbinganController::class, 'create'])->name('bimbingan.create');
@@ -224,7 +238,4 @@ Route::prefix('artefak')->group (function(){
     //untuk menampilkan kepada dosen koordinator
     Route::get('/koordinator/{id}',[Artefak_Controller::class,'index_koordinator'])->name('artefak.index.koordinator');
     //untuk menampilkan kepada dosen pembimbing
-   
-}
-}
-);
+});
