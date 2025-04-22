@@ -123,13 +123,17 @@ Route::prefix('pengumuman')->group(function(){
     Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
     
 
+
+<<<<<<< HEAD
+=======
 Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
 Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
 
 Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
 Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
 
-
+>>>>>>> ee0b77a4e0d2e3a5022ec521c58ab19e1935a8a9
+//Pengumuman by Koordinator
 Route::prefix('pengumuman')->group(function(){
     Route::get('/',[PengumumanController::class, 'index'])->name('pengumuman.index');
     Route::get('/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
@@ -185,7 +189,13 @@ Route::prefix('jadwal')->group(function(){
 // Jadwal mahasiswa
 Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
 
+
+<<<<<<< HEAD
+=======
 // request bimbingan oleh mahasiswa
+>>>>>>> ee0b77a4e0d2e3a5022ec521c58ab19e1935a8a9
+
+
 Route::prefix('bimbingan')->group(function(){
     Route::get('/',[BimbinganController::class, 'index'])->name('bimbingan.index');
     Route::get('/create', [BimbinganController::class, 'create'])->name('bimbingan.create');
