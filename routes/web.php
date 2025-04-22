@@ -103,6 +103,29 @@ Route::prefix('pembimbing')->group(function(){
     Route::get('/{id}/show',[pembimbing_Controller::class, 'show'])->name('pembimbing.show');
 });
 
+Route::prefix('pengumuman')->group(function(){
+    Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
+    Route::get('/pengumuman/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
+    Route::post('/pengumuman/store', [PengumumanController::class, 'store'])->name('pengumuman.store');
+    Route::get('/pengumuman/{id}/edit', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
+    Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
+    Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
+    
+    });
+    //Pengumuman send Mahasiswa
+    Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
+    Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
+    //Pengumuman send Pembimbing 
+    Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
+    Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
+    
+
+Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
+Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
+
+Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
+Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
+
 
 Route::prefix('pengumuman')->group(function(){
     Route::get('/',[PengumumanController::class, 'index'])->name('pengumuman.index');
@@ -158,3 +181,36 @@ Route::prefix('jadwal')->group(function(){
 
 // Jadwal mahasiswa
 Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
+
+// request bimbingan oleh mahasiswa
+Route::prefix('bimbingan')->group(function(){
+    Route::get('/',[BimbinganController::class, 'index'])->name('bimbingan.index');
+    Route::get('/create', [BimbinganController::class, 'create'])->name('bimbingan.create');
+    Route::post('/', [BimbinganController::class, 'store'])->name('bimbingan.store');
+    Route::get('/{id}', [BimbinganController::class, 'edit'])->name('bimbingan.edit');
+    Route::put('/{id}', [BimbinganController::class, 'update'])->name('bimbingan.update');
+    Route::delete('/{id}',[BimbinganController::class, 'destroy'])->name('bimbingan.destroy');
+    Route::get('/{id}/show',[BimbinganController::class, 'show'])->name('bimbingan.show');
+});
+
+//request bimbingan dosen pembimbing
+Route::prefix('dosenpembimbing')->group(function(){
+    Route::get('/',[BimbinganController::class, 'indexpembimbing'])->name('pembimbing.bimbingan.index');
+    Route::get('/{id}', [BimbinganController::class, 'setuju'])->name('pembimbing.bimbingan.setujui');
+    Route::put('/{id}', [BimbinganController::class, 'tolak'])->name('pembimbing.bimbingan.tolak');
+});
+
+
+// artefak oleh mahasiswa
+Route::prefix('artefak')->group(function(){
+    Route::get('/',[Artefak_Controller::class, 'index'])->name('artefak.index');
+    Route::get('/create/{id}', [Artefak_Controller::class, 'create'])->name('artefak.create');
+    Route::post('/{id}', [Artefak_Controller::class, 'submit'])->name('artefak.submit');
+    Route::get('/edit/{id}',[Artefak_Controller::class, 'edit'])->name('artefak.edit');
+    Route::put('/{id}',[Artefak_Controller::class, 'update'])->name('artefak.update');
+
+    //untuk menampilkan kepada dosen koordinator
+    Route::get('/koordinator/{id}',[Artefak_Controller::class,'index_koordinator'])->name('artefak.index.koordinator');
+    //untuk menampilkan kepada dosen pembimbing
+   
+});
