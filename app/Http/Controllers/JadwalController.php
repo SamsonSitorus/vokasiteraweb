@@ -214,5 +214,8 @@ class JadwalController extends Controller
             Log::error('Error deleting jadwal: ' . $e->getMessage());
             return back()->with('error', 'Gagal menghapus jadwal');
         }
+
+        $tugas->delete();
+        return redirect()->back()->with('success','Jadwal berhasil dihapus');
     }
 }

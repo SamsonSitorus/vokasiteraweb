@@ -33,7 +33,7 @@
                                      @foreach($bimbingan as $item)
                                         <tr>
                                             <td>{{ $item->id }}</td>
-                                            <td>{{ $item->kelompok_id }}</td>
+                                            <td>{{ $item->kelompok->nomor_kelompok }}</td>
                                             <td>{{ $item->keperluan }}</td>
                                             <td>{{ $item->rencana_mulai }}</td>    
                                             <td>{{ $item->rencana_selesai}}</td> 

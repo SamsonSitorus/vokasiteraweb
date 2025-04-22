@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('tugas_id')->constrained('tugas')->onDelete('cascade');
             $table->dateTime('waktu_submit')->nullable();
             $table->string('file_path')->nullable(); // path file yang diunggah
-            $table->enum('status', ['Submitted', 'Late', 'Belum'])->default('Belum');
+            $table->enum('status', ['Submitted', 'Late', 'Belum'])->default('Submitted');
             $table->timestamps();
         });
     }
