@@ -190,8 +190,6 @@ Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->n
 
 
 // request bimbingan oleh mahasiswa
-
-
 Route::prefix('bimbingan')->group(function(){
     Route::get('/',[BimbinganController::class, 'index'])->name('bimbingan.index');
     Route::get('/create', [BimbinganController::class, 'create'])->name('bimbingan.create');
