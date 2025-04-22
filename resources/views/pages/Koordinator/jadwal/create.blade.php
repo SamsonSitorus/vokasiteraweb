@@ -29,18 +29,17 @@
                         <form method="POST" action="{{ route('jadwal.store')}}" enctype="multipart/form-data">
                             @csrf
                             {{--Pilih Kelompok--}}
-                            <label for="ruangan">Kelompok</label>
-                                <select id="kelompok_id" name="kelompok_id" class="select2 form-control" required>
+                            <div class="form-group">
+                                <label for="kelompok_id">Pilih Kelompok</label>
+                                <select name="kelompok_id" id="kelompok_id" class="form-control" required>
                                     <option value="">-- Pilih Kelompok --</option>
-                                    @foreach ($kelompok as $item)
-                                        <option 
-                                            value="{{ $item['id'] }}" 
-                                            {{ old('kelompok_id') == $item['id'] ? 'selected' : '' }}
-                                        >
-                                            {{ $item['nomor_kelompok'] }}
+                                    @foreach($kelompok as $item)
+                                        <option value="{{ $item->id }}">
+                                            {{ $item->nomor_kelompok }}
                                         </option>
                                     @endforeach
                                 </select>
+                            </div>
 
                             {{--Masukkan lokasi--}}
                             <div class="form-group">

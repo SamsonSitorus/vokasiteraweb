@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kelompok;
 use App\Models\KelompokMahasiswa;
+use App\Models\Jadwal;
 use Illuminate\Support\Facades\Http;
 
 class JadwalMahasiswaController extends Controller
@@ -14,7 +15,6 @@ class JadwalMahasiswaController extends Controller
         $userId = session('user_id');
         $token = session('token');
 
-        // Ambil data kelompok dan jadwalnya
         $kelompokMahasiswa = KelompokMahasiswa::with(['kelompok.jadwal'])
             ->where('user_id', $userId)
             ->first();
@@ -26,12 +26,10 @@ class JadwalMahasiswaController extends Controller
         $kelompok = $kelompokMahasiswa->kelompok;
         $jadwal = $kelompok->jadwal;
 
-        // Cek apakah jadwal tersedia
         if (!$jadwal) {
-            return back()->with('error', 'Jadwal belum tersedia untuk kelompok Anda.');
+            return view('pages.Mahasiswa.jadwal.index', compact('kelompok'))->with('error', 'Jadwal belum tersedia untuk kelompok Anda.');
         }
 
-        // Ambil data dosen
         $responseDosen = Http::withHeaders([
             'Authorization' => "Bearer $token"
         ])->get(env('API_URL') . "library-api/dosen", ['limit' => 100]);
@@ -43,7 +41,6 @@ class JadwalMahasiswaController extends Controller
             $dosenArray[$dosen['user_id']] = $dosen['nama'];
         }
 
-        // Tambahkan nama penguji ke objek jadwal
         $jadwal->penguji1_nama = $dosenArray[$jadwal->penguji1] ?? 'Tidak Ditemukan';
         $jadwal->penguji2_nama = $dosenArray[$jadwal->penguji2] ?? 'Tidak Ditemukan';
 
