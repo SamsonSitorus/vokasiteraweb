@@ -15,6 +15,9 @@ use App\Http\Controllers\Pembimbing_tugas_Controller;
 use App\Http\Controllers\pengumpulan_tugasController;
 use App\Http\Controllers\PengumumanController;
 use App\Models\pengumpulan_tugas;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\JadwalMahasiswaController;
+
 
 Route::get('/', fn () => redirect()->route('login.form'));
 
