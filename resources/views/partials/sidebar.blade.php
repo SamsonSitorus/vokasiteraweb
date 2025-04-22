@@ -36,7 +36,7 @@
             @if (in_array(3, $dosenRoles) || in_array(5, $dosenRoles)) 
             <li class="menu-header">Pembimbing</li>
             <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
-            <li ><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
+            <li ><a class="nav-link" href="{{route('pembimbing.tugas.index')}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{route('pembimbing.bimbingan.index')}}"><i class="fas fa-bullhorn"></i> <span>Bimbingan</span></a></li>
             <li ><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
             <li ><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-columns"></i> <span>Nilai</span></a></li>

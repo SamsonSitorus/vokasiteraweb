@@ -20,28 +20,29 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Judul Tugas</th>
+                                        <th>Nomor Kelompok</th>
+                                        <th>Waktu Submit</th>
+                                        <th>File</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                     @foreach($tugas as $item)
+                                     @foreach($artefak as $item)
                                         <tr>
                                             <td>{{ $item->id }}</td>
-                                            <td>{{ $item->Judul_Tugas }}</td>
+                                            <td>{{ $item->kelompok->nomor_kelompok }}</td>
+                                            <td>{{ $item->waktu_submit }}</td>
+                                            <td>
+                                                <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank">Lihat File</a>
+                                            </td>
+                                            
                                             <td>{{ $item->status }}</td> 
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{route('tugas.show', $item->id)}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-eye"></i> &nbsp; Show</a>&nbsp;&nbsp;
-                                                    <a href="{{route('artefak.index.koordinator', $item->id)}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-eye"></i> &nbsp; Show Submision</a>&nbsp;&nbsp;
-                                                    <a href="{{ route('tugas.edit', ['id' => Crypt::encrypt($item->id)]) }}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
-                                                    <form method="POST" action="{{route('tugas.destroy', $item->id)}}">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 8px"><i class="nav-icon fas fa-trash-alt"></i> &nbsp; Hapus</button>
-                                                    </form>
-                                                    {{-- <a href="{{route('artefak.index.koordinator')}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-eye"></i> &nbsp; Show Tugas</a>&nbsp;&nbsp; --}}
+                                                    <a href="{{route('tugas.show', $item->id)}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-comments"></i> &nbsp; FeedBack</a>&nbsp;&nbsp;
+                                                   
+                                                   
                                                 </div>
                                             </td>
                                         </tr>

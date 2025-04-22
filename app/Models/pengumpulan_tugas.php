@@ -23,4 +23,7 @@ class pengumpulan_tugas extends Model
     {
         return $this->belongsTo(Tugas::class,'tugas_id');
     }
+    public function pembimbing(){
+        return $this->belongsTo(pembimbing::class);
+    }
 }

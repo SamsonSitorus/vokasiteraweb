@@ -89,7 +89,7 @@ class JadwalController extends Controller
             return response()->json(['error' => 'Pengguna tidak ditemukan'], 401);
         }
 
-        $tugas->delete();
+        $jadwal->delete();
         return redirect()->back()->with('success','Jadwal berhasil dihapus');
     }
 }
