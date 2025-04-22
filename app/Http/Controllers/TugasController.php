@@ -34,6 +34,7 @@ class TugasController extends Controller
       ->get();
         return view('pages.Koordinator.tugas.index', compact('tugas'));
     }
+   
     public function create()
     {
         try{
@@ -187,4 +188,5 @@ public function destroy($id)
         $tugas = Tugas::findOrFail($id);
         return view('pages.Koordinator.tugas.show', compact('tugas'));
     }
+
 }

@@ -13,7 +13,7 @@ class PengumumanController extends Controller
  
 public function index()
 {
-    $pengumuman = Pengumuman::all(); 
+    $pengumuman = Pengumuman::all(); // atau bisa juga paginate(), latest(), dsb.
     
     return view('pages.Koordinator.pengumuman.index', compact('pengumuman'));
 }
@@ -108,8 +108,6 @@ public function showMahasiswa($id)
     $pengumuman = Pengumuman::findOrFail($id);
     return view('pages.Mahasiswa.pengumuman.show', compact('pengumuman'));
 }
-
-// // Pengumuman Dosen Pembimbing 
 
 
 public function pembimbingIndex()

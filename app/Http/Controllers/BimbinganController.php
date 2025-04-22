@@ -13,7 +13,7 @@ class BimbinganController extends Controller
     public function index(Request $request){
         $kelompokId = session('kelompok_id');
         // dd($kelompokId);
-        $bimbingan = Bimbingan::where ('kelompok_id',$kelompokId)->get();
+        $bimbingan = Bimbingan::where ('kelompok_id',$kelompokId)->with('kelompok')->get();
 
         return view('pages.Mahasiswa.Bimbingan.index',compact('bimbingan'));
     }
@@ -100,21 +100,25 @@ class BimbinganController extends Controller
         $prodi_id = session('prodi_id');
         $KPA_id = session('KPA_id');
         $TA_id = session('TA_id');
+        
 
         $bimbingan = Bimbingan::whereHas('kelompok',function($query) use ($prodi_id,$KPA_id,$TA_id){
             $query  ->where('prodi_id', $prodi_id)
                     ->where('KPA_id', $KPA_id)
                     ->where('TA_id', $TA_id);
-        })->get();
+        })->with('kelompok')->get();
         return view('pages.Pembimbing.Bimbingan.index',compact('bimbingan'));
     
     }
 
     public function setuju($encryptedId){
         $id = Crypt::decrypt($encryptedId); 
+       
         $bimbingan = Bimbingan::find($id);
-
+        $userId = session('user_id');
+        // dd($userId);
         $bimbingan->status = 'disetujui';
+        $bimbingan->user_id = $userId;
         $bimbingan->save();
         return redirect()->back()->with('success', 'Bimbingan berhasil disetujui.');
 
@@ -122,8 +126,10 @@ class BimbinganController extends Controller
     public function tolak($encryptedId){
         $id = Crypt::decrypt($encryptedId); 
         $bimbingan = Bimbingan::find($id);
-
+        $userId = session('user_id');
+        // dd($userId);
         $bimbingan->status = 'ditolak';
+        $bimbingan->user_id = $userId;
         $bimbingan->save();
         return redirect()->back()->with('success', 'Bimbingan berhasil ditolak.');
 

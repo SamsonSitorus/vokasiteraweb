@@ -13,7 +13,7 @@
                         <a href="{{ route('tugas.index') }}" class="btn btn-primary">Kembali</a>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{-- route('tugas.update', ['id' => Crypt::encrypt($item->id)]) --}}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('tugas.update', ['id' => Crypt::encrypt($tugas->id)]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             {{--  input user_id hide --}}
