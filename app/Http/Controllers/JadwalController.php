@@ -80,6 +80,39 @@ class JadwalController extends Controller
 
             if (!$userID || !$token) {
                 return redirect()->route('login')->with('error', 'Sesi telah berakhir');
+            {
+            try {
+                $userID = session('user_id');
+                $token = session('token');
+                $KPA_id = session('KPA_id');
+                $prodi_id = session('prodi_id');
+                $TM_id = session('TM_id');
+                $role_id = session('role_id');
+
+                if (!$userID || !$token) {
+                    return redirect()->route('login')->with('error', 'Sesi telah berakhir');
+                }
+
+                $responseDosen = Http::withHeaders([
+                    'Authorization' => "Bearer $token"
+                ])->get(env('API_URL') . "library-api/dosen", ['limit' => 100]);
+
+                $dosen = $responseDosen->successful() 
+                    ? ($responseDosen->json()['data']['dosen'] ?? []) 
+                    : [];
+
+                $kelompok = Kelompok::where('KPA_id', $KPA_id)
+                                    ->where('prodi_id', $prodi_id)
+                                    ->where('TM_id', $TM_id)
+                                    ->get();
+
+                $role = Role::all();
+
+                return view('pages.Koordinator.jadwal.create', compact('kelompok', 'dosen', 'role'));
+
+            } catch (Exception $e) {
+                Log::error('Error loading create form: ' . $e->getMessage());
+                return back()->with('error', 'Gagal memuat form');
             }
             // $jadwal = Jadwal::with(['kelompok.pembimbing.dosen'])->get();
             $kategoriPA = KategoriPA::find($KPA_id);
@@ -200,13 +233,13 @@ class JadwalController extends Controller
             $token = session('token');
             $KPA_id = session('KPA_id');
             $prodi_id = session('prodi_id');
-            $TA_id = session('TA_id');
+            $TM_id = session('TM_id');
 
             $jadwal = Jadwal::findOrFail($id);
 
             $kelompok = Kelompok::where('KPA_id', $KPA_id)
                                 ->where('prodi_id', $prodi_id)
-                                ->where('TA_id', $TA_id)
+                                ->where('TM_id', $TM_id)
                                 ->get();
 
             $responseDosen = Http::withHeaders([

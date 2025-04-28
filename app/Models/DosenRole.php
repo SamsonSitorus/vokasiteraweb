@@ -16,9 +16,9 @@ public function role()
 {
     return $this->belongsTo(Role::class, 'role_id');
 }
-public function tahunAjaran()
+public function tahunMasuk()
 {
-    return $this->belongsTo(TahunAjaran::class, 'TA_id');
+    return $this->belongsTo(tahunMasuk::class, 'TM_id');
 }
 public function kategoriPA()
 {
@@ -34,7 +34,8 @@ public function pembimbing(){
         'role_id',
         'prodi_id',
         'KPA_id',
-        'TA_id',
+        'TM_id',
+        'Tahun_Ajaran',
         'status',
     ];
     

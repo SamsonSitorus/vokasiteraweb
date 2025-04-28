@@ -20,6 +20,14 @@ use App\Http\Controllers\JadwalMahasiswaController;
 use App\Http\Controllers\JadwalStaffController;
 use App\Http\Controllers\JadwalPengujiController;
 
+use App\Http\Controllers\NilaiKelompok_Controller;
+use App\Http\Controllers\NilaiMahasiswa_Controller;
+use App\Http\Controllers\Penguji_Controller;
+use App\Http\Controllers\penguji_tugas_Controller;
+use App\Http\Controllers\TahunAjaran_Controller;
+use App\Http\Controllers\TahunMasuk_Controller;
+use App\Models\Nilai_kelompok;
+use App\Models\Pengumuman;
 
 Route::get('/', fn () => redirect()->route('login.form'));
 
@@ -90,12 +98,16 @@ Route::prefix('tugas')->group(function(){
     Route::get('/{id}/show',[TugasController::class, 'show'])->name('tugas.show');
 });
 Route::prefix('submitan')->group(function(){
-        // untuk pembimbing
+        //lihat submitan file untuk pembimbing
         Route::get('/pembimbing',[Pembimbing_tugas_Controller::class, 'indexpembimbing'])->name('pembimbing.tugas.index');
         Route::get('pembimbing/tugas/{id}',[Pembimbing_tugas_Controller::class, 'showpembimbing'])->name('pembimbing.tugas.show'); 
         Route::get('/pembimbing/{id}',[Pembimbing_tugas_Controller::class,'index_pembimbing'])->name('pembimbing.show.submitan');
+
+        //lihat submitan file untuk penguji
+        Route::get('/penguji',[penguji_tugas_Controller::class, 'indexpenguji'])->name('penguji.tugas.index');
      
 });
+
 
 //pembimbing oleh koordinator
 Route::prefix('pembimbing')->group(function(){
@@ -106,8 +118,40 @@ Route::prefix('pembimbing')->group(function(){
     Route::put('/{id}', [pembimbing_Controller::class, 'update'])->name('pembimbing.update');
     Route::delete('/{id}',[pembimbing_Controller::class, 'destroy'])->name('pembimbing.destroy');
     Route::get('/{id}/show',[pembimbing_Controller::class, 'show'])->name('pembimbing.show');
+
+});
+//untuk pembimbing2
+Route::prefix('pembimbing2')->group(function(){
+    Route::get('/', [pembimbing_Controller::class, 'indexpembimbing2'])->name('pembimbing2.index');
+    Route::get('/create', [pembimbing_Controller::class, 'createpembimbing2'])->name('pembimbing2.create');
+    Route::post('/', [pembimbing_Controller::class, 'storepembimbing2'])->name('pembimbing2.store');
+    Route::get('/{id}', [pembimbing_Controller::class, 'editpembimbing2'])->name('pembimbing2.edit');
+    Route::put('/{id}', [pembimbing_Controller::class, 'updatepembimbing2'])->name('pembimbing2.update');
+    Route::delete('/{id}', [pembimbing_Controller::class, 'destroypembimbing2'])->name('pembimbing2.destroy');
+    Route::get('/{id}/show', [pembimbing_Controller::class, 'showpembimbing2'])->name('pembimbing2.show');
 });
 
+Route::prefix('penguji')->group(function(){
+    Route::get('/',[Penguji_Controller::class, 'index'])->name('penguji.index');
+    Route::get('/create', [Penguji_Controller::class, 'create'])->name('penguji.create');
+    Route::post('/', [Penguji_Controller::class, 'store'])->name('penguji.store');
+    Route::get('/{id}', [Penguji_Controller::class, 'edit'])->name('penguji.edit');
+    Route::put('/{id}', [Penguji_Controller::class, 'update'])->name('penguji.update');
+    Route::delete('/{id}',[Penguji_Controller::class, 'destroy'])->name('penguji.destroy');
+    Route::get('/{id}/show',[Penguji_Controller::class, 'show'])->name('penguji.show');
+
+});
+//untuk pembimbing2
+Route::prefix('penguji2')->group(function(){
+    Route::get('/', [Penguji_Controller::class, 'indexpenguji2'])->name('penguji2.index');
+    Route::get('/create', [Penguji_Controller::class, 'createpenguji2'])->name('penguji2.create');
+    Route::post('/', [Penguji_Controller::class, 'storepenguji2'])->name('penguji2.store');
+    Route::get('/{id}', [Penguji_Controller::class, 'editpenguji2'])->name('penguji2.edit');
+    Route::put('/{id}', [Penguji_Controller::class, 'updatepenguji2'])->name('penguji2.update');
+    Route::delete('/{id}', [Penguji_Controller::class, 'destroypenguji2'])->name('penguji2.destroy');
+    Route::get('/{id}/show', [Penguji_Controller::class, 'showpenguji2'])->name('penguji2.show');
+});
+//pengumuman untuk koordinator
 Route::prefix('pengumuman')->group(function(){
     Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
     Route::get('/pengumuman/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
@@ -115,46 +159,54 @@ Route::prefix('pengumuman')->group(function(){
     Route::get('/pengumuman/{id}/edit', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
     Route::put('/pengumuman/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
     Route::delete('/pengumuman/{id}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
-    
-    });
-    //Pengumuman send Mahasiswa
+    //untuk menampilkan pengumuman ke mahasiswa
     Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
-    Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
-    //Pengumuman send Pembimbing 
-    Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
-    Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
+    Route::get('/pengumuman/show/{id}', [PengumumanController::class, 'showPengumuman'])->name('pengumuman.show');
+    //untuk koordinator
+    Route::get('/show/koordinator',[PengumumanController::class,'showPengumumanKoordinator'])->name('pengumuman.koordinator.show');
+    Route::get('/show/koordinator/{id}', [PengumumanController::class, 'showPengumumankoordinator'])->name('pengumuman.koordinator.show');
+    //untuk pembimbing
+    Route::get('/show/pembimbing/', [PengumumanController::class, 'pembimbingIndex'])->name('pengumuman.pembimbing.index');
+    Route::get('/show/pembimbing/{id}', [PengumumanController::class, 'showPengumumanpembimbing'])->name('pengumuman.pembimbing.show');
+    //Route untuk staff =>pengumuman
+    Route::get('/BAAK',[PengumumanController::class, 'staffpengumuman'])->name('pengumuman.BAAK.index');
+    Route::get('/BAAK/create',[PengumumanController::class, 'createpengumuman'])->name('pengumuman.BAAK.create');
+    Route::post('/BAAK/store',[PengumumanController::class,'storepengumuman'])->name('pengumuman.BAAK.store');
+    Route::get('/BAAK/pengumuman/edit/{id}', [PengumumanController::class, 'editpengumuman'])->name('pengumuman.BAAK.edit');
+    Route::put('/BAAK/pengumuman/{id}', [PengumumanController::class, 'updatepengumuman'])->name('pengumuman.BAAK.update');
+    Route::delete('/BAAK/pengumuman/{id}',[PengumumanController::class,'destroypengumuman'])->name('pengumuman.BAAK.destroy');
+    Route::get('/pengumuman/show/BAAK/{id}', [PengumumanController::class, 'showPengumumanBAAK'])->name('pengumuman.BAAK.show');
+    });
+
+    //Route untuk BAAK =>tahun ajaran
+    Route::prefix('TahunMasuk')->group(function(){
+        Route::get('/',[TahunMasuk_Controller::class,'index'])->name('TahunMasuk.index');
+        Route::get('/create',[TahunMasuk_Controller::class,'create'])->name('TahunMasuk.create');
+        Route::post('/',[TahunMasuk_Controller::class, 'store'])->name('TahunMasuk.store');
+        Route::get('/edit/{id}', [TahunMasuk_Controller::class, 'edit'])->name('TahunMasuk.edit');
+        Route::put('/{id}', [TahunMasuk_Controller::class, 'update'])->name('TahunMasuk.update');
+        Route::delete('/{id}',[TahunMasuk_Controller::class, 'destroy'])->name('TahunMasuk.destroy');
+
+    });
+
+     //Route untuk Koordinator =>Nilai Kelompok
+Route::prefix('NilaiKelompok')->group(function(){
+        Route::get('/',[NilaiKelompok_Controller::class,'index'])->name('NilaiKelompok.index');
+        Route::post('/nilai-kelompok', [NilaiKelompok_Controller::class, 'store'])->name('NilaiKelompok.store');
+        Route::put('/{id}',[NilaiKelompok_Controller::class, 'update'])->name('NilaiKelompok.update');
+        Route::delete('/{id}',[NilaiKelompok_Controller::class, 'destroy'])->name('NilaiKelompok.destroy');
+
+});
+Route::prefix('NilaiMahasiswa')->group(function(){
+        Route::get('/',[NilaiMahasiswa_Controller::class,'index'])->name('NilaiMahasiswa.index');
+        Route::post('/nilai-kelompok', [NilaiMahasiswa_Controller::class, 'store'])->name('NilaiMahasiswa.store');
+        Route::put('/{id}',[NilaiMahasiswa_Controller::class, 'update'])->name('NilaiMahasiswa.update');
+        Route::delete('/{id}',[NilaiMahasiswa_Controller::class, 'destroy'])->name('NilaiMahasiswa.destroy');
+
+});
     
 
-
-
-Route::get('/mahasiswa/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
-Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
-
-Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
-Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
-
-//Pengumuman by Koordinator
-Route::prefix('pengumuman')->group(function(){
-    Route::get('/',[PengumumanController::class, 'index'])->name('pengumuman.index');
-    Route::get('/create', [PengumumanController::class, 'create'])->name('pengumuman.create');
-    Route::post('/', [PengumumanController::class, 'store'])->name('pengumuman.store');
-    Route::get('/{id}', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
-    Route::put('/{id}', [PengumumanController::class, 'update'])->name('pengumuman.update');
-    Route::delete('/{id}',[PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
-    Route::get('/{id}/show',[PengumumanController::class, 'show'])->name('pengumuman.show');
-    Route::get('/pengumuman/mahasiswa',[PengumumanController::class, 'showMahasiswa'])->name('pengumuman.mahasiswa.index');
-});
-// request bimbingan oleh mahasiswa
-Route::prefix('bimbingan')->group(function(){
-    Route::get('/',[BimbinganController::class, 'index'])->name('bimbingan.index');
-    Route::get('/create', [BimbinganController::class, 'create'])->name('bimbingan.create');
-    Route::post('/', [BimbinganController::class, 'store'])->name('bimbingan.store');
-    Route::get('/{id}', [BimbinganController::class, 'edit'])->name('bimbingan.edit');
-    Route::put('/{id}', [BimbinganController::class, 'update'])->name('bimbingan.update');
-    Route::delete('/{id}',[BimbinganController::class, 'destroy'])->name('bimbingan.destroy');
-    Route::get('/{id}/show',[BimbinganController::class, 'show'])->name('bimbingan.show');
-});
-//request bimbingan dosen pembimbing
+//request bimbingan untuk dosen pembimbing
 Route::prefix('dosenpembimbing')->group(function(){
     Route::get('/',[BimbinganController::class, 'indexpembimbing'])->name('pembimbing.bimbingan.index');
     Route::get('/{id}', [BimbinganController::class, 'setuju'])->name('pembimbing.bimbingan.setujui');

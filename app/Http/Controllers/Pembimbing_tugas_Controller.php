@@ -11,13 +11,13 @@ class Pembimbing_tugas_Controller extends Controller
 
         $prodi_id = session('prodi_id');
         $KPA_id = session('KPA_id');
-        $TA_id = session('TA_id');
+        $TM_id = session('TM_id');
         $user_id = session('user_id');
 
-      $tugas = tugas::with(['prodi', 'tahunAjaran', 'kategoripa'])
+      $tugas = tugas::with(['prodi', 'tahunMasuk', 'kategoripa'])
       ->where('prodi_id', $prodi_id)
       ->where('KPA_id', $KPA_id)
-      ->where('TA_id', $TA_id)
+      ->where('TM_id', $TM_id)
       ->where('user_id',$user_id)
       ->get();
     
@@ -34,7 +34,7 @@ class Pembimbing_tugas_Controller extends Controller
     public function index_pembimbing($id){
         $prodi_id = session('prodi_id');
         $KPA_id = session('KPA_id');
-        $TA_id = session('TA_id');
+        $TM_id = session('TM_id');
         $user_id = session('user_id');
 
         $artefak = pengumpulan_tugas::with(['kelompok.pembimbing','tugas'])
@@ -45,10 +45,10 @@ class Pembimbing_tugas_Controller extends Controller
 
                 });
             }) 
-            ->whereHas('tugas', function ($query) use ($prodi_id, $KPA_id, $TA_id) {
+            ->whereHas('tugas', function ($query) use ($prodi_id, $KPA_id, $TM_id) {
                 $query->where('prodi_id', $prodi_id)
                       ->where('KPA_id', $KPA_id)
-                      ->where('TA_id', $TA_id);
+                      ->where('TM_id', $TM_id);
             })
             ->get();
         return view('pages.pembimbing.tugas.show_submission', compact('artefak'));

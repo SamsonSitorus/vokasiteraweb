@@ -6,6 +6,7 @@ use App\Models\Kelompok;
 use App\Models\KelompokMahasiswa;
 use App\Models\Prodi;
 use App\Models\TahunAjaran;
+use App\Models\TahunMasuk;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -56,13 +57,13 @@ class Kelompok_mahasiswa_Controller extends Controller
     {
         $token = session('token');
         $prodiId = session('prodi_id');
-        $TahunAjaranId =session('TA_id');
-        $TahunAjaran =TahunAjaran::where('id', $TahunAjaranId)->value('Tahun_Ajaran');
+        $TahunMasukId =session('TM_id');
+        $TahunMasuk =TahunMasuk::where('id', $TahunMasukId)->value('Tahun_Masuk');
 
         $responseMahasiswa = Http::withHeaders([
             'Authorization' => "Bearer $token"
         ])->get(env('API_URL') . "library-api/mahasiswa", [
-            "angkatan" =>$TahunAjaran,
+            "angkatan" =>$TahunMasuk,
             "prodi" => $prodiId,
             'limit' => 100]);
     
@@ -72,13 +73,17 @@ class Kelompok_mahasiswa_Controller extends Controller
             ->values()
             : collect();
             //cek apakah sudah ada kelompok
-        $user_idsudahpunyakelompok = DB::table('kelompok_mahasiswa')->pluck('user_id')->toArray();
+        // Ambil 1 data kelompok berdasarkan ID
+        $kelompok = Kelompok::findOrFail($id);
+        $kpaId = $kelompok->KPA_id; 
+
+        $user_idsudahpunyakelompok = DB::table('kelompok_mahasiswa as km')
+        ->join('kelompok as k', 'km.kelompok_id', '=', 'k.id')
+        ->where('KPA_id', $kpaId)
+        ->pluck('user_id')->toArray();
         $mahasiswabelummasuk = $mahasiswa->filter(function($mhs)use ($user_idsudahpunyakelompok){
             return !in_array($mhs['user_id'], $user_idsudahpunyakelompok);
         })->values();
-        // Ambil 1 data kelompok berdasarkan ID
-        $kelompok = Kelompok::findOrFail($id);
-    
         return view('pages.Koordinator.kelompok-mahasiswa.create', [
             'mahasiswa' => $mahasiswabelummasuk,
             'kelompok' => $kelompok
@@ -128,8 +133,12 @@ class Kelompok_mahasiswa_Controller extends Controller
     }
 
     // Cek apakah user_id sudah terdaftar di kelompok manapun
-    $existingUsers = KelompokMahasiswa::whereIn('user_id', $userIds)->pluck('user_id')->toArray();
-
+    $existingUsers = DB::table('kelompok_mahasiswa as km')
+    ->join('kelompok as k', 'km.kelompok_id', '=', 'k.id')
+    ->where('k.KPA_id', $kpaId)
+    ->whereIn('km.user_id', $userIds)
+    ->pluck('km.user_id')
+    ->toArray();
     if (!empty($existingUsers)) {
         return back()->withErrors([
             'user_id' => 'Beberapa Mahasiswa sudah tergabung dalam kelompok lain: ' . implode(', ', $existingUsers)
@@ -152,15 +161,15 @@ class Kelompok_mahasiswa_Controller extends Controller
         $id = Crypt::decrypt($encryptedId); 
         $token = session('token');
         $prodiId = session('prodi_id');
-        $TahunAjaranId =session('TA_id');
-        $TahunAjaran =TahunAjaran::where('id', $TahunAjaranId)->value('Tahun_Ajaran');
+        $TahunMasukId =session('TM_id');
+        $TahunMasuk =TahunMasuk::where('id', $TahunMasukId)->value('Tahun_Masuk');
         $kelompokMahasiswa = KelompokMahasiswa::findOrFail($id);
     
         // Ambil semua mahasiswa dari API
         $response = Http::withHeaders([
             'Authorization' => "Bearer $token"
         ])->get(env('API_URL') . "library-api/mahasiswa", [
-            "angkatan" =>$TahunAjaran,
+            "angkatan" =>$TahunMasuk,
             "prodi" => $prodiId,
             'limit' => 100]);
     

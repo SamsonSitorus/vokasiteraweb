@@ -36,11 +36,11 @@
                                 <input type="text" name="nomor_kelompok" id="nomor_kelompok" class="form-control" required>
                             </div>
 
-                       {{-- Tahun Angkatan --}}
+                       {{-- Tahun Masuk  --}}
                         <div class="form-group">
-                            <label for="TA_id">Tahun Angkatan</label>
-                            <input type="text" class="form-control" value="{{ $tahun_ajaran->Tahun_Ajaran ?? '-' }}" readonly>
-                            <input type="hidden" name="TA_id" value="{{ $tahun_ajaran->id }}">
+                            <label for="TM_id">Tahun Tahun Masuk</label>
+                            <input type="text" class="form-control" value="{{ $tahun_masuk->Tahun_Masuk ?? '-' }}" readonly>
+                            <input type="hidden" name="TM_id" value="{{ $tahun_masuk->id }}">
                         </div>
 
                         {{-- Prodi --}}

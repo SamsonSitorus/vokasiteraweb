@@ -14,8 +14,8 @@ class pembimbing extends Model
     protected $table = 'pembimbing';
     public function dosenRoles()
     {
-        return $this->belongsTo(DosenRole::class);
-    }
+        return $this->hasOne(DosenRole::class, 'user_id', 'user_id');
+    }    
     public function Kelompok()
     {
         return $this->belongsTo(Kelompok::class,'kelompok_id');

@@ -39,8 +39,8 @@
                             {{-- Tahun Angkatan --}}
                             <div class="form-group">
                                 <label for="TA_id">Tahun Angkatan (Readonly)</label>
-                                <input type="text" class="form-control" value="{{ $kelompok->tahunAjaran->Tahun_Ajaran ?? '-' }}" readonly>
-                                <input type="hidden" name="TA_id" value="{{ $kelompok->TA_id }}">
+                                <input type="text" class="form-control" value="{{ $kelompok->tahunMasuk->Tahun_Masuk ?? '-' }}" readonly>
+                                <input type="hidden" name="TM_id" value="{{ $kelompok->TM_id }}">
                             </div>
                            {{-- Status --}}
                            <div class="form-group">

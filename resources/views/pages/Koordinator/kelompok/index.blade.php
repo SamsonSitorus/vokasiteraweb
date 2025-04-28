@@ -34,7 +34,7 @@
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->nomor_kelompok }}</td>
                                             <td>{{ $item->kategoripa->kategori_pa ?? 'N/A' }}</td>
-                                            <td>{{ $item->tahunAjaran->Tahun_Ajaran ?? 'N/A' }}</td>    
+                                            <td>{{ $item->tahunMasuk->Tahun_Masuk ?? 'N/A' }}</td>    
                                             <td>{{ $item->prodi->nama_prodi ?? 'N/A'}}</td>  
                                             <td>{{ $item->status }}</td>
                                             <td>

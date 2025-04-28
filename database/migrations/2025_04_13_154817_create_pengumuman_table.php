@@ -12,15 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pengumuman', function (Blueprint $table) {
-            $table->id('pengumuman_id');
-            $table->unsignedBigInteger('user_id');
+            $table->id('id');
             $table->string('judul');
-            $table->string('pengirim');
             $table->text('deskripsi');
-            $table->string('status');
-
+            $table->dateTime('tanggal_penulisan');
+            $table->string('file')->nullable();
+            $table->enum('status',['aktif','non-aktif']);
+            $table->unsignedBigInteger('user_id');
+            $table->foreignId('KPA_id')->constrained('kategori_pa')->onDelete('cascade');
+            $table->foreignId('prodi_id')->constrained('prodi')->onDelete('cascade'); 
+            $table->foreignId('TM_id')->constrained('tahun_masuk')->onDelete('cascade');
             $table->timestamps();
-
         });
     }
 
