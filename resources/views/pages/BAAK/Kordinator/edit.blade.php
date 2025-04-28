@@ -80,20 +80,28 @@
                                 @endforeach
                                 </select>
                             </div>
+                            {{--Tahun Masuk  --}}
                             <div class="form-group">
-                                <label for="TA_id">Tahun Ajaran</label>
-                                <select name="TA_id" id="TA_id" class="select2 form-control" required>
+                                <label for="TM_id">Tahun Masuk</label>
+                                <select name="TM_id" id="TM_id" class="select2 form-control" required>
                                     <option value="">-- Pilih Tahun Masuk --</option>
-                                    @foreach ($tahun_ajaran as $item)
+                                    @foreach ($tahun_masuk as $item)
                                         <option 
                                             value="{{ $item->id }}" 
-                                            {{ old('TA_id', $dosenRole->TA_id) == $item->id ? 'selected' : '' }}
+                                            {{ old('TM_id', $dosenRole->TM_id) == $item->id ? 'selected' : '' }}
                                         >
-                                            {{ $item->Tahun_Ajaran }}
+                                            {{ $item->Tahun_Masuk }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
+                            {{-- Tahun Ajaran --}}
+                        <div class="form-group">
+                            <label for="Tahun_Ajaran">Tahun Ajaran</label>
+                            <input type="text"name="Tahun_Ajaran" id="Tahun_Ajaran" class="form-control" required  pattern="\d{4}/\d{4}" title="Format: 2024/2025" 
+                                value="{{ old('Tahun_Ajaran', $dosenRole->Tahun_Ajaran) }}">
+                        </div>
+
                             {{-- Status --}}
                             <div class="form-group">
                                 <label for="status">Status</label>

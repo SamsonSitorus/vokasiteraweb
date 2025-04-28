@@ -44,24 +44,29 @@
                             </select>
                         </div>
                         <label for="nomor">Nomor Kelompok</label>
-                            <div class="row">
-                                @forelse ($kelompok as $item)
-                                    <div class="col-md-6 col-lg-5 mb-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="kelompok_id[]" value="{{ $item['id'] }}" id="klmpk{{ $item['id'] }}">
-                                            <label class="form-check-label" for="klmpk{{ $item['id'] }}">
-                                               {{ $item['nomor_kelompok'] }}
-                                            </label>
+                        <div class="row">
+                            @forelse ($kelompok as $item)
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="kelompok_id[]" value="{{ $item['id'] }}" id="klmpk{{ $item['id'] }}">
+                                                <label class="form-check-label" for="klmpk{{ $item['id'] }}">Kelompok
+                                                    {{ $item['nomor_kelompok'] }}
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                @empty
-                                    <div class="col-12">
-                                        <div class="alert alert-warning">
-                                            Semua kelompok sudah memiliki Pembimbing.
-                                        </div>
+                                </div>
+                            @empty
+                                <div class="col-12">
+                                    <div class="alert alert-warning">
+                                        Semua kelompok sudah memiliki Pembimbing.
                                     </div>
-                                @endforelse
-                            </div>
+                                </div>
+                            @endforelse
+                        </div>
+                        
     
 
                             <button type="submit" class="btn btn-primary">Tambah</button>

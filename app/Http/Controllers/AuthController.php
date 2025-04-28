@@ -79,7 +79,7 @@ class AuthController extends Controller
                         session([
                             'prodi_id' => $dosenRole->prodi_id,
                             'KPA_id' => $dosenRole->KPA_id,
-                            'TA_id' => $dosenRole->TA_id,
+                            'TM_id' => $dosenRole->TM_id,
                             'role_id' => $dosenRole->role_id,
                         ]);
     
@@ -106,7 +106,7 @@ class AuthController extends Controller
                     $kelompokMahasiswa = KelompokMahasiswa ::where('user_id',$userTemp['user_id'])
                     ->join('kelompok', 'kelompok_mahasiswa.kelompok_id', '=', 'kelompok.id')
                     ->where('status','Aktif')
-                    ->select('kelompok_mahasiswa.*', 'kelompok.KPA_id', 'kelompok.prodi_id', 'kelompok.TA_id')
+                    ->select('kelompok_mahasiswa.*', 'kelompok.KPA_id', 'kelompok.prodi_id', 'kelompok.TM_id')
                     ->first();
                     if (!$kelompokMahasiswa) {
                         return redirect()->route('login.form')->withErrors(['Login' => 'Anda belum tergabung dalam kelompok aktif.'])->withInput();;
@@ -116,7 +116,7 @@ class AuthController extends Controller
                             'kelompok_id' => $kelompokMahasiswa->kelompok_id,
                             'prodi_id' => $kelompokMahasiswa->prodi_id,
                             'KPA_id' => $kelompokMahasiswa->KPA_id,
-                            'TA_id' => $kelompokMahasiswa->TA_id,
+                            'TM_id' => $kelompokMahasiswa->TM_id,
                         ]);
                     
                     $kelompok = KelompokMahasiswa::where('user_id', $userTemp['user_id'])

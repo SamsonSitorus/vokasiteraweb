@@ -19,7 +19,7 @@
                             {{--  input user_id hide --}}
                             <input type="hidden" name="user_id" value="{{ $user_id }}">
                             {{--  input TA_id hide --}}
-                            <input type="hidden" name="TA_id" value="{{ $tahun_ajaran->id }}">
+                            <input type="hidden" name="TM_id" value="{{ $tahun_masuk->id }}">
                             {{--  input prodi_id hide --}}
                             <input type="hidden" name="prodi_id" value="{{ $prodi->id }}">
                              {{--  KPA_id hide --}}

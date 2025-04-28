@@ -32,7 +32,7 @@
                                     <tr>
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->nama}}</td>
-                                       <td>belum ada</td>
+                                       <td>Pembimbing 1</td>
                                        <td>{{ $item->kelompok->nomor_kelompok }}</td>
                                        <td>
                                         <div class="d-flex">

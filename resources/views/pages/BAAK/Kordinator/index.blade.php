@@ -25,6 +25,7 @@
                                         <th>Kategori PA</th>
                                         <th>Role </th>
                                         <th>Tahun Ajaran</th>
+                                        <th>Tahun Masuk</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -37,7 +38,8 @@
                                             <td>{{ $item->prodi->nama_prodi ?? 'N/A'}}</td>                                           
                                             <td>{{ $item->kategoripa->kategori_pa ?? 'N/A' }}</td>
                                             <td>{{ $item->role->role_name ?? 'N/A' }}</td>
-                                            <td>{{ $item->tahunAjaran->Tahun_Ajaran ?? 'N/A' }}</td>    
+                                            <td>{{ $item->Tahun_Ajaran }}</td>
+                                            <td>{{ $item->tahunMasuk->Tahun_Masuk ?? 'N/A' }}</td>    
                                             <td>{{ $item->status }}</td>
                                             <td>
                                                 <div class="d-flex">
