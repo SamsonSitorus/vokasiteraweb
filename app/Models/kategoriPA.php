@@ -19,4 +19,8 @@ class kategoriPA extends Model
     {
         return $this->hasMany(Kelompok::class);
     }
+    public function jadwal() {
+        return $this->hasMany(Jadwal::class, 'KPA_id');
+    }
+    
 }

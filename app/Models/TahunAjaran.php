@@ -21,4 +21,8 @@ class TahunAjaran extends Model
     {
         return $this->hasMany(Kelompok::class);
     }
+    public function jadwal() {
+        return $this->hasMany(Jadwal::class, 'TA_id');
+    }
+    
 }

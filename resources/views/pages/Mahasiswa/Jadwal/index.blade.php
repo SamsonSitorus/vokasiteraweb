@@ -14,40 +14,84 @@
                         @include('partials.alert')
                         @if(session('error'))
                         <div class="alert alert-warning">
-                        {{ session('error') }}
+                            {{ session('error') }}
                         </div>
                         @endif
-                        @if(isset($jadwal))
+
+                        @if(isset($jadwalUtama))
+                        <div class="mb-4">
+                            <h5>Jadwal Seminar Kelompok Anda</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>Nomor Kelompok</th>
+                                        <td>{{ $jadwalUtama->kelompok->nomor_kelompok ?? '-' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ruangan</th>
+                                        <td>{{ $jadwalUtama->ruangan }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Waktu Sidang</th>
+                                        <td>{{ \Carbon\Carbon::parse($jadwalUtama->waktu)->translatedFormat('l, d F Y - H:i') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Penguji 1</th>
+                                        <td>{{ $jadwalUtama->penguji1_nama ?? '-' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Penguji 2</th>
+                                        <td>{{ $jadwalUtama->penguji2_nama ?? '-' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Pembimbing</th>
+                                        <td>
+                                            @if(!empty($pembimbingNama))
+                                                @foreach($pembimbingNama as $nama)
+                                                    <div>{{ $nama }}</div>
+                                                @endforeach
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        @endif
+
+                        @if(isset($jadwalLain) && $jadwalLain->count() > 0)
+                        <h5>Jadwal Seminar Kelompok Lainnya</h5>
                         <div class="table-responsive">
-                            <table class="table table-striped" id="table-2">
+                            <table class="table table-bordered table-striped">
                                 <thead>
-                                <tr>
-                                    <th>Nomor Kelompok</th>
-                                    <td>{{ $jadwal->kelompok->nomor_kelompok ?? '-' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Ruangan</th>
-                                    <td>{{ $jadwal->ruangan }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Waktu Sidang</th>
-                                    <td>{{ \Carbon\Carbon::parse($jadwal->waktu)->translatedFormat('l, d F Y - H:i') }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Penguji 1</th>
-                                    <td>{{ $jadwal->penguji1_nama ?? '-' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Penguji 2</th>
-                                    <td>{{ $jadwal->penguji2_nama ?? '-' }}</td>
-                                </tr>
+                                    <tr>
+                                        <th>Nomor Kelompok</th>
+                                        <th>Ruangan</th>
+                                        <th>Waktu</th>
+                                        <th>Penguji 1</th>
+                                        <th>Penguji 2</th>
+                                    </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach($jadwalLain as $jadwal)
+                                    <tr>
+                                        <td>{{ $jadwal->kelompok->nomor_kelompok ?? '-' }}</td>
+                                        <td>{{ $jadwal->ruangan }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($jadwal->waktu)->translatedFormat('l, d F Y - H:i') }}</td>
+                                        <td>{{ $jadwal->penguji1_nama ?? '-' }}</td>
+                                        <td>{{ $jadwal->penguji2_nama ?? '-' }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
-                        @else
-                            <div class="alert alert-info">
-                                Jadwal belum tersedia untuk kelompok Anda.
-                            </div>
+                        @endif
+
+                        @if(!isset($jadwalUtama))
+                        <div class="alert alert-info">
+                            Jadwal belum tersedia untuk kelompok Anda.
+                        </div>
                         @endif
                     </div>
                 </div>
@@ -55,47 +99,4 @@
         </div>
     </div>
 </section>
-
-<!-- <div class="container mt-4">
-    <h3 class="mb-4">Jadwal Seminar</h3>
-
-    @if(session('error'))
-        <div class="alert alert-warning">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    @if(isset($jadwal))
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Nomor Kelompok</th>
-                        <td>{{ $jadwal->kelompok->nomor_kelompok ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Ruangan</th>
-                        <td>{{ $jadwal->ruangan }}</td>
-                    </tr>
-                    <tr>
-                        <th>Waktu Sidang</th>
-                        <td>{{ \Carbon\Carbon::parse($jadwal->waktu)->translatedFormat('l, d F Y - H:i') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Penguji 1</th>
-                        <td>{{ $jadwal->penguji1_nama ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Penguji 2</th>
-                        <td>{{ $jadwal->penguji2_nama ?? '-' }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    @else
-        <div class="alert alert-info">
-            Jadwal belum tersedia untuk kelompok Anda.
-        </div>
-    @endif
-</div> -->
 @endsection

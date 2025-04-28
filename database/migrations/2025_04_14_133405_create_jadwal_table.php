@@ -19,6 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('penguji1');
             $table->unsignedBigInteger('penguji2');
+            $table->foreignId('KPA_id')->nullable()->constrained('kategori_pa')->onDelete('cascade');
+            $table->foreignId('prodi_id')->nullable()->constrained('prodi')->onDelete('cascade');
+            $table->foreignId('TA_id')->nullable()->constrained('tahun_ajaran')->onDelete('cascade');
             $table->timestamps();
             
             $table->index('user_id');

@@ -26,5 +26,9 @@ class Prodi extends Model
     {
         return $this->hasMany(Pengumuman::class, 'prodi_id');
     }
+    public function jadwal() {
+        return $this->hasMany(Jadwal::class);
+    }
+    
 }
 

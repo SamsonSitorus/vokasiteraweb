@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Jadwal')
+@section('title', 'Jadwal Staff')
 
 @section('content')
 <section class="section custom-section">
@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Jadwal Seminar</h4>
-                        <a href="{{ route('jadwal.create') }}" class="btn btn-primary">
+                        <a href="{{ route('baak.jadwal.create') }}" class="btn btn-primary">
                             <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Jadwal
                         </a>
                     </div>                    
@@ -19,31 +19,34 @@
                             <table class="table table-striped" id="table-2">
                                 <thead>
                                     <tr>
+                                        <th>Kategori PA</th>
+                                        <th>Program Studi</th>
+                                        <th>Tahun Ajaran</th>
                                         <th>Kelompok</th>
-                                        <th>Pembimbing</th> <!-- Tambah kolom baru -->
                                         <th>Tanggal</th>
-                                        <th>Lokasi</th>
-                                        <th>Dosen Penguji</th>
+                                        <!-- <th>Dosen Penguji</th> -->
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($jadwal as $item)
+                                     @foreach($jadwal as $item)
                                         <tr>
+                                            <!-- <td>{{ $item->id }}</td> -->
+                                             <td>{{ $item->kategoriPA->kategori_pa}}</td>
+                                             <td>{{ $item->prodi->nama_prodi}}</td>
+                                             <td>{{ $item->tahunAjaran->Tahun_Ajaran}}</td>
                                             <td>{{ $item->kelompok->nomor_kelompok ?? '-' }}</td>
-                                            <td>{{ $item->pembimbing_nama ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->waktu)->format('d M Y H:i') }}</td>    
-                                            <td>{{ $item->ruangan }}</td>
-                                            <td>{{ $item->penguji1_nama }}<br>{{ $item->penguji2_nama }}</td>
+                                            <!-- <td>{{ $item->penguji1_nama }}<br>{{ $item->penguji2_nama }}</td> -->
                                             <td>
-                                                <div class="d-flex align-items-center">
-                                                    <a href="{{ route('jadwal.show', Crypt::encrypt($item->id)) }}" class="btn btn-info btn-sm me-2">
+                                            <div class="d-flex align-items-center">
+                                                    <a href="{{ route('baak.jadwal.show', Crypt::encrypt($item->id)) }}" class="btn btn-info btn-sm me-2">
                                                         <i class="nav-icon fas fa-info-circle"></i>&nbsp;Detail
                                                     </a>
-                                                    <a href="{{ route('jadwal.edit', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm me-2">
+                                                    <a href="{{ route('baak.jadwal.edit', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm me-2">
                                                         <i class="nav-icon fas fa-edit"></i>&nbsp;Edit
                                                     </a>
-                                                    <form method="POST" action="{{ route('jadwal.destroy', $item->id) }}">
+                                                    <form method="POST" action="{{ route('baak.jadwal.destroy', $item->id) }}">
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title="Hapus">
@@ -72,17 +75,17 @@
         var name = $(this).data("name");
         event.preventDefault();
         swal({
-            title: `Yakin ingin menghapus data ini?`,
-            text: "Data akan terhapus secara permanen!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-            if (willDelete) {
-                form.submit();
-            }
-        });
+                title: `Yakin ingin menghapus data ini?`
+                , text: "Data akan terhapus secara permanen!"
+                , icon: "warning"
+                , buttons: true
+                , dangerMode: true
+            , })
+            .then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                }
+            });
     });
 </script>
 @endpush

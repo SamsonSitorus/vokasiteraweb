@@ -15,7 +15,7 @@ class JadwalMahasiswaController extends Controller
         $userId = session('user_id');
         $token = session('token');
 
-        $kelompokMahasiswa = KelompokMahasiswa::with(['kelompok.jadwal'])
+        $kelompokMahasiswa = KelompokMahasiswa::with(['kelompok.jadwal', 'kelompok.pembimbing'])
             ->where('user_id', $userId)
             ->first();
 
@@ -24,11 +24,21 @@ class JadwalMahasiswaController extends Controller
         }
 
         $kelompok = $kelompokMahasiswa->kelompok;
-        $jadwal = $kelompok->jadwal;
+        $jadwalUtama = $kelompok->jadwal;
 
-        if (!$jadwal) {
-            return view('pages.Mahasiswa.jadwal.index', compact('kelompok'))->with('error', 'Jadwal belum tersedia untuk kelompok Anda.');
+        if (!$jadwalUtama) {
+            return view('pages.Mahasiswa.jadwal.index', compact('kelompok'))
+                ->with('error', 'Jadwal belum tersedia untuk kelompok Anda.');
         }
+
+        $jadwalLain = Jadwal::with('kelompok')
+            ->where('KPA_id', $jadwalUtama->KPA_id)
+            ->where('prodi_id', $jadwalUtama->prodi_id)
+            ->where('TA_id', $jadwalUtama->TA_id)
+            ->where('id', '!=', $jadwalUtama->id)
+            ->get();
+
+        $jadwalSemua = collect([$jadwalUtama])->merge($jadwalLain);
 
         $responseDosen = Http::withHeaders([
             'Authorization' => "Bearer $token"
@@ -41,9 +51,25 @@ class JadwalMahasiswaController extends Controller
             $dosenArray[$dosen['user_id']] = $dosen['nama'];
         }
 
-        $jadwal->penguji1_nama = $dosenArray[$jadwal->penguji1] ?? 'Tidak Ditemukan';
-        $jadwal->penguji2_nama = $dosenArray[$jadwal->penguji2] ?? 'Tidak Ditemukan';
+        foreach ($jadwalSemua as $jadwal) {
+            $jadwal->penguji1_nama = $dosenArray[$jadwal->penguji1] ?? 'Tidak Ditemukan';
+            $jadwal->penguji2_nama = $dosenArray[$jadwal->penguji2] ?? 'Tidak Ditemukan';
+        }
 
-        return view('pages.Mahasiswa.jadwal.index', compact('jadwal', 'kelompok'));
+        $pembimbingNama = [];
+        if ($kelompok->pembimbing && $kelompok->pembimbing->isNotEmpty()) {
+            foreach ($kelompok->pembimbing as $pembimbing) {
+                $userId = $pembimbing->user_id;
+                $pembimbingNama[] = $dosenArray[$userId] ?? 'Tidak Ditemukan';
+            }
+        }
+
+        return view('pages.Mahasiswa.jadwal.index', [
+            'jadwalUtama' => $jadwalUtama,
+            'jadwalLain' => $jadwalLain,
+            'jadwalSemua' => $jadwalSemua,
+            'kelompok' => $kelompok,
+            'pembimbingNama' => $pembimbingNama,
+        ]);
     }
 }

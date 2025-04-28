@@ -17,6 +17,8 @@ use App\Http\Controllers\PengumumanController;
 use App\Models\pengumpulan_tugas;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JadwalMahasiswaController;
+use App\Http\Controllers\JadwalStaffController;
+use App\Http\Controllers\JadwalPengujiController;
 
 
 Route::get('/', fn () => redirect()->route('login.form'));
@@ -181,13 +183,11 @@ Route::prefix('jadwal')->group(function(){
     Route::get('/{id}', [JadwalController::class, 'edit'])->name('jadwal.edit');
     Route::put('/{id}', [JadwalController::class, 'update'])->name('jadwal.update');
     Route::delete('/{id}',[JadwalController::class, 'destroy'])->name('jadwal.destroy');
-    // Route::get('/{id}/show',[JadwalController::class, 'show'])->name('jadwal.show');
+    Route::get('/{id}/show',[JadwalController::class, 'show'])->name('jadwal.show');
 });
 
 // Jadwal mahasiswa
 Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
-
-
 
 // request bimbingan oleh mahasiswa
 Route::prefix('bimbingan')->group(function(){
@@ -219,5 +219,19 @@ Route::prefix('artefak')->group(function(){
     //untuk menampilkan kepada dosen koordinator
     Route::get('/koordinator/{id}',[Artefak_Controller::class,'index_koordinator'])->name('artefak.index.koordinator');
     //untuk menampilkan kepada dosen pembimbing
-   
 });
+
+// Jadwal dari BAAK 
+Route::prefix('staff/jadwal')->group(function(){
+    Route::get('/',[JadwalStaffController::class, 'index'])->name('baak.jadwal.index');
+    Route::get('/create',[JadwalStaffController::class, 'create'])->name('baak.jadwal.create');
+    Route::post('/', [JadwalStaffController::class, 'store'])->name('baak.jadwal.store');
+    Route::get('/{id}', [JadwalStaffController::class, 'edit'])->name('baak.jadwal.edit');
+    Route::put('/{id}', [JadwalStaffController::class, 'update'])->name('baak.jadwal.update');
+    Route::delete('/{id}',[JadwalStaffController::class, 'destroy'])->name('baak.jadwal.destroy');
+    Route::get('/{id}/show',[JadwalController::class, 'show'])->name('baak.jadwal.show');
+    Route::get('/jadwal/get-kelompok', [JadwalStaffController::class, 'getKelompok'])->name('baak.jadwal.getKelompok');
+});
+
+// Jadwal Penguji 
+Route::get('/penguji/jadwal',  [JadwalPengujiController::class, 'index'])->name('penguji.jadwal.index');
