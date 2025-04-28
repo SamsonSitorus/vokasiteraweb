@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreignId('kelompok_id')->constrained('kelompok')->onDelete('cascade');
             $table->timestamps();
-            $table->unique('kelompok_id');
         });
     }
 

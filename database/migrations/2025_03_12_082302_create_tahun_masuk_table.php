@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tahun_ajaran', function (Blueprint $table) {
+        Schema::create('tahun_masuk', function (Blueprint $table) {
             $table->id();
-            $table->year('Tahun_Ajaran');
-            $table->string('Status');
+            $table->year('Tahun_Masuk');
+            $table->enum('Status',['Aktif','Tidak-Aktif']);
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tahun_ajaran');
+        Schema::dropIfExists('tahun_masuk');
     }
 };

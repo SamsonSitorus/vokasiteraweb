@@ -15,12 +15,12 @@ class Artefak_Controller extends Controller
     {
         $prodi_id = session('prodi_id');
         $KPA_id = session('KPA_id');
-        $TA_id = session('TA_id');
+        $TM_id = session('TM_id');
     
-        $artefak = Tugas::with(['prodi', 'tahunAjaran', 'kategoripa'])
+        $artefak = Tugas::with(['prodi', 'tahunMasuk', 'kategoripa'])
             ->where('prodi_id', $prodi_id)
             ->where('KPA_id', $KPA_id)
-            ->where('TA_id', $TA_id)
+            ->where('TM_id', $TM_id)
             ->orderBy('created_at', 'desc')
             ->get();
     
@@ -182,14 +182,14 @@ class Artefak_Controller extends Controller
     public function index_koordinator($id){
         $prodi_id = session('prodi_id');
         $KPA_id = session('KPA_id');
-        $TA_id = session('TA_id');
+        $TM_id = session('TM_id');
     
         $artefak = pengumpulan_tugas::with(['kelompok', 'tugas'])
             ->where('tugas_id', $id) // ambil berdasarkan tugas_id = $id
-            ->whereHas('tugas', function ($query) use ($prodi_id, $KPA_id, $TA_id) {
+            ->whereHas('tugas', function ($query) use ($prodi_id, $KPA_id, $TM_id) {
                 $query->where('prodi_id', $prodi_id)
                       ->where('KPA_id', $KPA_id)
-                      ->where('TA_id', $TA_id);
+                      ->where('TM_id', $TM_id);
             })
             ->get();
     

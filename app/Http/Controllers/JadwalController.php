@@ -59,7 +59,7 @@ class JadwalController extends Controller
                 $token = session('token');
                 $KPA_id = session('KPA_id');
                 $prodi_id = session('prodi_id');
-                $TA_id = session('TA_id');
+                $TM_id = session('TM_id');
                 $role_id = session('role_id');
 
                 if (!$userID || !$token) {
@@ -76,7 +76,7 @@ class JadwalController extends Controller
 
                 $kelompok = Kelompok::where('KPA_id', $KPA_id)
                                     ->where('prodi_id', $prodi_id)
-                                    ->where('TA_id', $TA_id)
+                                    ->where('TM_id', $TM_id)
                                     ->get();
 
                 $role = Role::all();
@@ -140,13 +140,13 @@ class JadwalController extends Controller
             $token = session('token');
             $KPA_id = session('KPA_id');
             $prodi_id = session('prodi_id');
-            $TA_id = session('TA_id');
+            $TM_id = session('TM_id');
 
             $jadwal = Jadwal::findOrFail($id);
 
             $kelompok = Kelompok::where('KPA_id', $KPA_id)
                                 ->where('prodi_id', $prodi_id)
-                                ->where('TA_id', $TA_id)
+                                ->where('TM_id', $TM_id)
                                 ->get();
 
             $responseDosen = Http::withHeaders([

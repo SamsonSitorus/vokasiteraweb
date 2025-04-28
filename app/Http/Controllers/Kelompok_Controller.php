@@ -13,6 +13,8 @@ use App\Models\kategoriPA;
 use App\Models\Prodi;
 use Exception;
 use App\Models\TahunAjaran;
+use App\Models\TahunMasuk;
+
 class Kelompok_Controller extends Controller
 {
     
@@ -21,13 +23,13 @@ class Kelompok_Controller extends Controller
           // Ambil data dari session
           $prodi_id = session('prodi_id');
           $KPA_id = session('KPA_id');
-          $TA_id = session('TA_id');
+          $TM_id = session('TM_id');
 
         // Filter berdasarkan session
-        $kelompok = Kelompok::with(['prodi', 'tahunAjaran', 'kategoripa'])
+        $kelompok = Kelompok::with(['prodi', 'tahunMasuk', 'kategoripa'])
             ->where('prodi_id', $prodi_id)
             ->where('KPA_id', $KPA_id)
-            ->where('TA_id', $TA_id)
+            ->where('TM_id', $TM_id)
             ->get();
     
         return view('pages.Koordinator.kelompok.index', compact('kelompok'));
@@ -38,7 +40,7 @@ class Kelompok_Controller extends Controller
     {
         try {
             // Ambil data session, jika belum ada ambil dari database
-            if (!session()->has('prodi_id') || !session()->has('KPA_id') || !session()->has('TA_id') || !session()->has('role_id')) {
+            if (!session()->has('prodi_id') || !session()->has('KPA_id') || !session()->has('TM_id') || !session()->has('role_id')) {
                 $user_id = session('user_id');
         
                 // Ambil data role dosen yang aktif berdasarkan user_id
@@ -61,15 +63,15 @@ class Kelompok_Controller extends Controller
             // Ambil data berdasarkan session
             $prodi = Prodi::find(session('prodi_id'));
             $kategoripa = KategoriPa::find(session('KPA_id'));
-            $tahun_ajaran = TahunAjaran::find(session('TA_id'));
+            $tahun_masuk = TahunMasuk::find(session('TM_id'));
     
             // Cek jika data terkait tidak ditemukan
-            if (!$prodi || !$kategoripa || !$tahun_ajaran) {
+            if (!$prodi || !$kategoripa || !$tahun_masuk) {
                 return redirect()->back()->with('error', 'Data terkait tidak ditemukan.');
             }
         
             // Kirim data ke view
-            return view('pages.Koordinator.kelompok.create', compact('prodi', 'kategoripa', 'tahun_ajaran'));
+            return view('pages.Koordinator.kelompok.create', compact('prodi', 'kategoripa', 'tahun_masuk'));
     
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -84,7 +86,7 @@ class Kelompok_Controller extends Controller
             'nomor_kelompok' => 'required|numeric',
             'prodi_id'       => 'required|exists:prodi,id',
             'KPA_id'         => 'required|exists:kategori_pa,id',
-            'TA_id'          => 'required|exists:tahun_ajaran,id',
+            'TM_id'          => 'required|exists:tahun_masuk,id',
             'status'         => 'required|in:Aktif,Tidak-Aktif',
         ]);
     
@@ -92,7 +94,7 @@ class Kelompok_Controller extends Controller
         $exists = Kelompok::where('nomor_kelompok', $validated['nomor_kelompok'])
             ->where('prodi_id', $validated['prodi_id'])
             ->where('KPA_id', $validated['KPA_id'])
-            ->where('TA_id', $validated['TA_id'])
+            ->where('TM_id', $validated['TM_id'])
             ->exists();
     
         if ($exists) {
@@ -113,13 +115,13 @@ class Kelompok_Controller extends Controller
         $id = Crypt::decrypt($encryptedId);
     
         // Ambil data kelompok beserta relasinya
-        $kelompok = Kelompok::with(['prodi', 'tahunAjaran', 'kategoripa'])->findOrFail($id);
+        $kelompok = Kelompok::with(['prodi', 'tahunMasuk', 'kategoripa'])->findOrFail($id);
     
         // Validasi kecocokan session
         if (
             $kelompok->prodi_id != session('prodi_id') ||
             $kelompok->KPA_id != session('KPA_id') ||
-            $kelompok->TA_id != session('TA_id')
+            $kelompok->TM_id != session('TM_id')
         ) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengedit data ini.');
         }
@@ -151,7 +153,7 @@ public function update(Request $request, $encryptedId)
         if (
             $kelompok->prodi_id != session('prodi_id') ||
             $kelompok->KPA_id != session('KPA_id') ||
-            $kelompok->TA_id != session('TA_id')
+            $kelompok->TM_id != session('TM_id')
         ) {
             return redirect()->back()->with('error', 'Data tidak sesuai dengan session Anda.');
         }
@@ -177,7 +179,7 @@ public function update(Request $request, $encryptedId)
             if (
                 $kelompok->prodi_id != session('prodi_id') ||
                 $kelompok->KPA_id != session('KPA_id') ||
-                $kelompok->TA_id != session('TA_id')
+                $kelompok->TM_id != session('TM_id')
             ) {
                 return redirect()->back()->with('error', 'Data tidak sesuai dengan session Anda.');
             }

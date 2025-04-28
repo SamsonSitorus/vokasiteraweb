@@ -11,34 +11,35 @@ class Pengumuman extends Model
 
     // Menentukan nama tabel jika berbeda dari nama model
     protected $table = 'pengumuman';
-
-    // Menentukan primary key tabel
-    protected $primaryKey = 'pengumuman_id';
-
-    // Menentukan kolom yang dapat diisi mass-assignment
-    protected $fillable = [
-        'judul', 
-        'pengirim', 
-        'deskripsi', 
-        'status', 
-        'prodi_id',
-        'user_id',
-        'created_at',
-    ];
-
-    // Menentukan apakah kolom timestamp otomatis diatur oleh Eloquent
-    public $timestamps = true;
-
-    // Relasi dengan model User
-    public function user()
+    public function dosenRoles()
     {
-        return $this->belongsTo(User::class, 'user_id', 'user_id');
+        return $this->hasMany(DosenRole::class,'user_id', 'user_id');
     }
-
-    // Relasi dengan model Prodi
     public function prodi()
     {
         return $this->belongsTo(Prodi::class, 'prodi_id');
     }
+    public function tahunMasuk()
+    {
+        return $this->belongsTo(tahunMasuk::class, 'TM_id');
+    }
+    public function kategoriPA()
+    {
+        return $this->belongsTo(KategoriPA::class, 'KPA_id');
+    }
+    // Menentukan kolom yang dapat diisi mass-assignment
+    protected $fillable = [
+        'judul', 
+        'deskripsi', 
+        'tanggal_penulisan', 
+        'file', 
+        'status',
+        'user_id',
+        'KPA_id',
+        'prodi_id',
+        'TM_id',
+
+    ];
+
 }
    

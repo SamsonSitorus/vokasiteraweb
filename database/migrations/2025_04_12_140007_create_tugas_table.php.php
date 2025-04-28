@@ -18,7 +18,7 @@ return new class extends Migration
                 $table->string('Deskripsi_Tugas', 1000);
                 $table->foreignId('KPA_id')->constrained('kategori_pa')->onDelete('cascade');
                 $table->foreignId('prodi_id')->constrained('prodi')->onDelete('cascade'); // foreign key
-                $table->foreignId('TA_id')->constrained('tahun_ajaran')->onDelete('cascade');
+                $table->foreignId('TM_id')->constrained('tahun_masuk')->onDelete('cascade');
                 $table->dateTime('tanggal_pengumpulan');
                 $table->string('file')->nullable();
                 $table->enum('status',['selesai','berlangsung']);

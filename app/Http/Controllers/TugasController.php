@@ -13,6 +13,7 @@ use App\Models\Tugas;
 use App\Models\Prodi;
 use App\Models\TahunAjaran;
 use App\Models\kategoriPA;
+use App\Models\TahunMasuk;
 use GuzzleHttp\Client;
 use Exception;
 use Illuminate\Support\Facades\Storage;
@@ -23,13 +24,13 @@ class TugasController extends Controller
     public function index(Request $request){
         $prodi_id = session('prodi_id');
         $KPA_id = session('KPA_id');
-        $TA_id = session('TA_id');
+        $TM_id = session('TM_id');
         $user_id = session('user_id');
 
-      $tugas = tugas::with(['prodi', 'tahunAjaran', 'kategoripa'])
+      $tugas = tugas::with(['prodi', 'tahunMasuk', 'kategoripa'])
       ->where('prodi_id', $prodi_id)
       ->where('KPA_id', $KPA_id)
-      ->where('TA_id', $TA_id)
+      ->where('TM_id', $TM_id)
       ->where('user_id',$user_id)
       ->get();
         return view('pages.Koordinator.tugas.index', compact('tugas'));
@@ -39,7 +40,7 @@ class TugasController extends Controller
     {
         try{
               // Ambil data session, jika belum ada ambil dari database
-            if (!session()->has('prodi_id') || !session()->has('KPA_id') || !session()->has('TA_id') || !session()->has('role_id')) {
+            if (!session()->has('prodi_id') || !session()->has('KPA_id') || !session()->has('TM_id') || !session()->has('role_id')) {
                 $user_id = session('user_id');
         
                 // Ambil data role dosen yang aktif berdasarkan user_id
@@ -49,14 +50,14 @@ class TugasController extends Controller
          }
         $prodi = Prodi::find(session('prodi_id'));
         $kategoripa = KategoriPa::find(session('KPA_id'));
-        $tahun_ajaran = TahunAjaran::find(session('TA_id'));
+        $tahun_masuk = TahunMasuk::find(session('TM_id'));
         $user_id = session('user_id');
          
         // Cek jika data terkait tidak ditemukan
-        if (!$prodi || !$kategoripa || !$tahun_ajaran) {
+        if (!$prodi || !$kategoripa || !$tahun_masuk) {
             return redirect()->back()->with('error', 'Data terkait tidak ditemukan.');
         }
-        return view('pages.Koordinator.tugas.create',compact('prodi', 'kategoripa', 'tahun_ajaran','user_id'));
+        return view('pages.Koordinator.tugas.create',compact('prodi', 'kategoripa', 'tahun_masuk','user_id'));
     
 
     } catch (Exception $e) {
@@ -73,7 +74,7 @@ public function store(Request $request)
         'Deskripsi_Tugas' => 'required|string|max:1000',
         'prodi_id'       => 'required|exists:prodi,id',
         'KPA_id'         => 'required|exists:kategori_pa,id',
-        'TA_id'          => 'required|exists:tahun_ajaran,id',
+        'TM_id'          => 'required|exists:tahun_masuk,id',
         'tanggal_pengumpulan' => 'required|date|after_or_equal:today',
         'file' => 'nullable|mimes:pdf,docx,jpg,jpeg,png|max:10240', 
         'status' => 'required',
@@ -98,7 +99,7 @@ public function edit($encryptedId)
         $tugas = Tugas::findOrFail($id);
 
         // Retrieve session data or fetch from database
-        if (!session()->has('prodi_id') || !session()->has('KPA_id') || !session()->has('TA_id') || !session()->has('role_id')) {
+        if (!session()->has('prodi_id') || !session()->has('KPA_id') || !session()->has('TM_id') || !session()->has('role_id')) {
             $user_id = session('user_id');
 
             $dosenRole = DosenRole::where('user_id', $user_id)
@@ -114,13 +115,13 @@ public function edit($encryptedId)
 
         $prodi = Prodi::find(session('prodi_id'));
         $kategoripa = KategoriPa::find(session('KPA_id'));
-        $tahun_ajaran = TahunAjaran::find(session('TA_id'));
+        $tahun_masuk = TahunMasuk::find(session('TM_id'));
 
-        if (!$prodi || !$kategoripa || !$tahun_ajaran) {
+        if (!$prodi || !$kategoripa || !$tahun_masuk) {
             return redirect()->back()->with('error', 'Data terkait tidak ditemukan.');
         }
 
-        return view('pages.Koordinator.tugas.edit', compact('prodi', 'kategoripa', 'tahun_ajaran', 'user_id', 'tugas'));
+        return view('pages.Koordinator.tugas.edit', compact('prodi', 'kategoripa', 'tahun_masuk', 'user_id', 'tugas'));
 
     } catch (Exception $e) {
         return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -137,7 +138,7 @@ public function update(Request $request, $encryptedId)
         'Deskripsi_Tugas' => 'required|string|max:1000',
         'prodi_id'       => 'required|exists:prodi,id',
         'KPA_id'         => 'required|exists:kategori_pa,id',
-        'TA_id'          => 'required|exists:tahun_ajaran,id',
+        'TM_id'          => 'required|exists:tahun_masuk,id',
         'tanggal_pengumpulan' => 'required|date|after_or_equal:today',
         'file' => 'nullable|mimes:pdf,docx,jpg,jpeg,png|max:10240', 
         'status' => 'required',
