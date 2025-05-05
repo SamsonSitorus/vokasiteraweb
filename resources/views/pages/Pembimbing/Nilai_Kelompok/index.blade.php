@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'List Tahun Ajaran')
+@section('title', 'Nilai Kelompok')
 
 @section('content')
 <section class="section custom-section">
@@ -18,7 +18,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nomor Kelompok</th>
-                                        <th>Nilai</th>
+                                        <th>Komponen Penilaian </th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -30,34 +30,52 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $item->nomor_kelompok }}</td>
-                                            
                                             <td>
-                                                <form method="POST" action="{{ $nilai ? route('NilaiKelompok.update', $nilai->id) : route('NilaiKelompok.store') }}" class="d-flex">
+                                                <form method="POST" action="{{ $nilai ? route('pembimbing1.NilaiKelompok.update', $nilai->id) : route('pembimbing1.NilaiKelompok.store') }}">
                                                     @csrf
                                                     @if($nilai)
                                                         @method('PUT')
                                                     @endif
                                                     <input type="hidden" name="kelompok_id" value="{{ $item->id }}">
                                                     <input type="hidden" name="user_id" value="{{ $userId }}">
-                                                    <input type="number" name="A11" class="form-control form-control-sm" value="{{ old('Nilai', $nilai->A11 ?? '') }}" min="0" max="100" required>
-                                                    <input type="number" name="A12" class="form-control form-control-sm" value="{{ old('Nilai', $nilai->A12 ?? '') }}" min="0" max="100" required>
-                                                    <input type="number" name="A13" class="form-control form-control-sm" value="{{ old('Nilai', $nilai->A13 ?? '') }}" min="0" max="100" required>
-                                                    <input type="number" name="A21" class="form-control form-control-sm" value="{{ old('Nilai', $nilai->A21 ?? '') }}" min="0" max="100" required> 
-                                                    <input type="number" name="A22" class="form-control form-control-sm" value="{{ old('Nilai', $nilai->A22 ?? '') }}" min="0" max="100" required>
-                                                    <input type="number" name="A23" class="form-control form-control-sm" value="{{ old('Nilai', $nilai->A23 ?? '') }}" min="0" max="100" required>
-                                            </td>
                                             
-                                            <td class="d-flex">
-                                                    <button class="btn btn-success btn-sm" type="submit" style="height: 30px">
-                                                        {{ $nilai ? 'Update' : 'Simpan' }}
-                                                    </button>
-                                                </form>
-                                                
+                                                    <div class="row" style="width: 100%;">
+                                                        <div class="col-6 col-md-4 mb-3">
+                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Produk: Mencakup seluruh requirements dalam laporan</label>
+                                                            <input type="number" name="A11" class="form-control form-control-sm" value="{{ old('A11', $nilai->A11 ?? '') }}" min="0" max="100" required>
+                                                        </div>
+                                                        <div class="col-6 col-md-4 mb-3">
+                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Produk: Bebas dari error</label>
+                                                            <input type="number" name="A12" class="form-control form-control-sm" value="{{ old('A12', $nilai->A12 ?? '') }}" min="0" max="100" required>
+                                                        </div>
+                                                        <div class="col-6 col-md-4 mb-3">
+                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Produk: Dapat digunakan dengan baik dan mudah</label>
+                                                            <input type="number" name="A13" class="form-control form-control-sm" value="{{ old('A13', $nilai->A13 ?? '') }}" min="0" max="100" required>
+                                                        </div>
+                                                        <div class="col-6 col-md-4 mb-3">
+                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Laporan: Desain menggambarkan produk dengan sesuai</label>
+                                                            <input type="number" name="A21" class="form-control form-control-sm" value="{{ old('A21', $nilai->A21 ?? '') }}" min="0" max="100" required>
+                                                        </div>
+                                                        <div class="col-6 col-md-4 mb-3">
+                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Laporan: Ditulis menurut kaidah bahasa Indonesia yang baik</label>
+                                                            <input type="number" name="A22" class="form-control form-control-sm" value="{{ old('A22', $nilai->A22 ?? '') }}" min="0" max="100" required>
+                                                        </div>
+                                                        <div class="col-6 col-md-4 mb-3">
+                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Laporan: Sesuai kaidah penulisan dokumen dan template</label>
+                                                            <input type="number" name="A23" class="form-control form-control-sm" value="{{ old('A23', $nilai->A23 ?? '') }}" min="0" max="100" required>
+                                                        </div>
+                                                    </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-success btn-sm" type="submit" style="height: 40px; padding: 10px 15px;">
+                                                    {{ $nilai ? 'Update' : 'Simpan' }}
+                                                </button>
+                                            </form>
                                                 @if($nilai)
-                                                    <form method="POST" action="{{ route('NilaiKelompok.destroy', $nilai->id) }}" class="ml-2">
+                                                    <form method="POST" action="{{ route('pembimbing1.NilaiKelompok.destroy', $nilai->id) }}" class="ml-2" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title='Hapus'>
+                                                        <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title="Hapus" style="height: 40px; padding: 10px 15px;">
                                                             <i class="fas fa-trash-alt"></i> Hapus
                                                         </button>
                                                     </form>

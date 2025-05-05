@@ -9,18 +9,25 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('request_bimbingan', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->foreignId('kelompok_id')->constrained('kelompok')->onDelete('cascade');
+            $table->id();
+            $table->foreignId('kelompok_id')
+                  ->constrained('kelompok')
+                  ->onDelete('cascade');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('keperluan');
             $table->dateTime('rencana_mulai');
             $table->dateTime('rencana_selesai');
             $table->string('lokasi');
-            $table->enum('status', ['menunggu', 'selesai', 'disetujui','ditolak']);
-            $table->timestamps();
+            $table->enum('status', ['menunggu', 'selesai', 'disetujui', 'ditolak'])
+                  ->default('menunggu');
+            $table->text('hasil_bimbingan')->nullable(); // Added to match model
+            $table->timestamps();    
+
+            // Add index for better performance
+            $table->index('kelompok_id');
+            $table->index('user_id');
         });
     }
-    
 
     public function down(): void
     {

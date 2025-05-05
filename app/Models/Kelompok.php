@@ -34,6 +34,17 @@ class Kelompok extends Model
     public function nilais()
     {
         return $this->hasMany(Nilai_kelompok::class);
+    }   
+    public function nilaiindividu()
+    {
+        return $this->hasMany(Nilai_Individu::class);
+    }  
+    public function penguji()
+    {
+        return $this->hasMany(Penguji::class, 'kelompok_id');
+    }
+    public function KelompokMahasiswa() {
+        return $this->hasMany(KelompokMahasiswa::class);
     }
     public function penguji()
     {
@@ -45,6 +56,5 @@ class Kelompok extends Model
         'KPA_id',
         'prodi_id',
         'TM_id',
-        // 'status',
     ];
 }

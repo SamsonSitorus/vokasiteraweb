@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('nilai_kelompok', function (Blueprint $table) {
             $table->id();
             $table->foreignId('kelompok_id')->constrained('kelompok')->onDelete('cascade');
+            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
             $table->float('A11');
             $table->float('A12');
             $table->float('A13');
@@ -24,7 +25,6 @@ return new class extends Migration
             $table->float('A2_total')->nullable();
             $table->float('A_total')->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->decimal('Nilai');
             $table->timestamps();
         });
     }

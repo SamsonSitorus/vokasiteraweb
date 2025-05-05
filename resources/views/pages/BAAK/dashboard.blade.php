@@ -4,7 +4,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Dashboar BAAK</h1>
+            <h1>Dashboard BAAK</h1>
         </div>
 
         <div class="section-body">

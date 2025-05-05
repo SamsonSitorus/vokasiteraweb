@@ -41,17 +41,17 @@
                                             <td>{{ $item->status }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{route('bimbingan.edit', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm"><i class="nav-icon fas fa-edit"></i> &nbsp; Edit</a>
-                                                    <form method="POST" action="{{route('bimbingan.destroy',$item->id)}}">
+                                                    <a href="{{ route('bimbingan.kartu', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm">
+                                                        <i class="nav-icon fas fa-edit"></i> &nbsp;Lainnya
+                                                    </a>
+                                                    <form method="POST" action="{{ route('bimbingan.destroy', $item->id) }}">
                                                         @csrf
-                                                        @method('delete')
-                                                        <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 8px"><i class="nav-icon fas fa-trash-alt"></i> &nbsp; Hapus</button>
                                                     </form>
                                                 </div>
                                             </td>
                                         </tr>
                                     @endforeach 
-                                </tbody>
+                                </tbody>    
                             </table>
                         </div>
                     </div>

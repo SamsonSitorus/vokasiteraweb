@@ -30,8 +30,8 @@
                                             <td>{{ $item->status }}</td> 
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{route('pembimbing.tugas.show', $item->id)}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-eye"></i> &nbsp; Show</a>&nbsp;&nbsp;
-                                                    <a href="{{route('pembimbing.show.submitan', $item->id)}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-eye"></i> &nbsp; Show Submision</a>&nbsp;&nbsp;
+                                                    <a href="{{route('penguji.tugas.show', $item->id)}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-eye"></i> &nbsp; Show</a>&nbsp;&nbsp;
+                                                    <a href="{{route('penguji.show.submitan', $item->id)}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-eye"></i> &nbsp; Show Submision</a>&nbsp;&nbsp;
                                                 </div>
                                             </td>
                                         </tr>

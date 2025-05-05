@@ -31,10 +31,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Pengumuman</h4>
+                                <h4>Pengumuman44</h4>
                             </div>
                             <div class="card-body">
-                                {{-- {{ $mapel }} --}}
+                                
                             </div>
                         </div>
                     </div>

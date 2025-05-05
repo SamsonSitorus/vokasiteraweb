@@ -12,7 +12,7 @@ class Nilai_kelompok extends Model
     protected $fillable = [
         'kelompok_id', 
         'user_id',
-        'Nilai',
+        'role_id',
         'A11',
         'A12',
         'A13',
