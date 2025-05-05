@@ -38,6 +38,7 @@
                                             <td>{{ $item->status }}</td>
                                             <td>
                                                 <div class="d-flex">
+                                                    @if($item->status == 'menunggu')
                                                     <a href="{{route('pembimbing.bimbingan.setujui', Crypt::encrypt($item->id)) }}" class="btn btn-info btn-sm"><i class="nav-icon fas fa-check"></i> &nbsp; Setujui</a>
                                                     <form action="{{ route('pembimbing.bimbingan.tolak', Crypt::encrypt($item->id)) }}" method="POST" style="display: inline">
                                                         @csrf
@@ -46,6 +47,18 @@
                                                             <i class="nav-icon fas fa-times"></i> &nbsp; Tolak
                                                         </button>
                                                     </form>
+                                                    @elseif($item->status == 'disetujui')
+                                                    <form action="{{ route('pembimbing.bimbingan.tolak', Crypt::encrypt($item->id)) }}" method="POST" style="display: inline">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <i class="nav-icon fas fa-times"></i> &nbsp; Tolak
+                                                        </button>
+                                                    </form>
+                                                    @elseif($item->status == 'ditolak')
+                                                    <a href="{{route('pembimbing.bimbingan.setujui', Crypt::encrypt($item->id)) }}" class="btn btn-info btn-sm"><i class="nav-icon fas fa-check"></i> &nbsp; Setujui</a>
+                                                    @endif
+                                                   
                                                 </div>
                                             </td>
                                         </tr>

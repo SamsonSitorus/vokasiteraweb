@@ -33,6 +33,13 @@ class TugasController extends Controller
       ->where('TM_id', $TM_id)
       ->where('user_id',$user_id)
       ->get();
+
+      foreach($tugas as $tugasItem){
+        if($tugasItem->tanggal_pengumpulan <=now() && $tugasItem->status !=='selesai'){
+            $tugasItem->status = 'selesai';
+            $tugasItem->save();
+        }
+      }
         return view('pages.Koordinator.tugas.index', compact('tugas'));
     }
    

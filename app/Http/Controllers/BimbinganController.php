@@ -15,6 +15,13 @@ class BimbinganController extends Controller
         // dd($kelompokId);
         $bimbingan = Bimbingan::where ('kelompok_id',$kelompokId)->with('kelompok')->get();
 
+        foreach($bimbingan as $bimbinganItem){
+            if($bimbinganItem->rencana_selesai <=now() && $bimbinganItem->status !=='selesai'){
+                $bimbinganItem->status = 'selesai';
+                $bimbinganItem->save();
+            }
+        }
+
         return view('pages.Mahasiswa.Bimbingan.index',compact('bimbingan'));
     }
     public function create() {
@@ -107,6 +114,13 @@ class BimbinganController extends Controller
                     ->where('KPA_id', $KPA_id)
                     ->where('TM_id', $TM_id);
         })->with('kelompok')->get();
+        
+        foreach($bimbingan as $bimbinganItem){
+            if($bimbinganItem->rencana_selesai <=now() && $bimbinganItem->status !=='selesai'){
+                $bimbinganItem->status = 'selesai';
+                $bimbinganItem->save();
+            }
+        }
         return view('pages.Pembimbing.Bimbingan.index',compact('bimbingan'));
     
     }

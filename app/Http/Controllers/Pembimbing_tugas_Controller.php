@@ -18,7 +18,6 @@ class Pembimbing_tugas_Controller extends Controller
       ->where('prodi_id', $prodi_id)
       ->where('KPA_id', $KPA_id)
       ->where('TM_id', $TM_id)
-      ->where('user_id',$user_id)
       ->get();
     
       return view('pages.Pembimbing.tugas.index',compact('tugas'));

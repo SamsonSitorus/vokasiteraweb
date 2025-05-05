@@ -2,35 +2,93 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kategoriPA;
-use App\Models\Prodi;
+use App\Models\Nilai_Mahasiswa;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use App\Models\TahunAjaran;
+use App\Exports\NilaiAkhirExport;
+
 class NilaiMahasiswa_Controller extends Controller
 {
-    public function index(){
-        $prodi_id = session('prodi_id');
-        // $KPA_id = session('KPA_id');
-        $TA_id = session('TA_id');
-        $token = session('token');
-        $TahunAjaran =TahunAjaran::where('id', $TA_id)->value('Tahun_Ajaran');
-        $prodi = Prodi::where('id', $prodi_id)->value('nama_prodi');
-        // $KPA = kategoriPA::where('id',$KPA_id)->value('kategori_pa');
+    public function index() {
+        $data = DB::table('kelompok_mahasiswa as km')
+            ->select(
+                'km.user_id',
+                'km.kelompok_id',
+                DB::raw('
+                    0.05 * COALESCE(na.Pameran, 0) +
+                    0.45 * COALESCE(ns.nilai_seminar, 0) +
+                    0.1  * COALESCE(na.Administrasi, 0) +
+                    0.4  * COALESCE(nb.Total, 0) AS nilai_akhir
+                ')
+            )
+            ->leftJoin(DB::raw('(
+                SELECT kelompok_id, MAX(Pameran) AS Pameran, MAX(Administrasi) AS Administrasi
+                FROM nilai_administrasi
+                GROUP BY kelompok_id
+            ) as na'),'na.kelompok_id', '=', 'km.kelompok_id')
+            ->leftJoin(DB::raw('(
+                SELECT user_id, MAX(nilai_seminar) AS nilai_seminar
+                FROM nilai_seminar
+                GROUP BY user_id
+            ) as ns'), 'ns.user_id', '=', 'km.user_id')
+            ->leftJoin(DB::raw('(
+                SELECT user_id, MAX(Total) AS Total
+                FROM nilai_bimbingan
+                GROUP BY user_id
+            ) as nb'), 'nb.user_id', '=', 'km.user_id')
+            ->get();
+            foreach ($data as $item){
+                DB::table('nilai_mahasiswa')->updateOrInsert([
+                    'user_id' => $item->user_id,
+                    'kelompok_id' => $item->kelompok_id
+                ],
+                [
+                    'nilai_akhir' => $item->nilai_akhir
+                ]
+                );
+            }
 
-        $responseMahasiswa = Http::withHeaders([
-            'Authorization' => "Bearer $token"
-        ])->get(env('API_URL') . "library-api/mahasiswa", [
-            "angkatan" =>$TahunAjaran,
-            "prodi" => $prodi,
-            'limit' => 100]);
-    
-        $mahasiswa = $responseMahasiswa->successful()
-            ? collect($responseMahasiswa->json()['data']['mahasiswa'] ?? [])
-            ->sortBy('nim')
-            ->values()
-            : collect();
+                $prodi_id = session('prodi_id');
+                $KPA_id = session('KPA_id');
+                $TM_id = session('TM_id');
+                $token = session('token');
+        
+            $nilai_akhir = DB::table('nilai_mahasiswa')
+            ->join('kelompok_mahasiswa','nilai_mahasiswa.user_id', '=', 'kelompok_mahasiswa.user_id')
+            ->join('kelompok', 'kelompok_mahasiswa.kelompok_id','=', 'kelompok.id')
+            ->where('kelompok.prodi_id', $prodi_id)
+            ->where('kelompok.KPA_id', $KPA_id)
+            ->where('kelompok.TM_id', $TM_id)
+            ->select('nilai_mahasiswa.*', 'kelompok.nomor_kelompok')
+            ->get();
 
-            return view('pages.Koordinator.Nilai_Mahasiswa.index', compact('mahasiswa')); 
+                // Ambil semua mahasiswa dari API
+            $response = Http::withHeaders([
+                'Authorization' => "Bearer $token"
+            ])->get(env('API_URL') . "library-api/mahasiswa", [
+                'limit' => 100
+            ]);
+        
+            $mahasiswa = collect();
+            if ($response->successful()) {
+                $data = $response->json();
+                $listMahasiswa = $data['data']['mahasiswa'] ?? [];
+                $mahasiswa = collect($listMahasiswa)->keyBy('user_id');
+            }
+            
+
+            //   dd($nilai_akhir);
+            return view('pages.Koordinator.Nilai_Administrasi.NilaiAkhir', compact('nilai_akhir','mahasiswa','prodi_id','KPA_id','TM_id'));
+
     }
+    
+    public function export($prodi_id,$KPA_id,$TM_id){
+        $token = session('token');
+         // Ekspor data ke Excel dengan parameter yang diterima
+         return Excel::download(new NilaiAkhirExport($prodi_id, $KPA_id, $TM_id,$token), 'nilai_akhir.xlsx');
+    
+    }
+   
 }

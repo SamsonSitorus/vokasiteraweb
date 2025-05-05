@@ -31,7 +31,7 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $item->nomor_kelompok }}</td>
                                             <td>
-                                                <form method="POST" action="{{ $nilai ? route('pembimbing1.NilaiKelompok.update', $nilai->id) : route('pembimbing1.NilaiKelompok.store') }}">
+                                                <form method="POST" action="{{ $nilai ? route('pembimbing2.NilaiKelompok.update', $nilai->id) : route('pembimbing2.NilaiKelompok.store') }}">
                                                     @csrf
                                                     @if($nilai)
                                                         @method('PUT')
@@ -72,7 +72,7 @@
                                                 </button>
                                             </form>
                                                 @if($nilai)
-                                                    <form method="POST" action="{{ route('pembimbing1.NilaiKelompok.destroy', $nilai->id) }}" class="ml-2" style="display: inline;">
+                                                    <form method="POST" action="{{ route('pembimbing2.NilaiKelompok.destroy', $nilai->id) }}" class="ml-2" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title="Hapus" style="height: 40px; padding: 10px 15px;">

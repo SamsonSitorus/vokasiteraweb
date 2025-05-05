@@ -112,9 +112,11 @@
                             {{-- Status --}}
                            <div class="form-group">
                                 <label for="status">Status</label>
-                                <select name="status" id="status" class="form-control">
+                                <input type="text" class="form-control" value="Aktif" readonly>
+                                <input type="hidden" name="status" value="Aktif">
+                                {{-- <select name="status" id="status" class="form-control">
                                     <option value="Aktif" {{ old('status', 'Aktif') == 'Aktif' ? 'selected' : '' }}>Aktif</option>
-                                </select>
+                                </select> --}}
                             </div>
                             <button type="submit" class="btn btn-primary">Tambah</button>
                         </form>

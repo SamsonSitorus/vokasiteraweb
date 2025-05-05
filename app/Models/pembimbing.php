@@ -21,8 +21,8 @@ class pembimbing extends Model
         return $this->belongsTo(Kelompok::class,'kelompok_id');
     }
     public function role()
-{
-    return $this->belongsTo(Role::class, 'role_id');
-}
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 
 }

@@ -26,4 +26,7 @@ class pengumpulan_tugas extends Model
     public function pembimbing(){
         return $this->belongsTo(pembimbing::class);
     }
+    public function penguji(){
+        return $this->belongsTo(penguji::class);
+    }
 }

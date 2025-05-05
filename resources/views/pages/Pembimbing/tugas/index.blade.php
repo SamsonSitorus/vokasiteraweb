@@ -1,4 +1,4 @@
-@extends('layouts.main')
+    @extends('layouts.main')
 @section('title', 'List Tugas')
 
 @section('content')
