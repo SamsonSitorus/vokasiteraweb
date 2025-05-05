@@ -1,3 +1,4 @@
+
 @extends('layouts.main')
 
 @section('title', 'Kartu Bimbingan')
@@ -10,7 +11,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Proyek Akhir 2</h4>
-                        <p>Kartu Bimbingan</p>
+                        
                     </div>
                     <div class="card-body">
                         <!-- Menampilkan Kartu Bimbingan -->
@@ -66,10 +67,7 @@
                         <!-- Hasil Bimbingan -->
                         <div class="form-group">
                             <label for="hasil_bimbingan">Hasil Bimbingan</label>
-                            <textarea class="form-control" id="hasil_bimbingan" rows="15" name="hasil_bimbingan" style="font-size: 16px; line-height: 1.5;">{{ $bimbingan->hasil_bimbingan }}</textarea>
-                            <small class="form-text text-muted">
-                                Format penomoran akan otomatis diatur saat disimpan. Gunakan baris baru untuk setiap poin.
-                            </small>
+                            <textarea class="form-control" id="hasil_bimbingan" rows="6" name="hasil_bimbingan">{{ $bimbingan->hasil_bimbingan }}</textarea>
                         </div>
 
                         <!-- Tanda Tangan Pembimbing -->
@@ -93,50 +91,4 @@
         </div>
     </div>
 </section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Format hasil bimbingan saat halaman dimuat
-    formatHasilBimbingan();
-    
-    // Tambahkan event listener untuk memformat hasil bimbingan saat diubah
-    document.getElementById('hasil_bimbingan').addEventListener('input', formatHasilBimbingan);
-    
-    function formatHasilBimbingan() {
-        const textarea = document.getElementById('hasil_bimbingan');
-        
-        // Simpan posisi kursor
-        const cursorPosition = textarea.selectionStart;
-        
-        // Dapatkan teks dari textarea
-        let text = textarea.value;
-        
-        // Jika teks tidak kosong, pastikan setiap baris baru dimulai dengan nomor yang benar
-        if (text.trim()) {
-            // Pisahkan teks menjadi baris-baris
-            let lines = text.split('\n');
-            
-            // Format setiap baris
-            for (let i = 0; i < lines.length; i++) {
-                // Hapus nomor yang ada di awal baris (jika ada)
-                lines[i] = lines[i].replace(/^\d+\.\s*/, '').trim();
-                
-                // Tambahkan nomor baru jika baris tidak kosong
-                if (lines[i]) {
-                    lines[i] = (i + 1) + '. ' + lines[i];
-                }
-            }
-            
-            // Gabungkan kembali baris-baris
-            text = lines.join('\n');
-            
-            // Perbarui nilai textarea
-            textarea.value = text;
-            
-            // Kembalikan posisi kursor
-            textarea.setSelectionRange(cursorPosition, cursorPosition);
-        }
-    }
-});
-</script>
 @endsection

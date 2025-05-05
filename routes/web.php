@@ -25,6 +25,8 @@ use App\Http\Controllers\TahunAjaran_Controller;
 use App\Http\Controllers\TahunMasuk_Controller;
 use App\Models\Nilai_kelompok;
 use App\Models\Pengumuman;
+use App\Http\Controllers\PengajuanSeminarController;
+
 
 Route::get('/', fn () => redirect()->route('login.form'));
 
@@ -311,6 +313,9 @@ Route::prefix('bimbingan')->group(function(){
     Route::put('/{id}', [BimbinganController::class, 'update'])->name('bimbingan.update');
     Route::delete('/{id}',[BimbinganController::class, 'destroy'])->name('bimbingan.destroy');
     Route::get('/{id}/show',[BimbinganController::class, 'show'])->name('bimbingan.show');
+    Route::get('/kartu-bimbingan/{id}', [BimbinganController::class, 'showKartuBimbingan'])->name('bimbingan.kartu');
+    Route::get('/export-pdf/{id}', [BimbinganController::class, 'exportToPdf'])->name('bimbingan.exportPdf');
+
 });
 
 //request bimbingan dosen pembimbing
@@ -332,4 +337,23 @@ Route::prefix('artefak')->group (function(){
     //untuk menampilkan kepada dosen koordinator
     Route::get('/koordinator/{id}',[Artefak_Controller::class,'index_koordinator'])->name('artefak.index.koordinator');
     //untuk menampilkan kepada dosen pembimbing
+});
+
+
+
+// Routes untuk Mahasiswa
+Route::prefix('pengajuan-seminar')->name('PengajuanSeminar.')->group(function () {
+    Route::get('/', [PengajuanSeminarController::class, 'index'])->name('index');
+    Route::get('/create', [PengajuanSeminarController::class, 'create'])->name('create');
+    Route::post('/', [PengajuanSeminarController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [PengajuanSeminarController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [PengajuanSeminarController::class, 'update'])->name('update');
+    Route::delete('/{id}', [PengajuanSeminarController::class, 'destroy'])->name('destroy');
+});
+
+// Routes untuk Pembimbing
+Route::prefix('pembimbing-pengajuan-seminar')->name('PembimbingPengajuanSeminar.')->group(function () {
+    Route::get('/', [PengajuanSeminarController::class, 'indexPembimbing'])->name('index');
+    Route::put('/{id}/setujui', [PengajuanSeminarController::class, 'setujui'])->name('setujui');
+    Route::put('/{id}/tolak', [PengajuanSeminarController::class, 'tolak'])->name('tolak');
 });

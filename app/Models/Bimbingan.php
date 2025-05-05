@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,10 +18,18 @@ class Bimbingan extends Model
         'rencana_selesai',
         'lokasi',
         'status',
+        'hasil_bimbingan', // Tambahkan field ini
     ];
+    
     // Relasi ke Kelompok
     public function kelompok()
     {
         return $this->belongsTo(Kelompok::class, 'kelompok_id');
+    }
+    
+    // Relasi ke KartuBimbingan
+    public function kartuBimbingan()
+    {
+        return $this->hasOne(KartuBimbingan::class, 'request_bimbingan_id');
     }
 }

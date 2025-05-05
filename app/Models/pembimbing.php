@@ -25,4 +25,9 @@ class pembimbing extends Model
     return $this->belongsTo(Role::class, 'role_id');
 }
 
+public function kartuBimbingan()
+{
+    return $this->hasMany(KartuBimbingan::class, 'pembimbing_id');
+}
+
 }

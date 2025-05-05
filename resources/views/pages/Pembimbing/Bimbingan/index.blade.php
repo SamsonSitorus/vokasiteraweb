@@ -35,17 +35,25 @@
                                             <td>{{ $item->rencana_mulai }}</td>    
                                             <td>{{ $item->rencana_selesai}}</td> 
                                             <td>{{ $item->lokasi }}</td> 
-                                            <td>{{ $item->status }}</td>
+                                            <td>
+                                                <span class="badge 
+                                                    @if($item->status == 'disetujui') badge-success
+                                                    @elseif($item->status == 'ditolak') badge-danger
+                                                    @else badge-warning
+                                                    @endif">
+                                                    {{ ucfirst($item->status) }}
+                                                </span>
+                                            </td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{route('pembimbing.bimbingan.setujui', Crypt::encrypt($item->id)) }}" class="btn btn-info btn-sm"><i class="nav-icon fas fa-check"></i> &nbsp; Setujui</a>
-                                                    <form action="{{ route('pembimbing.bimbingan.tolak', Crypt::encrypt($item->id)) }}" method="POST" style="display: inline">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit" class="btn btn-danger btn-sm">
-                                                            <i class="nav-icon fas fa-times"></i> &nbsp; Tolak
-                                                        </button>
-                                                    </form>
+                                                    @if($item->status == 'menunggu')
+                                                        <a href="{{ route('pembimbing.bimbingan.setujui', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-success mr-2">
+                                                            <i class="fas fa-check"></i> Setujui
+                                                        </a>
+                                                        <a href="{{ route('pembimbing.bimbingan.tolak', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-times"></i> Tolak
+                                                        </a>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>
@@ -80,6 +88,5 @@
                 }
             });
     });
-
 </script>
 @endpush
