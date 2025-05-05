@@ -12,6 +12,7 @@
                     </div>                    
                     <div class="card-body">
                         @include('partials.alert')
+
                         @if(session('error'))
                         <div class="alert alert-warning">
                             {{ session('error') }}
@@ -36,12 +37,8 @@
                                         <td>{{ \Carbon\Carbon::parse($jadwalUtama->waktu)->translatedFormat('l, d F Y - H:i') }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Penguji 1</th>
-                                        <td>{{ $jadwalUtama->penguji1_nama ?? '-' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Penguji 2</th>
-                                        <td>{{ $jadwalUtama->penguji2_nama ?? '-' }}</td>
+                                        <th>Penguji</th>
+                                        <td>{!! $pengujiNama !!}</td>
                                     </tr>
                                     <tr>
                                         <th>Pembimbing</th>
@@ -69,8 +66,7 @@
                                         <th>Nomor Kelompok</th>
                                         <th>Ruangan</th>
                                         <th>Waktu</th>
-                                        <th>Penguji 1</th>
-                                        <th>Penguji 2</th>
+                                        <th>Penguji</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -79,8 +75,7 @@
                                         <td>{{ $jadwal->kelompok->nomor_kelompok ?? '-' }}</td>
                                         <td>{{ $jadwal->ruangan }}</td>
                                         <td>{{ \Carbon\Carbon::parse($jadwal->waktu)->translatedFormat('l, d F Y - H:i') }}</td>
-                                        <td>{{ $jadwal->penguji1_nama ?? '-' }}</td>
-                                        <td>{{ $jadwal->penguji2_nama ?? '-' }}</td>
+                                        <td>{!! $jadwal->penguji_nama !!}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>

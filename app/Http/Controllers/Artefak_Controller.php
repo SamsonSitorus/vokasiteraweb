@@ -179,6 +179,42 @@ class Artefak_Controller extends Controller
         return redirect()->route('artefak.index')->with('success', 'Tugas berhasil diperbarui!');
     
     }
+    public function editFeedback($id)
+    {
+        $pengumpulan = pengumpulan_tugas::with(['kelompok', 'tugas'])->findOrFail($id);
+        return view('pages.feedback.create', compact('pengumpulan'));
+    }
+
+    public function updateFeedback(Request $request, $id)
+    {
+        $request->validate([
+            'feedback' => 'required|string|max:1000',
+        ]);
+
+        $pengumpulan = pengumpulan_tugas::findOrFail($id);
+        $pengumpulan->feedback = $request->feedback;
+        $pengumpulan->save();
+
+        return redirect()->route('artefak.index.koordinator', $pengumpulan->tugas_id)->with('success', 'Feedback berhasil disimpan.');
+    }
+    public function editFeedbackPembimbing($id)
+    {
+        $pengumpulan = pengumpulan_tugas::with(['kelompok', 'tugas'])->findOrFail($id);
+        return view('pages.feedback.create_pembimbing', compact('pengumpulan'));
+    }
+    public function updateFeedbackPembimbing(Request $request, $id)
+    {
+        $request->validate([
+            'feedback_pembimbing' => 'required|string|max:1000',
+        ]);
+
+        $pengumpulan = pengumpulan_tugas::findOrFail($id);
+        $pengumpulan->feedback_pembimbing = $request->feedback_pembimbing;
+        $pengumpulan->save();
+
+        return redirect()->route('artefak.index.koordinator', $pengumpulan->tugas_id)->with('success', 'Feedback pembimbing berhasil disimpan.');
+    }
+
     public function index_koordinator($id){
         $prodi_id = session('prodi_id');
         $KPA_id = session('KPA_id');

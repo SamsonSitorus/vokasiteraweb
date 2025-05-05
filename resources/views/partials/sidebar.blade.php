@@ -51,22 +51,20 @@
             @endif
             {{--  untuk Penguji --}}
             @if (in_array(2, $dosenRoles) || in_array(4, $dosenRoles)) 
-
-            <li class="menu-header">Penguji</li><li class="{{ request()->routeIs('siswa.dashboard.*') ? 'active' : '' }}"><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
-            <li ><a class="nav-link" href="{{ route('penguji.jadwal.index') }}"><i class="fas fa-file"></i> <span>Jadwal</span></a></li>
-            <li ><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-list"></i> <span>Nilai</span></a></li>
-
             <li class="menu-header">Penguji</li>            <li class="{{ request()->routeIs('siswa.dashboard.*') ? 'active' : '' }}"><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li ><a class="nav-link" href="{{route('penguji.tugas.index')}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
-            <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-calendar"></i> <span>Nilai</span></a>
+            {{--<li class="nav-item dropdown {{ request()->is('nilai*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
+                    <i class="fas fa-calendar"></i> <span>Nilai</span>
+                </a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{--  --}}">Nilai Kelompok</a></li>
-                    <li><a class="nav-link" href="{{--  --}}">Nilai Mahasiswa</a></li>
+                    <li><a class="nav-link {{ request()->routeIs('NilaiKelompok.index') ? 'active' : '' }}" href="{{ route('NilaiKelompok.index') }}">Nilai Kelompok </a></li>
+                    <li><a class="nav-link {{ request()->routeIs('pembimbing2.NilaiIndividu.index') ? 'active' : '' }}" href="{{ route('pembimbing2.NilaiIndividu.index') }}">Nilai Individu</a></li>
                 </ul>
-            </li>
+            </li> --}}
+            <li ><a class="nav-link" href="{{ route('penguji.jadwal.index') }}"><i class="fas fa-file"></i> <span>Jadwal</span></a></li>
             <li ><a class="nav-link" href="{{--route('pembimbing.pengumuman.index')--}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
-          
+
             @endif
             {{-- Untuk  Pembimbing --}}
             @if (in_array(3, $dosenRoles) || in_array(5, $dosenRoles)) 
@@ -75,6 +73,7 @@
             <li ><a class="nav-link" href="{{route('pembimbing.tugas.index')}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{route('pembimbing.bimbingan.index')}}"><i class="fas fa-bullhorn"></i> <span>Bimbingan</span></a></li>
             <li ><a class="nav-link" href="{{route('pengumuman.pembimbing.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
+            <li ><a class="nav-link" href="{{ route('pembimbing.jadwal.index') }}"><i class="fas fa-file"></i> <span>Jadwal</span></a></li>
             <li class="nav-item dropdown {{ request()->is('nilai*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
                     <i class="fas fa-calendar"></i> <span>Nilai</span>

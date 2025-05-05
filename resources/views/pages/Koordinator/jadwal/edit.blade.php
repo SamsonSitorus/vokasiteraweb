@@ -59,43 +59,11 @@
                             <div class="form-group">
                                 <label for="waktu">Tanggal</label>
                                 <input type="datetime-local" name="waktu" id="waktu"
-                                    class="form-control @error('waktu') is-invalid @enderror"
+                                     class="form-control @error('waktu') is-invalid @enderror"
                                     value="{{ old('waktu', \Carbon\Carbon::parse($jadwal->waktu)->format('Y-m-d\TH:i')) }}">
                                 @error('waktu')
                                     <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            {{-- Pilih Penguji 1 --}}
-                            <div class="form-group">
-                                <label for="penguji1">Pilih Penguji 1</label>
-                                <select id="penguji1" name="penguji1" class="select2 form-control" required>
-                                    <option value="">-- Pilih Penguji 1 --</option>
-                                    @foreach ($dosen as $item)
-                                        <option 
-                                            value="{{ $item['user_id'] }}" 
-                                            {{ (old('penguji1') ?? $jadwal->penguji1) == $item['user_id'] ? 'selected' : '' }}
-                                        >
-                                            {{ $item['nama'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            {{-- Pilih Penguji 2 --}}
-                            <div class="form-group">
-                                <label for="penguji2">Pilih Penguji 2</label>
-                                <select id="penguji2" name="penguji2" class="select2 form-control" required>
-                                    <option value="">-- Pilih Penguji 2 --</option>
-                                    @foreach ($dosen as $item)
-                                        <option 
-                                            value="{{ $item['user_id'] }}" 
-                                            {{ (old('penguji2') ?? $jadwal->penguji2) == $item['user_id'] ? 'selected' : '' }}
-                                        >
-                                            {{ $item['nama'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                @enderror 
                             </div>
 
                             <button type="submit" class="btn btn-success">Simpan Perubahan</button>

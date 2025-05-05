@@ -11,7 +11,7 @@ use App\Models\Kelompok;
 use App\Models\Prodi;
 use App\Models\DosenRole;
 use App\Models\KategoriPA;
-use App\Models\TahunAjaran;
+use App\Models\TahunMasuk;
 use App\Models\Role;
 use Exception;
 use Carbon\Carbon;
@@ -56,13 +56,13 @@ class JadwalStaffController extends Controller
         $validated = $request->validate([
             'prodi_id' => 'required|integer|exists:prodi,id',
             'KPA_id' => 'required|integer|exists:kategori_pa,id',
-            'TA_id' => 'required|integer|exists:tahun_ajaran,id'
+            'TM_id' => 'required|integer|exists:tahun_masuk,id'
         ]);
 
         try {
             $kelompok = Kelompok::where('prodi_id', $validated['prodi_id'])
                 ->where('KPA_id', $validated['KPA_id'])
-                ->where('TA_id', $validated['TA_id'])
+                ->where('TM_id', $validated['TM_id'])
                 ->select('id', 'nomor_kelompok as text')
                 ->get();
 
@@ -94,21 +94,11 @@ class JadwalStaffController extends Controller
                 ->whereHas('role', function ($query) {
                   $query->where('role_name', 'penguji 1');
               })->get();
-            $dosenFinal = $dosen->map(function ($dr) use ($dosenApiMap) {
-                return [
-                    'user_id' => $dr->user_id,
-                    'nama' => $dosenApiMap[$dr->user_id]['nama'] ?? 'Nama Tidak Diketahui',
-                    'prodi' => $dr->prodi->nama_prodi ?? '',
-                    'role' => $dr->role->role_name ?? '',
-                    'tahun_ajaran' => $dr->tahunAjaran->tahun ?? '',
-                    'kategori' => $dr->kategoripa->nama_kategori ?? '',
-                ];
-              });
             $kategori_pa = KategoriPA::all();
             $prodi = Prodi::all();
-            $tahun_ajaran = TahunAjaran::all();
+            $tahun_masuk = TahunMasuk::all();
             $kelompok = Kelompok::all();
-            return view('pages.BAAK.jadwal.create', compact('kategori_pa', 'prodi', 'tahun_ajaran', 'kelompok','dosenFinal'));
+            return view('pages.BAAK.jadwal.create', compact('kategori_pa', 'prodi', 'tahun_masuk', 'kelompok'));
         } catch (Exception $e) {
             Log::error('Error loading create form: ' . $e->getMessage());
             return back()->with('error', 'Gagal memuat form');
@@ -123,39 +113,32 @@ class JadwalStaffController extends Controller
             $validated = $request->validate([
                 'kelompok_id' => ['required', function($attribute, $value, $fail) use($request) {
                         $KPA_id = $request->input('KPA_id');
+
                         $prodi_id = $request->input('prodi_id');
-                        $TA_id = $request->input('TA_id');
+                        $TM_id = $request->input('TM_id');
 
                         if (Jadwal::where('kelompok_id', $value)
                             ->where('KPA_id', $KPA_id)
                             ->where('prodi_id', $prodi_id)
-                            ->where('TA_id', $TA_id)
+                            ->where('TM_id', $TM_id)
                             ->exists()) {
                             $fail("Jadwal untuk kelompok ini sudah ada.");
                         }
                     }],
                 'ruangan' => 'required|string|max:50',
                 'waktu' => 'required|date|after:now',
-                'penguji1' => 'required|integer|different:penguji2',
-                'penguji2' => 'required|integer|different:penguji1',
                 'KPA_id' => 'required',
                 'prodi_id'=>'required',
-                'TA_id'=>'required',
-            ],
-            [
-                'penguji1.different' => 'Penguji 1 dan Penguji 2 tidak boleh sama.',
-                'penguji2.different' => 'Penguji 2 dan Penguji 1 tidak boleh sama.',
+                'TM_id'=>'required',
             ]);   
             Jadwal::create([
                 'kelompok_id' => $validated['kelompok_id'],
                 'ruangan' => $validated['ruangan'],
                 'waktu' => $validated['waktu'],
-                'penguji1' => $validated['penguji1'],
-                'penguji2' => $validated['penguji2'],
                 'user_id' => $userID,
                 'KPA_id'=>$validated['KPA_id'],
                 'prodi_id'=>$validated['prodi_id'],
-                'TA_id' => $validated['TA_id'],
+                'TM_id' => $validated['TM_id'],
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
@@ -192,28 +175,12 @@ class JadwalStaffController extends Controller
                 $dosenApiMap = collect($dosenList)->keyBy('user_id');
             }
 
-            $dosen = DosenRole::with(['role'])
-                ->whereHas('role', function ($query) {
-                    $query->where('role_name', 'penguji 1');
-                })->get();
-
-            $dosenFinal = $dosen->map(function ($dr) use ($dosenApiMap) {
-                return [
-                    'user_id' => $dr->user_id,
-                    'nama' => $dosenApiMap[$dr->user_id]['nama'] ?? 'Nama Tidak Diketahui',
-                    'prodi' => $dr->prodi->nama_prodi ?? '',
-                    'role' => $dr->role->role_name ?? '',
-                    'tahun_ajaran' => $dr->tahunAjaran->tahun ?? '',
-                    'kategori' => $dr->kategoripa->nama_kategori ?? '',
-                ];
-            });
-
             $kategori_pa = KategoriPA::all();
             $prodi = Prodi::all();
-            $tahun_ajaran = TahunAjaran::all();
+            $tahun_masuk = TahunMasuk::all();
             $kelompok = Kelompok::all();
 
-            return view('pages.BAAK.jadwal.edit', compact('jadwal', 'dosenFinal', 'kategori_pa', 'prodi', 'tahun_ajaran', 'kelompok'));
+            return view('pages.BAAK.jadwal.edit', compact('jadwal', 'kategori_pa', 'prodi', 'tahun_masuk', 'kelompok'));
         } catch (Exception $e) {
             Log::error('Error loading edit form: ' . $e->getMessage());
             return back()->with('error', 'Gagal memuat form edit');
@@ -228,15 +195,11 @@ class JadwalStaffController extends Controller
                 'kelompok_id' => 'required',
                 'ruangan' => 'required|string|max:50',
                 'waktu' => 'required|date|after:now',
-                'penguji1' => 'required|integer|different:penguji2',
-                'penguji2' => 'required|integer|different:penguji1',
+                // 'penguji1' => 'required|integer|different:penguji2',
+                // 'penguji2' => 'required|integer|different:penguji1',
                 // 'KPA_id' => 'required',
                 // 'prodi_id' => 'required',
                 // 'TA_id' => 'required',
-            ],
-            [
-                'penguji1.different' => 'Penguji 1 dan Penguji 2 tidak boleh sama.',
-                'penguji2.different' => 'Penguji 2 dan Penguji 1 tidak boleh sama.',
             ]);
 
             $jadwal = Jadwal::findOrFail($id);
@@ -245,8 +208,8 @@ class JadwalStaffController extends Controller
                 'kelompok_id' => $validated['kelompok_id'],
                 'ruangan' => $validated['ruangan'],
                 'waktu' => $validated['waktu'],
-                'penguji1' => $validated['penguji1'],
-                'penguji2' => $validated['penguji2'],
+                // 'penguji1' => $validated['penguji1'],
+                // 'penguji2' => $validated['penguji2'],
                 // 'KPA_id' => $validated['KPA_id'],
                 // 'prodi_id' => $validated['prodi_id'],
                 // 'TA_id' => $validated['TA_id'],
@@ -261,32 +224,75 @@ class JadwalStaffController extends Controller
             return back()->with('error', 'Gagal memperbarui jadwal')->withInput();
         }
     }
+    // public function show($id)
+    // {
+    //     try {
+    //         $id = Crypt::decrypt($id);
+    //         $jadwal = Jadwal::findOrFail($id);
+
+    //         $token = session('token');
+    //         $response = Http::withHeaders([
+    //             'Authorization' => "Bearer $token"
+    //         ])->get(env('API_URL') . 'library-api/dosen', ['limit' => 100]);
+
+    //         if ($response->successful()) {
+    //             $dosenList = $response->json()['data']['dosen'] ?? [];
+
+    //             $penguji1 = collect($dosenList)->firstWhere('user_id', $jadwal->penguji1);
+    //             $penguji2 = collect($dosenList)->firstWhere('user_id', $jadwal->penguji2);
+    //         }
+
+    //         return view('pages.BAAK.jadwal.show', compact('jadwal', 'penguji1', 'penguji2'));
+
+    //     } catch (Exception $e) {
+    //         Log::error('Error loading jadwal detail: ' . $e->getMessage());
+    //         return back()->with('error', 'Gagal memuat detail jadwal');
+    //     }
+    // }
     public function show($id)
     {
         try {
             $id = Crypt::decrypt($id);
-            $jadwal = Jadwal::findOrFail($id);
+
+            // Ambil jadwal + relasi kelompok -> penguji dan pembimbing
+            $jadwal = Jadwal::with(['kelompok.penguji', 'kelompok.pembimbing', 'prodi', 'tahunMasuk', 'kategoriPA'])->findOrFail($id);
 
             $token = session('token');
             $response = Http::withHeaders([
                 'Authorization' => "Bearer $token"
             ])->get(env('API_URL') . 'library-api/dosen', ['limit' => 100]);
 
+            $dosenArray = [];
             if ($response->successful()) {
-                $dosenList = $response->json()['data']['dosen'] ?? [];
-
-                $penguji1 = collect($dosenList)->firstWhere('user_id', $jadwal->penguji1);
-                $penguji2 = collect($dosenList)->firstWhere('user_id', $jadwal->penguji2);
+                $dosenData = $response->json('data.dosen') ?? [];
+                foreach ($dosenData as $dosen) {
+                    $dosenArray[$dosen['user_id']] = $dosen['nama'];
+                }
             }
 
-            return view('pages.BAAK.jadwal.show', compact('jadwal', 'penguji1', 'penguji2'));
+            // Ambil semua nama penguji
+            $pengujiNama = [];
+            if ($jadwal->kelompok && $jadwal->kelompok->penguji) {
+                foreach ($jadwal->kelompok->penguji as $penguji) {
+                    $pengujiNama[] = $dosenArray[$penguji->user_id] ?? 'Nama tidak ditemukan';
+                }
+            }
 
-        } catch (Exception $e) {
+            // Ambil semua nama pembimbing
+            $pembimbingNames = [];
+            if ($jadwal->kelompok && $jadwal->kelompok->pembimbing) {
+                foreach ($jadwal->kelompok->pembimbing as $pembimbing) {
+                    $pembimbingNames[] = $dosenArray[$pembimbing->user_id] ?? 'Nama tidak ditemukan';
+                }
+            }
+
+            return view('pages.BAAK.jadwal.show', compact('jadwal', 'pengujiNama', 'pembimbingNames'));
+
+        } catch (\Exception $e) {
             Log::error('Error loading jadwal detail: ' . $e->getMessage());
             return back()->with('error', 'Gagal memuat detail jadwal');
         }
     }
-
 
     public function destroy($id){
         try{

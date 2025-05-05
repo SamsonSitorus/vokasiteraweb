@@ -12,12 +12,10 @@ class Jadwal extends Model
         'kelompok_id',
         'ruangan',
         'waktu',
-        'penguji1',
-        'penguji2',
         'user_id',
         'KPA_id',
         'prodi_id',
-        'TA_id'
+        'TM_id'
     ];
 
     protected $casts = [
@@ -38,8 +36,8 @@ class Jadwal extends Model
         return $this->belongsTo(Prodi::class);
     }
 
-    public function tahunAjaran()
+    public function tahunMasuk()
     {
-        return $this->belongsTo(TahunAjaran::class, 'TA_id');
+        return $this->belongsTo(TahunMasuk::class, 'TM_id');
     }
 }

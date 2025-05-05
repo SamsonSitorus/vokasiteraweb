@@ -22,7 +22,7 @@ class TahunMasuk extends Model
         return $this->hasMany(Kelompok::class);
     }
     public function jadwal() {
-        return $this->hasMany(Jadwal::class, 'TA_id');
+        return $this->hasMany(Jadwal::class, 'TM_id');
     }
     
 }

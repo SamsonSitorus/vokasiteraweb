@@ -20,7 +20,7 @@
                                 </tr>
                                 <tr>
                                     <th>Tahun Ajaran</th>
-                                    <td>{{ $jadwal->tahunAjaran->Tahun_Ajaran ?? '-' }}</td>
+                                    <td>{{ $jadwal->tahunMasuk->Tahun_Masuk ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Kategori PA</th>
@@ -39,12 +39,32 @@
                                     <td>{{ $jadwal->ruangan }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Penguji 1</th>
-                                    <td>{{ $penguji1['nama'] ?? '-' }}</td>
+                                    <th>Dosen Penguji</th>
+                                    <td>
+                                        @if(!empty($pengujiNama))
+                                            <ul class="pl-3">
+                                                @foreach ($pengujiNama as $nama)
+                                                    <li>{{ $nama }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <th>Penguji 2</th>
-                                    <td>{{ $penguji2['nama'] ?? '-' }}</td>
+                                    <th>Pembimbing</th>
+                                    <td>
+                                        @if(!empty($pembimbingNames))
+                                            <ul class="pl-3">
+                                                @foreach ($pembimbingNames as $namaPembimbing)
+                                                    <li>{{ $namaPembimbing }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
                                 </tr>
                             </table>
                         </div>

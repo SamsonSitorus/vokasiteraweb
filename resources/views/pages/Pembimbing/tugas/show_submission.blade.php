@@ -37,9 +37,9 @@
                                             <td>{{ $item->status }}</td> 
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{route('tugas.show', $item->id)}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-comments"></i> &nbsp; FeedBack</a>&nbsp;&nbsp;
-                                                   
-                                                   
+                                                <a href="{{ route('pembimbing.feedback.form', $item->id) }}" class="btn btn-sm btn-success">
+                                                    <i class="fas fa-comment"></i> Feedback
+                                                </a>
                                                 </div>
                                             </td>
                                         </tr>

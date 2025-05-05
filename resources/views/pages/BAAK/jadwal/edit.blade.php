@@ -36,9 +36,9 @@
                             </div>
                             {{-- Pilih Tahun Ajaran --}}
                             <div class="form-group">
-                                <label for="TA_id">Tahun Ajaran</label>
-                                <input type="hidden" name="TA_id" value="{{ old('TA_id', $jadwal->TA_id) }}" required>
-                                <input type="text" class="form-control" value="{{ $jadwal->tahunAjaran->Tahun_Ajaran?? 'Data tidak ditemukan'}}" disabled>
+                                <label for="TM_id">Tahun Ajaran</label>
+                                <input type="hidden" name="TM_id" value="{{ old('TM_id', $jadwal->TM_id) }}" required>
+                                <input type="text" class="form-control" value="{{ $jadwal->tahunMasuk->Tahun_Masuk?? 'Data tidak ditemukan'}}" disabled>
                             </div>
                             {{-- Pilih Kategori PA --}}
                             <div class="form-group">
@@ -51,7 +51,7 @@
                             <label for="kelompok_id">Kelompok</label>
                             <input type="hidden" name="kelompok_id" value="{{ old('kelompok_id', $jadwal->kelompok_id) }}" required>
                             <input type="text" class="form-control" value="{{ $jadwal->kelompok->nomor_kelompok ?? 'Data tidak ditemukan' }}" disabled>
-                            <!--  --></div>
+                            </div>
 
                             {{--Masukkan lokasi--}}
                             <div class="form-group mt-3">
@@ -76,7 +76,7 @@
                                 @enderror
                             </div>
 
-                            {{-- Pilih Penguji 1 --}}
+                            {{-- Pilih Penguji 1 
                             <div class="form-group">
                                 <label for="penguji1">Pilih Penguji 1</label>
                                 <select id="penguji1" name="penguji1" class="select2 form-control" required>
@@ -90,9 +90,9 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div>--}}
 
-                            {{-- Pilih Penguji 2 --}}
+                            {{-- Pilih Penguji 2 
                             <div class="form-group">
                                 <label for="penguji2">Pilih Penguji 2</label>
                                 <select id="penguji2" name="penguji2" class="select2 form-control" required>
@@ -106,7 +106,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div>--}}
                             <button type="submit" class="btn btn-success">Simpan Perubahan</button>
                         </form>
                     </div>

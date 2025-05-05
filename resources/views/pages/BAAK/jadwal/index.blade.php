@@ -34,7 +34,7 @@
                                             <!-- <td>{{ $item->id }}</td> -->
                                              <td>{{ $item->kategoriPA->kategori_pa}}</td>
                                              <td>{{ $item->prodi->nama_prodi}}</td>
-                                             <td>{{ $item->tahunAjaran->Tahun_Ajaran}}</td>
+                                             <td>{{ $item->tahunMasuk->Tahun_Masuk}}</td>
                                             <td>{{ $item->kelompok->nomor_kelompok ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->waktu)->format('d M Y H:i') }}</td>    
                                             <!-- <td>{{ $item->penguji1_nama }}<br>{{ $item->penguji2_nama }}</td> -->

@@ -62,7 +62,7 @@
                                 @enderror
                             </div>
 
-                            {{-- Pilih Penguji 1 --}}
+                            {{-- Pilih Penguji 1 
                             <div class="form-group">
                                 <label for="penguji1">Pilih Penguji 1</label>
                                 <select id="penguji1" name="penguji1" class="select2 form-control" required>
@@ -73,9 +73,9 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div>--}}
 
-                            {{-- Pilih Penguji 2 --}}
+                            {{-- Pilih Penguji 2 
                             <div class="form-group">
                                 <label for="penguji2">Pilih Penguji 2</label>
                                 <select id="penguji2" name="penguji2" class="select2 form-control" required>
@@ -86,13 +86,13 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div>--}}
 
-                            {{-- Tahun Ajaran --}}
+                            {{-- Tahun Masuk --}}
                             <div class="form-group">
-                                <label>Tahun Ajaran</label>
-                                <input type="text" class="form-control" value="{{ $tahunAjaran->Tahun_Ajaran }}" disabled>
-                                <input type="hidden" name="TA_id" value="{{ $tahunAjaran->id }}">
+                                <label>Tahun Masuk</label>
+                                <input type="text" class="form-control" value="{{ $tahunMasuk->Tahun_Masuk }}" disabled>
+                                <input type="hidden" name="TM_id" value="{{ $tahunMasuk->id }}">
                             </div>
 
                             {{-- Program Studi --}}

@@ -20,7 +20,7 @@
                                 <thead>
                                     <tr>
                                         <th>Kelompok</th>
-                                        <th>Pembimbing</th> <!-- Tambah kolom baru -->
+                                        <th>Pembimbing</th> 
                                         <th>Tanggal</th>
                                         <th>Lokasi</th>
                                         <th>Dosen Penguji</th>
@@ -34,7 +34,7 @@
                                             <td>{{ $item->pembimbing_nama ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->waktu)->format('d M Y H:i') }}</td>    
                                             <td>{{ $item->ruangan }}</td>
-                                            <td>{{ $item->penguji1_nama }}<br>{{ $item->penguji2_nama }}</td>
+                                            <td>{!! $item->penguji_nama !!}</td>
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <a href="{{ route('jadwal.show', Crypt::encrypt($item->id)) }}" class="btn btn-info btn-sm me-2">
@@ -43,9 +43,9 @@
                                                     <a href="{{ route('jadwal.edit', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm me-2">
                                                         <i class="nav-icon fas fa-edit"></i>&nbsp;Edit
                                                     </a>
-                                                    <form method="POST" action="{{ route('jadwal.destroy', $item->id) }}">
+                                                    <form method="POST" action="{{ route('jadwal.destroy', Crypt::encrypt($item->id)) }}">
                                                         @csrf
-                                                        @method('delete')
+                                                        @method('DELETE')
                                                         <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title="Hapus">
                                                             <i class="nav-icon fas fa-trash-alt"></i>&nbsp;Hapus
                                                         </button>

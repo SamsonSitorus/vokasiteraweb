@@ -14,6 +14,8 @@ class pengumpulan_tugas extends Model
         'waktu_submit',
         'file_path',
         'status',
+        'feedback',
+        'feedback_pembimbing'
     ];
     public function Kelompok()
     {

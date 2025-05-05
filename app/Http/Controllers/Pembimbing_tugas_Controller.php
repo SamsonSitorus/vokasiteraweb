@@ -30,6 +30,41 @@ class Pembimbing_tugas_Controller extends Controller
         // dd($tugas);
         return view('pages.Pembimbing.tugas.show', compact('tugas'));
     }
+    public function formFeedback($id)
+    {
+        $user_id = session('user_id');
+
+        $artefak = pengumpulan_tugas::with('kelompok.pembimbing')
+            ->where('id', $id)
+            ->whereHas('kelompok.pembimbing', function ($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            })
+            ->firstOrFail();
+
+        return view('pages.pembimbing.tugas.feedback_form', compact('artefak'));
+    }
+
+    public function submitFeedback(Request $request, $id)
+    {
+        $request->validate([
+            'feedback_pembimbing' => 'required|string|max:1000',
+        ]);
+
+        $user_id = session('user_id');
+
+        $artefak = pengumpulan_tugas::with('kelompok.pembimbing')
+            ->where('id', $id)
+            ->whereHas('kelompok.pembimbing', function ($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            })
+            ->firstOrFail();
+
+        $artefak->feedback_pembimbing = $request->feedback_pembimbing;
+        $artefak->save();
+
+        return redirect()->route('pembimbing.show.submitan', $artefak->tugas_id)
+            ->with('success', 'Feedback berhasil dikirim.');
+    }
 
     public function index_pembimbing($id){
         $prodi_id = session('prodi_id');

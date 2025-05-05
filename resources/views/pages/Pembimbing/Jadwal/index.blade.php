@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Jadwal Penguji')
+@section('title', 'Jadwal Pembimbing')
 
 @section('content')
 <section class="section custom-section">
@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4>Jadwal Seminar Penguji</h4>
+                        <h4>Jadwal Seminar Pembimbing</h4>
                     </div>                    
                     <div class="card-body">
                         @include('partials.alert')
@@ -20,6 +20,7 @@
                                         <th>Tahun Masuk</th>
                                         <th>Kategori PA</th>
                                         <th>Kelompok</th>
+                                        <th>Penguji</th> {{-- TAMBAH INI --}}
                                         <th>Tanggal</th>
                                         <th>Lokasi</th>
                                     </tr>
@@ -31,6 +32,7 @@
                                             <td>{{ $item->tahunMasuk->Tahun_Masuk ?? '-' }}</td>
                                             <td>{{ $item->KategoriPA->kategori_pa ?? '-' }}</td>
                                             <td>{{ $item->kelompok->nomor_kelompok ?? '-' }}</td>
+                                            <td>{!! $item->penguji_nama ?? '-' !!}</td> {{-- TAMBAH INI --}}
                                             <td>{{ \Carbon\Carbon::parse($item->waktu)->format('d M Y H:i') }}</td>
                                             <td>{{ $item->ruangan }}</td>
                                         </tr>
@@ -45,6 +47,7 @@
     </div>
 </section>
 @endsection
+
 @push('script')
 <script type="text/javascript">
     $('.show_confirm').click(function(event) {

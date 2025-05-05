@@ -19,6 +19,8 @@
                                             <th>Submission</th>
                                             <th>DEADLINE</th>
                                             <th>SUBMISSION STATUS</th>
+                                            <th>Feedback Koordinator</th>
+                                            <th>Feedback Pembimbing</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -42,6 +44,12 @@
                                                 <span class="badge badge-info">
                                                     {{ $status ? $status->status : 'Belum dikumpulkan' }}
                                                 </span>
+                                            </td>
+                                            <td>
+                                                {{ $status && isset($statusByTugas[$item->id]) ? $statusByTugas[$item->id]->feedback : '-' }}
+                                            </td>
+                                            <td>
+                                                {{ $status && $status->feedback_pembimbing ? $status->feedback_pembimbing : '-' }}
                                             </td>
                                             <td>
                                                 <a href="{{ route('artefak.create', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-info">View</a>

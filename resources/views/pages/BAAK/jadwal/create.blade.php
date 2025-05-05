@@ -45,12 +45,12 @@
 
                             {{-- Tahun Ajaran --}}
                             <div class="form-group">
-                                <label for="TA_id">Tahun Ajaran</label>
-                                <select name="TA_id" id="TA_id" class="select2 form-control" required>
+                                <label for="TM_id">Tahun Ajaran</label>
+                                <select name="TM_id" id="TM_id" class="select2 form-control" required>
                                     <option value="">-- Pilih Tahun Masuk --</option>
-                                    @foreach ($tahun_ajaran as $item)
-                                        <option value="{{ $item->id }}" {{ old('TA_id') == $item->id ? 'selected' : '' }}>
-                                            {{ $item->Tahun_Ajaran }}
+                                    @foreach ($tahun_masuk as $item)
+                                        <option value="{{ $item->id }}" {{ old('TM_id') == $item->id ? 'selected' : '' }}>
+                                            {{ $item->Tahun_Masuk }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -96,7 +96,7 @@
                                 @enderror
                             </div>
 
-                            {{-- Pilih Penguji 1 --}}
+                            {{-- Pilih Penguji 1 
                             <div class="form-group">
                                 <label for="penguji1">Pilih Penguji 1</label>
                                 <select id="penguji1" name="penguji1" class="select2 form-control" required>
@@ -105,11 +105,10 @@
                                         <option value="{{ $item['user_id'] }}" {{ old('penguji1') == $item['user_id'] ? 'selected' : '' }}>
                                             {{ $item['nama'] }}
                                         </option>
-                                    @endforeach
+                                    @endforeach--}}
                                 </select>
                             </div>
-
-                            {{-- Pilih Penguji 2 --}}
+                            {{-- Pilih Penguji 2 
                             <div class="form-group">
                                 <label for="penguji2">Pilih Penguji 2</label>
                                 <select id="penguji2" name="penguji2" class="select2 form-control" required>
@@ -118,7 +117,7 @@
                                         <option value="{{ $item['user_id'] }}" {{ old('penguji2') == $item['user_id'] ? 'selected' : '' }}>
                                             {{ $item['nama'] }}
                                         </option>
-                                    @endforeach
+                                    @endforeach--}}
                                 </select>
                             </div>
 
@@ -138,16 +137,16 @@
         function loadKelompok() {
             const prodi_id = $('#prodi_id').val();
             const KPA_id = $('#KPA_id').val();
-            const TA_id = $('#TA_id').val();
+            const TM_id = $('#TM_id').val();
 
-            if (prodi_id && KPA_id && TA_id) {
+            if (prodi_id && KPA_id && TM_id) {
                 $.ajax({
                     url: "{{ route('baak.jadwal.getKelompok') }}",
                     method: "GET",
                     data: {
                         prodi_id: prodi_id,
                         KPA_id: KPA_id,
-                        TA_id: TA_id
+                        TM_id: TM_id
                     },
                     success: function (response) {
                         const kelompokSelect = $('#kelompok_id');
@@ -164,7 +163,7 @@
             }
         }
 
-        $('#prodi_id, #KPA_id, #TA_id').change(loadKelompok);
+        $('#prodi_id, #KPA_id, #TM_id').change(loadKelompok);
     });
 </script>
 @endpush

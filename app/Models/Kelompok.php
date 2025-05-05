@@ -15,13 +15,13 @@ class Kelompok extends Model
     {
         return $this->belongsTo(Prodi::class, 'prodi_id');
     }
-    public function tahunMasuk()
-{
-    return $this->belongsTo(tahunMasuk::class, 'TM_id');
-}
+    public function TahunMasuk()
+    {
+        return $this->belongsTo(TahunMasuk::class, 'TM_id');
+    }
     public function kategoriPA()
     {
-        return $this->belongsTo(KategoriPA::class, 'KPA_id');
+        return $this->belongsTo(kategoriPA::class, 'KPA_id');
     }
     public function jadwal()
     {
@@ -35,6 +35,11 @@ class Kelompok extends Model
     {
         return $this->hasMany(Nilai_kelompok::class);
     }
+    public function penguji()
+    {
+        return $this->hasMany(Penguji::class, 'kelompok_id');
+    }
+
     protected $fillable = [
         'nomor_kelompok',
         'KPA_id',

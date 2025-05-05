@@ -29,6 +29,9 @@
                                 </thead>
                                 <tbody>
                                      @foreach($artefak as $item)
+                                     @php
+                                        $feedback = $item->feedback ?? '-';
+                                    @endphp
                                         <tr>
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->kelompok->nomor_kelompok }}</td>
@@ -36,13 +39,18 @@
                                             <td>
                                                 <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank">Lihat File</a>
                                             </td>
-                                            
-                                            <td>{{ $item->status }}</td> 
+                                            <td>
+                                                <strong>Status:</strong> {{ $item->status ?? '-' }} <br>
+                                                <strong>Feedback:</strong>
+                                                {{ \Illuminate\Support\Str::length($feedback) > 20 
+                                                    ? \Illuminate\Support\Str::limit($feedback, 20, '...') 
+                                                    : $feedback }}
+                                            </td> 
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{route('tugas.show', $item->id)}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-comments"></i> &nbsp; FeedBack</a>&nbsp;&nbsp;
-                                                   
-                                                   
+                                                <a href="{{ route('feedback.edit', $item->id) }}" class="btn btn-primary btn-sm">
+                                                    <i class="nav-icon fas fa-comments"></i> &nbsp; FeedBack
+                                                </a>                                                   
                                                 </div>
                                             </td>
                                         </tr>
