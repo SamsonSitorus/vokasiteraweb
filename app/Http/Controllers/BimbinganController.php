@@ -22,6 +22,13 @@ class BimbinganController extends Controller
         // dd($kelompokId);
         $bimbingan = Bimbingan::where ('kelompok_id',$kelompokId)->with('kelompok')->get();
 
+        foreach($bimbingan as $bimbinganItem){
+            if($bimbinganItem->rencana_selesai <=now() && $bimbinganItem->status !=='selesai'){
+                $bimbinganItem->status = 'selesai';
+                $bimbinganItem->save();
+            }
+        }
+
         return view('pages.Mahasiswa.Bimbingan.index',compact('bimbingan'));
     }
     
@@ -199,6 +206,7 @@ class BimbinganController extends Controller
                     ->where('TM_id', $TM_id);
         })->with('kelompok')->get();
         
+
         // Ambil data dosen dari API
         $token = session('token');
         $responseDosen = Http::withHeaders([
@@ -220,6 +228,13 @@ class BimbinganController extends Controller
             });
         }
         
+
+        foreach($bimbingan as $bimbinganItem){
+            if($bimbinganItem->rencana_selesai <=now() && $bimbinganItem->status !=='selesai'){
+                $bimbinganItem->status = 'selesai';
+                $bimbinganItem->save();
+            }
+        }
         return view('pages.Pembimbing.Bimbingan.index',compact('bimbingan'));
     }
 

@@ -25,13 +25,13 @@
                                 <tbody>
                                     @foreach($kelompok as $index => $item)
                                         @php
-                                            $nilai = $nilaiKelompok[$item->id] ?? null;
+                                            $nilai = $nilaiAdministrasi[$item->id] ?? null;
                                         @endphp
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $item->nomor_kelompok }}</td>
                                             <td>
-                                                <form method="POST" action="{{ $nilai ? route('pembimbing1.NilaiKelompok.update', $nilai->id) : route('pembimbing1.NilaiKelompok.store') }}">
+                                                <form method="POST" action="{{ $nilai ? route('koordinator.NilaiAdministrasi.update', $nilai->id) : route('koordinator.NilaiAdministrasi.store') }}">
                                                     @csrf
                                                     @if($nilai)
                                                         @method('PUT')
@@ -40,31 +40,16 @@
                                                     <input type="hidden" name="user_id" value="{{ $userId }}">
                                             
                                                     <div class="row" style="width: 100%;">
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Produk: Mencakup seluruh requirements dalam laporan</label>
-                                                            <input type="number" name="A11" class="form-control form-control-sm" value="{{ old('A11', $nilai->A11 ?? '') }}" min="0" max="100" required>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label" style="font-size: 12px;">Nilai Administrasi</label>
+                                                            <input type="number" name="Administrasi" class="form-control form-control-sm" value="{{ old('Administrasi', $nilai->Administrasi ?? '') }}" min="0" max="100" required>
                                                         </div>
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Produk: Bebas dari error</label>
-                                                            <input type="number" name="A12" class="form-control form-control-sm" value="{{ old('A12', $nilai->A12 ?? '') }}" min="0" max="100" required>
-                                                        </div>
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Produk: Dapat digunakan dengan baik dan mudah</label>
-                                                            <input type="number" name="A13" class="form-control form-control-sm" value="{{ old('A13', $nilai->A13 ?? '') }}" min="0" max="100" required>
-                                                        </div>
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Laporan: Desain menggambarkan produk dengan sesuai</label>
-                                                            <input type="number" name="A21" class="form-control form-control-sm" value="{{ old('A21', $nilai->A21 ?? '') }}" min="0" max="100" required>
-                                                        </div>
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Laporan: Ditulis menurut kaidah bahasa Indonesia yang baik</label>
-                                                            <input type="number" name="A22" class="form-control form-control-sm" value="{{ old('A22', $nilai->A22 ?? '') }}" min="0" max="100" required>
-                                                        </div>
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Laporan: Sesuai kaidah penulisan dokumen dan template</label>
-                                                            <input type="number" name="A23" class="form-control form-control-sm" value="{{ old('A23', $nilai->A23 ?? '') }}" min="0" max="100" required>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label" style="font-size: 12px;">Nilai Pameran</label>
+                                                            <input type="number" name="Pameran" class="form-control form-control-sm" value="{{ old('Pameran', $nilai->Pameran ?? '') }}" min="0" max="100" required>
                                                         </div>
                                                     </div>
+                                                    
                                             </td>
                                             <td>
                                                 <button class="btn btn-success btn-sm" type="submit" style="height: 40px; padding: 10px 15px;">
@@ -72,7 +57,7 @@
                                                 </button>
                                             </form>
                                                 @if($nilai)
-                                                    <form method="POST" action="{{ route('pembimbing1.NilaiKelompok.destroy', $nilai->id) }}" class="ml-2" style="display: inline;">
+                                                    <form method="POST" action="{{ route('koordinator.NilaiAdministrasi.destroy', $nilai->id) }}" class="ml-2" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title="Hapus" style="height: 40px; padding: 10px 15px;">
