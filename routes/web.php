@@ -306,16 +306,6 @@ Route::prefix('jadwal')->group(function(){
 Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
 
 
-
-
-
-// request bimbingan oleh mahasiswa
-
-
-
-
-// request bimbingan oleh mahasiswa
-
 Route::prefix('bimbingan')->group(function(){
     Route::get('/',[BimbinganController::class, 'index'])->name('bimbingan.index');
     Route::get('/create', [BimbinganController::class, 'create'])->name('bimbingan.create');

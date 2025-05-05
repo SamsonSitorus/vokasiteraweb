@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('kartu_bimbingan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('request_bimbingan_id')
-                  ->constrained('bimbingan') // Changed from 'request_bimbingan' to match model's relationship
+                  ->constrained('request_bimbingan') // Changed from 'request_bimbingan' to match model's relationship
                   ->onDelete('cascade');
             $table->foreignId('pembimbing_id')
                   ->constrained('pembimbing')
