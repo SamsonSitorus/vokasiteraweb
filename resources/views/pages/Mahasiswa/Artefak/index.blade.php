@@ -1,9 +1,7 @@
     @extends('layouts.main')
-<<<<<<< Updated upstream
-    @section('title', 'Revisi')
-=======
+
     @section('title', 'Tugas')
->>>>>>> Stashed changes
+
 
     @section('content')
     <section class="section custom-section">
@@ -30,11 +28,9 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-<<<<<<< Updated upstream
-                                            <a class="nav-link {{--  --}}" href="{{--  --}}">
-=======
-                                            <a class="nav-link {{--  --}}" href="{{ route('mahasiswa.jadwal.index')}}">
->>>>>>> Stashed changes
+
+                                   <a class="nav-link {{--  --}}" href="{{ route('mahasiswa.jadwal.index')}}">
+
                                                 JADWAL SIDANG
                                             </a>
                                         </li>

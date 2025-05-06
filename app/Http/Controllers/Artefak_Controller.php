@@ -22,7 +22,6 @@ class Artefak_Controller extends Controller
             ->where('KPA_id', $KPA_id)
             ->where('TM_id', $TM_id)
             ->where('kategori_tugas','tugas')
-<<<<<<< Updated upstream
             ->orderBy('created_at', 'desc')
             ->get();
             foreach($artefak as $artefakItem){
@@ -74,70 +73,7 @@ class Artefak_Controller extends Controller
 
         return view('pages.Mahasiswa.Artefak.index', compact('artefak','statusByTugas'));
     }
-    public function Revisi(Request $request)
-    {
-        $prodi_id = session('prodi_id');
-        $KPA_id = session('KPA_id');
-        $TM_id = session('TM_id');
     
-        $artefak = Tugas::with(['prodi', 'tahunMasuk', 'kategoripa'])
-            ->where('prodi_id', $prodi_id)
-            ->where('KPA_id', $KPA_id)
-            ->where('TM_id', $TM_id)
-            ->where('kategori_tugas','Revisi')
-=======
->>>>>>> Stashed changes
-            ->orderBy('created_at', 'desc')
-            ->get();
-            foreach($artefak as $artefakItem){
-                if($artefakItem->tanggal_pengumpulan <=now() && $artefakItem->status !=='selesai'){
-                    $artefakItem->status = 'selesai';
-                    $artefakItem->save();
-                }
-              }
-            foreach ($artefak as $item) {
-                $deadline = Carbon::parse($item->tanggal_pengumpulan);
-                $now = Carbon::now();
-                $diffInSeconds = $now->diffInSeconds($deadline, false);
-            
-                $item->formatted_deadline = $deadline->format('d M Y - h:i A');
-            
-                if ($diffInSeconds > 0) {
-                    // Masih ada waktu
-                    if ($diffInSeconds >= 86400) { // lebih dari atau sama dengan 24 jam
-                        $days = floor($diffInSeconds / 86400);
-                        $item->time_remaining = "$days hari lagi";
-                    } else {
-                        $hours = floor($diffInSeconds / 3600);
-                        $minutes = floor(($diffInSeconds % 3600) / 60);
-                        $item->time_remaining = "{$hours} jam {$minutes} menit lagi";
-                    }
-                    $item->status_class = 'text-warning';
-                } else {
-                    // Sudah lewat deadline
-                    $diffInSeconds = abs($diffInSeconds);
-                    if ($diffInSeconds >= 86400) {
-                        $days = floor($diffInSeconds / 86400);
-                        $item->time_remaining = "Selesai $days hari yang lalu";
-                    } else {
-                        $hours = floor($diffInSeconds / 3600);
-                        $minutes = floor(($diffInSeconds % 3600) / 60);
-                        $item->time_remaining = "Selesai {$hours} jam {$minutes} menit yang lalu";
-                    }
-                    $item->status_class = 'text-success';
-                }
-            }
-
-            $kelompokId = session('kelompok_id');
-         
-           
-            $status = pengumpulan_tugas::with(['Kelompok','tugas'])
-            ->where('kelompok_id', $kelompokId)
-            ->get();
-            $statusByTugas = $status->keyBy('tugas_id');
-
-        return view('pages.Mahasiswa.Artefak.revisi', compact('artefak','statusByTugas'));
-    }
     public function Revisi(Request $request)
     {
         $prodi_id = session('prodi_id');
@@ -200,7 +136,6 @@ class Artefak_Controller extends Controller
 
         return view('pages.Mahasiswa.Artefak.revisi', compact('artefak','statusByTugas'));
     }
-
     public function create( $encryptedId){
         try {
             $id = Crypt::decrypt($encryptedId);
