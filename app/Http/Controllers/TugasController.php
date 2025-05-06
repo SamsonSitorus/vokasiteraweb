@@ -85,7 +85,6 @@ public function store(Request $request)
         'tanggal_pengumpulan' => 'required|date|after_or_equal:today',
         'file' => 'nullable|mimes:pdf,docx,jpg,jpeg,png|max:10240', 
         'status' => 'required',
-        'kategori_tugas' => 'required',
     ]);
 
     // Handle file upload if exists
@@ -96,7 +95,7 @@ public function store(Request $request)
     }
 
     Tugas::create($validated);
-    return redirect()->route('tugas.index')->with('success', 'Tugas berhasil disimpan.');
+    return redirect()->route('koordinator.tugas.index')->with('success', 'Tugas berhasil disimpan.');
 }
 
 public function edit($encryptedId)
@@ -150,7 +149,6 @@ public function update(Request $request, $encryptedId)
         'tanggal_pengumpulan' => 'required|date|after_or_equal:today',
         'file' => 'nullable|mimes:pdf,docx,jpg,jpeg,png|max:10240', 
         'status' => 'required',
-       
     ]);
 
     $tugas = Tugas::findOrFail($id);
@@ -169,7 +167,7 @@ public function update(Request $request, $encryptedId)
     // Update the tugas attributes
     $tugas->update($validated);
     
-    return redirect()->route('tugas.index')->with('success', 'Tugas berhasil diperbarui!');
+    return redirect()->route('koordinator.tugas.index')->with('success', 'Tugas berhasil diperbarui!');
 }
 
     

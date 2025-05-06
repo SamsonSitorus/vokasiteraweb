@@ -18,7 +18,7 @@
             @if (in_array(1, $dosenRoles)) 
             <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li class="menu-header">Kordinator</li>
-             <li ><a class="nav-link" href="{{ route('tugas.index')}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
+             <li ><a class="nav-link" href="{{ route('koordinator.tugas.index')}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{ route('kelompok.index')}}"><i class="fas fa-users"></i> <span>Kelompok</span></a></li>
             <li ><a class="nav-link" href="{{ route('jadwal.index')}}"><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
             <li class="nav-item dropdown {{ request()->is('pembimbing*') ? 'active' : '' }}">
@@ -35,8 +35,8 @@
                     <i class="fas fa-user"></i> <span>Penguji</span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link {{ request()->routeIs('penguji.index') ? 'active' : '' }}" href="{{route('penguji.index')}}">Penguji 1</a></li>
-                    <li><a class="nav-link {{ request()->routeIs('penguji2.index') ? 'active' : '' }}" href="{{route('penguji2.index')}}">Penguji 2</a></li>
+                    <li><a class="nav-link {{--  --}}" href="{{route('penguji.index')}}">Penguji 1</a></li>
+                    <li><a class="nav-link {{--  --}}" href="{{route('penguji2.index')}}">Penguji 2</a></li>
                 </ul>
             </li>        
             <li class="nav-item dropdown {{ request()->is('nilai*') ? 'active' : '' }}">
@@ -44,7 +44,7 @@
                     <i class="fas fa-calendar"></i> <span>Nilai</span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link {{route('koordinator.NilaiAdministrasi.index')}}" href="{{route('koordinator.NilaiAdministrasi.index')}}">Nilai Administrasi </a></li>
+                    <li><a class="nav-link {{--  --}}" href="{{route('koordinator.NilaiAdministrasi.index')}}">Nilai Administrasi </a></li>
                     <li>
                         <a class="nav-link {{--  --}}" href="{{ route('NilaiAkhir.index') }}">Nilai Mahasiswa</a>
                     </li>

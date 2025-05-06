@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Edit Tugas</h4>
-                        <a href="{{ route('tugas.index') }}" class="btn btn-primary">Kembali</a>
+                        <a href="{{ route('koordinator.tugas.index') }}" class="btn btn-primary">Kembali</a>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('tugas.update', ['id' => Crypt::encrypt($tugas->id)]) }}" enctype="multipart/form-data">

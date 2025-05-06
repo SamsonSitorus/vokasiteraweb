@@ -59,7 +59,7 @@ class Artefak_Controller extends Controller
                         $minutes = floor(($diffInSeconds % 3600) / 60);
                         $item->time_remaining = "Selesai {$hours} jam {$minutes} menit yang lalu";
                     }
-                    $item->status_class = 'text-success';
+                    $item->status_class = 'text-warning';
                 }
             }
 
@@ -215,7 +215,7 @@ class Artefak_Controller extends Controller
         // Simpan ke database
         pengumpulan_tugas::create($validated);
     
-        return redirect()->route('artefak.index')->with('success', 'Data berhasil disimpan.');
+        return redirect()->route('tugas.index')->with('success', 'Data berhasil disimpan.');
         
     }
 
@@ -244,7 +244,7 @@ class Artefak_Controller extends Controller
         // Update the tugas attributes
         $artefak->update($validated);
         
-        return redirect()->route('artefak.index')->with('success', 'Tugas berhasil diperbarui!');
+        return redirect()->route('tugas.index')->with('success', 'Tugas berhasil diperbarui!');
     
     }
     public function editFeedback($id)
