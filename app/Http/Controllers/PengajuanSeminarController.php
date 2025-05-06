@@ -67,6 +67,117 @@ class PengajuanSeminarController extends Controller
         return view('pages.Mahasiswa.Pengajuan_Seminar.create', compact('kelompok', 'pembimbing'));
     }
 
+
+public function edit($id)
+{
+    try {
+        $id = Crypt::decrypt($id);
+        $pengajuanSeminar = PengajuanSeminar::with('files')->findOrFail($id);
+        
+        // Pastikan pengajuan ini milik kelompok yang sedang login
+        $kelompokId = session('kelompok_id');
+        if ($pengajuanSeminar->kelompok_id != $kelompokId) {
+            return redirect()->route('PengajuanSeminar.index')
+                ->with('error', 'Anda tidak memiliki akses untuk mengedit pengajuan ini.');
+        }
+        
+        $kelompok = Kelompok::findOrFail($pengajuanSeminar->kelompok_id);
+        $pembimbing = Pembimbing::findOrFail($pengajuanSeminar->pembimbing_id);
+        
+        // Jika status ditolak, kita bisa menampilkan catatan penolakan
+        $catatan = $pengajuanSeminar->catatan;
+        
+        return view('pages.Mahasiswa.Pengajuan_Seminar.edit', compact('pengajuanSeminar', 'kelompok', 'pembimbing', 'catatan'));
+    } catch (\Exception $e) {
+        Log::error('Error editing pengajuan seminar', [
+            'id' => $id ?? 'unknown',
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        
+        return redirect()->route('PengajuanSeminar.index')
+            ->with('error', 'Terjadi kesalahan saat membuka form edit: ' . $e->getMessage());
+    }
+}
+
+
+public function update(Request $request, $id)
+{
+    try {
+        $id = Crypt::decrypt($id);
+        $pengajuanSeminar = PengajuanSeminar::findOrFail($id);
+        
+        // Pastikan pengajuan ini milik kelompok yang sedang login
+        $kelompokId = session('kelompok_id');
+        if ($pengajuanSeminar->kelompok_id != $kelompokId) {
+            return redirect()->route('PengajuanSeminar.index')
+                ->with('error', 'Anda tidak memiliki akses untuk mengupdate pengajuan ini.');
+        }
+        
+        // Validasi request
+        $validatedData = $request->validate([
+            'files' => 'required|array|min:1|max:5',
+            'files.*' => 'required|file|mimes:pdf,jpg,jpeg,png,docx|max:10240',
+        ]);
+        
+        // Mulai transaksi database
+        DB::beginTransaction();
+        
+        // Update status pengajuan menjadi menunggu lagi
+        $pengajuanSeminar->update([
+            'status' => 'menunggu',
+            'catatan' => null // Hapus catatan penolakan sebelumnya
+        ]);
+        
+        // Hapus file-file lama
+        foreach ($pengajuanSeminar->files as $file) {
+            // Hapus file dari storage
+            Storage::disk('public')->delete($file->file_path);
+            // Hapus record dari database
+            $file->delete();
+        }
+        
+        // Proses file-file baru
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filePath = $file->store('pengajuan-seminar-files', 'public');
+                
+                // Buat record untuk setiap file
+                PengajuanSeminarFile::create([
+                    'pengajuan_seminar_id' => $pengajuanSeminar->id,
+                    'file_path' => $filePath,
+                    'file_name' => $file->getClientOriginalName(),
+                    'file_type' => $file->getClientOriginalExtension(),
+                    'file_size' => $file->getSize()
+                ]);
+            }
+        }
+        
+        // Commit transaksi
+        DB::commit();
+        
+        return redirect()->route('PengajuanSeminar.index')
+            ->with('success', 'Pengajuan seminar berhasil diperbarui dan dikirim kembali ke pembimbing!');
+    } catch (\Exception $e) {
+        // Rollback transaksi jika terjadi kesalahan
+        DB::rollBack();
+        
+        Log::error('Error updating pengajuan seminar', [
+            'id' => $id ?? 'unknown',
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        
+        return redirect()->back()
+            ->with('error', 'Terjadi kesalahan saat memperbarui pengajuan: ' . $e->getMessage())
+            ->withInput();
+    }
+}
+
+
+
+
+
     public function store(Request $request)
     {
         // Validate the request

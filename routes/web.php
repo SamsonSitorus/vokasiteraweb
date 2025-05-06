@@ -404,8 +404,8 @@ Route::prefix('bimbingan')->group(function(){
 //request bimbingan dosen pembimbing
 Route::prefix('dosenpembimbing')->group(function(){
     Route::get('/',[BimbinganController::class, 'indexpembimbing'])->name('pembimbing.bimbingan.index');
-    Route::get('/{id}', [BimbinganController::class, 'setuju'])->name('pembimbing.bimbingan.setujui');
-    Route::put('/{id}', [BimbinganController::class, 'tolak'])->name('pembimbing.bimbingan.tolak');
+    Route::put('/setujui/{id}', [BimbinganController::class, 'setuju'])->name('pembimbing.bimbingan.setujui');
+    Route::put('/tolak/{id}', [BimbinganController::class, 'tolak'])->name('pembimbing.bimbingan.tolak');
 });
 // jadwal dari BAAK
 Route::prefix('staff/jadwal')->group(function(){

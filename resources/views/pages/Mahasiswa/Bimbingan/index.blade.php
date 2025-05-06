@@ -22,8 +22,8 @@
                                         <th>No</th>
                                         <th>Nomor Kelompok</th>
                                         <th>Keperluan</th>
-                                        <th>Tanggal Mulai</th>
-                                        <th>Tanggal Selesai</th>
+                                         <th>Tanggal Mulai</th>
+                                         <th>Tanggal Selesai</th>
                                         <th>Lokasi</th>
                                         <th>Status</th>
                                         <th>Aksi</th>

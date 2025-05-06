@@ -42,22 +42,32 @@
                                <input type="text" name="keperluan" id="keperluan" class="form-control" required>
                          </div>
 
-                    {{-- Rencana Bimbingan --}}
-                    <div class="form-group">
-                        <label for="rencana_selesai">Rencana Bimbingan</label>
-                        <input type="datetime-local" name="rencana_selesai" id="rencana_selesai" class="form-control @error('rencana_selesai') is-invalid @enderror" value="{{ old('rencana_selesai') ? old('rencana_selesai') : '' }}">
-                        @error('rencana_selesai')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                     {{-- Rencana Bimbingan --}}
+
+                         {{-- Rencana Bimbingan --}}
                      <div class="form-group">
-                        <label for="rencana_mulai">Rencana Bimbingan</label>
+                        <label for="rencana_mulai">Rencana Mulai Bimbingan</label>
                         <input type="datetime-local" name="rencana_mulai" id="rencana_mulai" class="form-control @error('rencana_mulai') is-invalid @enderror" value="{{ old('rencana_mulai') ? old('rencana_mulai') : '' }}">
                         @error('rencana_mulai')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+
+                    {{-- Rencana Bimbingan --}}
+                    <div class="form-group">
+                        <label for="rencana_selesai">Rencana Selesai Bimbingan</label>
+                        <input type="datetime-local" name="rencana_selesai" id="rencana_selesai" class="form-control @error('rencana_selesai') is-invalid @enderror" value="{{ old('rencana_selesai') ? old('rencana_selesai') : '' }}">
+                        @error('rencana_selesai')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                     <!-- {{-- Rencana Bimbingan --}}
+                     <div class="form-group">
+                        <label for="rencana_mulai">Rencana Mulai Bimbingan</label>
+                        <input type="datetime-local" name="rencana_mulai" id="rencana_mulai" class="form-control @error('rencana_mulai') is-invalid @enderror" value="{{ old('rencana_mulai') ? old('rencana_mulai') : '' }}">
+                        @error('rencana_mulai')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div> -->
 
                    {{-- keperluan --}}
                    <div class="form-group">
