@@ -19,7 +19,7 @@
                                 <h4>Jumlah MahaSiswa</h4>
                                 <p>Prodi ID: {{ session('prodi_id') }}</p>
                                 <p>KPA ID: {{ session('KPA_id') }}</p>
-                                <p>TA ID: {{ session('TA_id') }}</p>
+                                <p>TM ID: {{ session('TM_id') }}</p>
                                 <p>session token: {{ session('token') }}</p>
                             </div>
                             <div class="card-body">

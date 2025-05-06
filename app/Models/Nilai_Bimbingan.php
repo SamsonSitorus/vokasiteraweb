@@ -31,4 +31,5 @@ class Nilai_Bimbingan extends Model
     {
         return $this->hasOne(Role::class);
     }
+    
 }

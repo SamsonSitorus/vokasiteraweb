@@ -47,12 +47,20 @@
 
                             <div class="form-group">
                                 <label for="Deskripsi_Tugas">Deskripsi Tugas</label>
-                                <input type="text" name="Deskripsi_Tugas" id="Deskripsi_Tugas" class="form-control @error('Deskripsi_Tugas') is-invalid @enderror" placeholder="Masukkan Deskripsi Tugas" value="{{ old('Deskripsi_Tugas') }}">
-                                @error('Deskripsi_Tugas')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                <textarea name="Deskripsi_Tugas" id="Deskripsi_Tugas"
+                                    class="form-control @error('Deskripsi_Tugas') is-invalid @enderror"
+                                    placeholder="Masukkan Deskripsi Tugas"
+                                    rows="5">{{ old('Deskripsi_Tugas') }}</textarea>
+                                </div>
 
+                            <div class="form-group">
+                                <label for="kategori_tugas">Kategori </label>
+                                <select name="kategori_tugas" id="kategori_tugas" class="form-control">
+                                    <option value="Tugas" >Tugas</option>
+                                    <option value="Revisi">Revisi</option>
+                                </select>
+                            </div>
+                            
                             <div class="form-group">
                                 <label for="tanggal_pengumpulan">Batas Pengumpulan</label>
                                 <input type="datetime-local" name="tanggal_pengumpulan" id="tanggal_pengumpulan" class="form-control @error('tanggal_pengumpulan') is-invalid @enderror" value="{{ old('tanggal_pengumpulan') ? old('tanggal_pengumpulan') : '' }}">

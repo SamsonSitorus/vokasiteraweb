@@ -12,10 +12,21 @@ use App\Exports\NilaiAkhirExport;
 class NilaiMahasiswa_Controller extends Controller
 {
     public function index() {
+        $prodi_id = session('prodi_id');
+        $KPA_id = session('KPA_id');
+        $TM_id = session('TM_id');
+        $token = session('token');
+
         $data = DB::table('kelompok_mahasiswa as km')
-            ->select(
-                'km.user_id',
-                'km.kelompok_id',
+        ->join('kelompok as k', 'km.kelompok_id', '=', 'k.id')
+        ->where('k.KPA_id', $KPA_id)
+        ->where('k.TM_id', $TM_id)
+        ->where('prodi_id', $prodi_id)
+        ->where('status','Aktif')
+        ->select(
+            'km.user_id',
+            'km.kelompok_id',
+            'k.nomor_kelompok',
                 DB::raw('
                     0.05 * COALESCE(na.Pameran, 0) +
                     0.45 * COALESCE(ns.nilai_seminar, 0) +
@@ -39,6 +50,7 @@ class NilaiMahasiswa_Controller extends Controller
                 GROUP BY user_id
             ) as nb'), 'nb.user_id', '=', 'km.user_id')
             ->get();
+      
             foreach ($data as $item){
                 DB::table('nilai_mahasiswa')->updateOrInsert([
                     'user_id' => $item->user_id,
@@ -49,21 +61,18 @@ class NilaiMahasiswa_Controller extends Controller
                 ]
                 );
             }
-
-                $prodi_id = session('prodi_id');
-                $KPA_id = session('KPA_id');
-                $TM_id = session('TM_id');
-                $token = session('token');
-        
-            $nilai_akhir = DB::table('nilai_mahasiswa')
-            ->join('kelompok_mahasiswa','nilai_mahasiswa.user_id', '=', 'kelompok_mahasiswa.user_id')
-            ->join('kelompok', 'kelompok_mahasiswa.kelompok_id','=', 'kelompok.id')
-            ->where('kelompok.prodi_id', $prodi_id)
-            ->where('kelompok.KPA_id', $KPA_id)
-            ->where('kelompok.TM_id', $TM_id)
-            ->select('nilai_mahasiswa.*', 'kelompok.nomor_kelompok')
-            ->get();
-
+            // dd($data);
+            // $nilai_akhir = DB::table('nilai_mahasiswa')
+            // ->join('kelompok_mahasiswa', 'nilai_mahasiswa.user_id', '=', 'kelompok_mahasiswa.user_id')
+            // ->join('kelompok', 'kelompok_mahasiswa.kelompok_id', '=', 'kelompok.id')  // Ganti dengan join yang benar
+            // ->where('kelompok.prodi_id', $prodi_id)
+            // ->where('kelompok.KPA_id', $KPA_id)
+            // ->where('kelompok.TM_id', $TM_id)
+            // ->select('nilai_mahasiswa.*', 'kelompok.nomor_kelompok', 'kelompok.KPA_id', 'kelompok.id AS kelompok_id')
+            // ->get();
+            // dd($nilai_akhir); 
+            $nilai_akhir = $data;  
+           
                 // Ambil semua mahasiswa dari API
             $response = Http::withHeaders([
                 'Authorization' => "Bearer $token"

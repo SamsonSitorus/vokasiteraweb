@@ -14,6 +14,8 @@ class NilaiBimbingan_Controller extends Controller
         $token = session('token');
         $userId = session('user_id');
         $roleId = session('role_id');
+        $KPAId = session('KPA_id');
+   
         
         // Ambil data kelompok
         $kelompoks = Kelompok::with(['pembimbing.dosenRoles', 'KelompokMahasiswa', 'nilais'])
@@ -44,7 +46,7 @@ class NilaiBimbingan_Controller extends Controller
         // Ambil nilai individu
         $nilaiindividu = Nilai_Bimbingan::whereIn('user_id', $user_ids)  
         ->where('penilai_id',$userId)
-       ->where('role_id', 3)
+        ->where('role_id', 3)
         ->get()->keyBy('user_id');
     
         // Pasang nama, nim, dan nilai ke setiap mahasiswa
@@ -56,7 +58,6 @@ class NilaiBimbingan_Controller extends Controller
                 $mhs->nilai_individu = $nilaiindividu->get($mhs->user_id)->nilai ?? null;
             });
         });
-
         return view('pages.pembimbing.Nilai_Individu.indexp3', [
             'kelompoks' => $kelompoks,
              'nilaiindividu' => $nilaiindividu

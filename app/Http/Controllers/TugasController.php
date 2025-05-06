@@ -85,6 +85,7 @@ public function store(Request $request)
         'tanggal_pengumpulan' => 'required|date|after_or_equal:today',
         'file' => 'nullable|mimes:pdf,docx,jpg,jpeg,png|max:10240', 
         'status' => 'required',
+        'kategori_tugas' => 'required',
     ]);
 
     // Handle file upload if exists
@@ -149,6 +150,7 @@ public function update(Request $request, $encryptedId)
         'tanggal_pengumpulan' => 'required|date|after_or_equal:today',
         'file' => 'nullable|mimes:pdf,docx,jpg,jpeg,png|max:10240', 
         'status' => 'required',
+       
     ]);
 
     $tugas = Tugas::findOrFail($id);

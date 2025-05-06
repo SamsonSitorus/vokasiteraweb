@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'List Kelompok')
+@section('title','Tugas')
 
 @section('content')
 <section class="section custom-section">

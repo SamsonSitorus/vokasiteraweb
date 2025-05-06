@@ -17,6 +17,7 @@ class Tugas extends Model
         'TM_id',
         'tanggal_pengumpulan',
         'file',
+        'kategori_tugas',
         'status',
     ];
 
