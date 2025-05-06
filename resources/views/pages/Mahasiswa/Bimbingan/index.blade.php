@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'List Kelompok')
+@section('title', 'List Bimbingan')
 
 @section('content')
 <section class="section custom-section">
@@ -22,9 +22,9 @@
                                         <th>No</th>
                                         <th>Nomor Kelompok</th>
                                         <th>Keperluan</th>
-                                         <th>Tanggal Mulai</th>
-                                         <th>Tanggal Selesai</th>
-                                        <th>Lokasi</th>
+                                        <th>Tanggal Mulai</th>
+                                        <th>Tanggal Selesai</th>
+                                        <th>Ruangan</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -32,21 +32,39 @@
                                 <tbody>
                                      @foreach($bimbingan as $item)
                                         <tr>
-                                            <td>{{ $item->id }}</td>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->kelompok->nomor_kelompok }}</td>
                                             <td>{{ $item->keperluan }}</td>
                                             <td>{{ $item->rencana_mulai }}</td>    
                                             <td>{{ $item->rencana_selesai}}</td> 
-                                            <td>{{ $item->lokasi }}</td> 
-                                            <td>{{ $item->status }}</td>
+                                            <td>{{ $item->ruangan->ruangan }}</td> 
+                                            <td>
+                                                <span class="badge 
+                                                    @if($item->status == 'disetujui') badge-success
+                                                    @elseif($item->status == 'ditolak') badge-danger
+                                                    @elseif($item->status == 'selesai') badge-info
+                                                    @else badge-warning
+                                                    @endif">
+                                                    {{ ucfirst($item->status) }}
+                                                </span>
+                                            </td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{ route('bimbingan.kartu', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm">
-                                                        <i class="nav-icon fas fa-edit"></i> &nbsp;Lainnya
+                                                    <a href="{{ route('bimbingan.kartu', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm mr-2">
+                                                        <i class="nav-icon fas fa-eye"></i> &nbsp;Kartu bimbingan
                                                     </a>
-                                                    <form method="POST" action="{{ route('bimbingan.destroy', $item->id) }}">
-                                                        @csrf
-                                                    </form>
+                                                        <a href="{{ route('bimbingan.edit', Crypt::encrypt($item->id)) }}" 
+                                                        class="btn btn-sm btn-primary mr-2">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                        </a>
+
+                                                        <form method="POST" action="{{ route('bimbingan.destroy', $item->id) }}" style="display: inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger show_confirm">
+                                                                <i class="fas fa-trash"></i> Hapus
+                                                            </button>
+                                                        </form>
                                                 </div>
                                             </td>
                                         </tr>
@@ -81,6 +99,5 @@
                 }
             });
     });
-
 </script>
 @endpush

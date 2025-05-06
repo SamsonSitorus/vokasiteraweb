@@ -16,7 +16,7 @@ class Bimbingan extends Model
         'keperluan',
         'rencana_mulai',
         'rencana_selesai',
-        'lokasi',
+        'ruangan_id',
         'status',
         'hasil_bimbingan', // Tambahkan field ini
     ];
@@ -31,5 +31,10 @@ class Bimbingan extends Model
     public function kartuBimbingan()
     {
         return $this->hasOne(KartuBimbingan::class, 'request_bimbingan_id');
+    }
+
+    
+    public function ruangan(){
+        return $this->belongsTo(Ruangan::class,'ruangan_id');
     }
 }

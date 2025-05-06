@@ -402,6 +402,7 @@ Route::prefix('bimbingan')->group(function(){
     // // Jadwal mahasiswa
     // Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
 });
+
 //request bimbingan dosen pembimbing
 Route::prefix('dosenpembimbing')->group(function(){
     Route::get('/',[BimbinganController::class, 'indexpembimbing'])->name('pembimbing.bimbingan.index');

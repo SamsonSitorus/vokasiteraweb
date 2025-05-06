@@ -71,9 +71,16 @@
 
                    {{-- keperluan --}}
                    <div class="form-group">
-                    <label for="lokasi">lokasi</label>
-                    <input type="text" name="lokasi" id="lokasi" class="form-control" required>
-                    </div>    
+                                <label for="ruangan">Ruangan</label>
+                                <select name="ruangan_id" id="ruangan_id" class="form-control" required>
+                                    <option value="">-- Pilih Ruangan --</option>
+                                    @foreach($ruangan as $item)
+                                    <option value="{{ $item->id}}" {{ old('ruangan_id') == $item->id ? 'selected' : '' }}>
+                                        {{ $item->ruangan}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>    
 
                     {{-- status --}}
                     <div class="form-group">

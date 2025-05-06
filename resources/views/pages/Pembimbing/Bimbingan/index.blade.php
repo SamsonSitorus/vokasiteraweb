@@ -34,7 +34,7 @@
                                             <td>{{ $item->keperluan }}</td>
                                             <td>{{ $item->rencana_mulai }}</td>    
                                             <td>{{ $item->rencana_selesai}}</td> 
-                                            <td>{{ $item->lokasi }}</td> 
+                                            <td>{{ $item->ruangan->ruangan }}</td> 
                                             <td>
                                                 <span class="badge 
                                                     @if($item->status == 'disetujui') badge-success

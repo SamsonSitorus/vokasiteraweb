@@ -12,6 +12,7 @@ use App\Models\KartuBimbingan;
 use Mpdf\Mpdf;
 use App\Models\KelompokMahasiswa;
 use App\Models\Pembimbing;
+use App\Models\Ruangan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
@@ -35,15 +36,16 @@ class BimbinganController extends Controller
     public function create() {
         $kelompokId =  session('kelompok_id');
         $token = session('token');
+        $ruangan = Ruangan::all();
 
-        return view('pages.Mahasiswa.Bimbingan.create',compact('kelompokId'));
+        return view('pages.Mahasiswa.Bimbingan.create',compact('kelompokId','ruangan'));
         // dd($kelompokId);
     }
 
     public function store(Request $request){
         $validated = $request->validate([
             'kelompok_id' => 'required||exists:kelompok,id',
-            'lokasi' => 'required|string|max:100',
+            'ruangan_id' => 'required|exists:ruangan,id',
             'keperluan' => 'required|string|max:1000',
             'rencana_mulai' => 'required|date|after_or_equal:today',
             'rencana_selesai' => 'required|date|after_or_equal:today',
@@ -54,26 +56,26 @@ class BimbinganController extends Controller
             return redirect()->route('bimbingan.index')->with('success', 'Request Bimbingan  berhasil disimpan.');
     }
 
-    public function edit ($encryptedId){
+    public function edit($encryptedId){
         try{
             $id = Crypt::decrypt($encryptedId);
 
             $bimbingan = Bimbingan::findOrFail($id);
 
-
             if(in_array($bimbingan->status,['selesai', 'disetujui','ditolak'])){
-                   // Tampilkan pesan kesalahan jika status masih Aktif
-        return back()->withErrors([
-            'error' => 'Tidak dapat mengedit  data Request Bimbingan .',
-        ]);
+                // Tampilkan pesan kesalahan jika status masih Aktif
+                return back()->withErrors([
+                    'error' => 'Tidak dapat mengedit data Request Bimbingan.',
+                ]);
             }
-        
-                return view('pages.Mahasiswa.Bimbingan.edit',compact('bimbingan'));
-                // dd($kelompokId);          
-        
-    } catch (Exception $e) {
-        return redirect()->back()->with('error', 'Gagal menampilkan data: ' . $e->getMessage());
-    }
+            
+            // Ambil data ruangan untuk dropdown
+            $ruangan = Ruangan::all();
+            
+            return view('pages.Mahasiswa.Bimbingan.edit', compact('bimbingan', 'ruangan'));
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menampilkan data: ' . $e->getMessage());
+        }
     }
 
     public function update(Request $request, $encryptedId){
@@ -150,7 +152,7 @@ class BimbinganController extends Controller
             } else {
                 // Ini adalah update untuk request bimbingan biasa
                 $validated = $request->validate([
-                    'lokasi' => 'required|string|max:100',
+                    'ruangan_id' => 'required|exists:ruangan,id',
                     'keperluan' => 'required|string|max:1000',
                     'rencana_mulai' => 'required|date|after_or_equal:today',
                     'rencana_selesai' => 'required|date|after_or_equal:today',
