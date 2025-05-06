@@ -1,7 +1,5 @@
     @extends('layouts.main')
-
     @section('title', 'Tugas')
-
 
     @section('content')
     <section class="section custom-section">
@@ -28,7 +26,6 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-
                                    <a class="nav-link {{--  --}}" href="{{ route('mahasiswa.jadwal.index')}}">
 
                                                 JADWAL SIDANG

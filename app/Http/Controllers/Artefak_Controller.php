@@ -136,7 +136,8 @@ class Artefak_Controller extends Controller
 
         return view('pages.Mahasiswa.Artefak.revisi', compact('artefak','statusByTugas'));
     }
-    public function create( $encryptedId){
+
+  public function create( $encryptedId){
         try {
             $id = Crypt::decrypt($encryptedId);
             $tugas = Tugas::findOrFail($id);
