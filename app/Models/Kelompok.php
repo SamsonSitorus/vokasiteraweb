@@ -46,11 +46,11 @@ class Kelompok extends Model
     public function KelompokMahasiswa() {
         return $this->hasMany(KelompokMahasiswa::class);
     }
-    // public function penguji()
-    // {
-    //     return $this->hasMany(Penguji::class, 'kelompok_id');
-    // }
 
+    public function pengajuanSeminar()
+    {
+        return $this->hasMany(PengajuanSeminar::class);
+    }
     protected $fillable = [
         'nomor_kelompok',
         'KPA_id',

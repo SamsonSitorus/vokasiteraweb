@@ -35,13 +35,20 @@
                                 <select name="kelompok_id" id="kelompok_id" class="form-control" required>
                                     <option value="">-- Pilih Kelompok --</option>
                                     @foreach($kelompok as $item)
+                                        @php
+                                            $hasApprovedSubmission = $item->pengajuanSeminar->where('status', 'disetujui')->isNotEmpty();
+                                        @endphp
                                         <option value="{{ $item->id }}" 
                                             data-pembimbing="{{ $item->pembimbing_id }}"
-                                            {{ old('kelompok_id') == $item->id ? 'selected' : '' }}>
+                                            data-approved="{{ $hasApprovedSubmission ? '1' : '0' }}"
+                                            {{ old('kelompok_id') == $item->id ? 'selected' : '' }}
+                                            @if(!$hasApprovedSubmission) disabled @endif>
                                             {{ $item->nomor_kelompok }}
+                                            @if(!$hasApprovedSubmission) (Belum disetujui) @endif
                                         </option>
                                     @endforeach
                                 </select>
+                                <small class="text-muted">Hanya kelompok dengan pengajuan seminar yang disetujui dapat dipilih</small>
                             </div>
                             {{-- Masukkan Lokasi --}}
                             <div class="form-group">
@@ -72,32 +79,6 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
-                            {{-- Pilih Penguji 1 
-                            <div class="form-group">
-                                <label for="penguji1">Pilih Penguji 1</label>
-                                <select id="penguji1" name="penguji1" class="select2 form-control" required>
-                                    <option value="">-- Pilih Penguji 1 --</option>
-                                    @foreach ($dosenFinal as $item)
-                                        <option value="{{ $item['user_id'] }}" {{ old('penguji1') == $item['user_id'] ? 'selected' : '' }}>
-                                            {{ $item['nama'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>--}}
-
-                            {{-- Pilih Penguji 2 
-                            <div class="form-group">
-                                <label for="penguji2">Pilih Penguji 2</label>
-                                <select id="penguji2" name="penguji2" class="select2 form-control" required>
-                                    <option value="">-- Pilih Penguji 2 --</option>
-                                    @foreach ($dosenFinal as $item)
-                                        <option value="{{ $item['user_id'] }}" {{ old('penguji2') == $item['user_id'] ? 'selected' : '' }}>
-                                            {{ $item['nama'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>--}}
 
                             {{-- Tahun Masuk --}}
                             <div class="form-group">
@@ -154,7 +135,25 @@
             }
         }
 
-        kelompokSelect.addEventListener('change', disablePembimbingOptions);
+        kelompokSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const isApproved = selectedOption.getAttribute('data-approved') === '1';
+            
+            if (!isApproved && selectedOption.value !== '') {
+                swal({
+                    title: 'Pengajuan Seminar Belum Disetujui',
+                    text: 'Anda tidak dapat memilih kelompok ini karena pengajuan seminar belum disetujui oleh pembimbing.',
+                    icon: 'warning',
+                    button: 'OK'
+                });
+                
+                // Reset selection
+                this.value = '';
+            }
+            
+            disablePembimbingOptions();
+        });
+        
         disablePembimbingOptions(); 
     });
 </script>

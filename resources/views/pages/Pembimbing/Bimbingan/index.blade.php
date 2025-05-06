@@ -46,14 +46,22 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex">
-                                                    @if($item->status == 'menunggu')
-                                                        <a href="{{ route('pembimbing.bimbingan.setujui', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-success mr-2">
-                                                            <i class="fas fa-check"></i> Setujui
-                                                        </a>
-                                                        <a href="{{ route('pembimbing.bimbingan.tolak', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-danger">
-                                                            <i class="fas fa-times"></i> Tolak
-                                                        </a>
-                                                    @endif
+                                                @if($item->status == 'menunggu')
+                                                <form action="{{ route('pembimbing.bimbingan.setujui', Crypt::encrypt($item->id)) }}" method="POST" style="display: inline;">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" class="btn btn-sm btn-success mr-2">
+                                                         <i class="fas fa-check"></i> Setujui
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('pembimbing.bimbingan.tolak', Crypt::encrypt($item->id)) }}" method="POST" style="display: inline;">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="fas fa-times"></i> Tolak
+                                                    </button>
+                                                </form>
+                                            @endif
                                                 </div>
                                             </td>
                                         </tr>
