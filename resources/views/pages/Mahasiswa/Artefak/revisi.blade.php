@@ -1,5 +1,5 @@
     @extends('layouts.main')
-    @section('title', 'Tugas')
+    @section('title', 'Revisi')
 
     @section('content')
     <section class="section custom-section">
@@ -12,55 +12,6 @@
                         </div>                    
                         <div class="card-body">
                             @include('partials.alert')
-<<<<<<< Updated upstream
-                            <div class="table-responsive">
-                                <table class="table table-striped" id="table-2">
-                                    <thead>
-                                        <tr>
-                                            <th>Submission</th>
-                                            <th>DEADLINE</th>
-                                            <th>SUBMISSION STATUS</th>
-                                            <th>Feedback Koordinator</th>
-                                            <th>Feedback Pembimbing</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($artefak as $item)
-                                        @php
-                                            $status = $statusByTugas->get($item->id);
-                                        @endphp
-                                        <tr>
-                                            <td>
-                                                <div class="submission-title font-weight-bold text-primary">{{ $item->Judul_Tugas }}</div>
-                                                <div>{{ $item->Deskripsi_Tugas }}</div>
-                                            </td>
-                                            <td>
-                                                <div>{{ $item->formatted_deadline }}</div>
-                                                <div class="{{ $item->status_class }}">
-                                                    ⏳ <span class="countdown" data-deadline="{{ $item->tanggal_pengumpulan }}"></span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <span class="badge badge-info">
-                                                    {{ $status ? $status->status : 'Belum dikumpulkan' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                {{ $status && isset($statusByTugas[$item->id]) ? $statusByTugas[$item->id]->feedback : '-' }}
-                                            </td>
-                                            <td>
-                                                {{ $status && $status->feedback_pembimbing ? $status->feedback_pembimbing : '-' }}
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('artefak.create', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-info">View</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    
-                                    </tbody>                                
-                                </table>
-=======
                             <div class="row">
                                 <div class="col-12">
                                     <ul class="nav nav-tabs mb-4" style="border-bottom: 1px solid #ddd;">
@@ -75,7 +26,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link {{--  --}}" href="{{ route('mahasiswa.jadwal.index')}}">
+                                            <a class="nav-link {{--  --}}" href="{{--  --}}">
                                                 JADWAL SIDANG
                                             </a>
                                         </li>
@@ -122,7 +73,6 @@
                             </div>
                         </div>
 
->>>>>>> Stashed changes
                             </div>
                         </div>
                     </div>

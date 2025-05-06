@@ -17,6 +17,10 @@ class NilaiIndividu_Controller extends Controller
     {
         $token = session('token');
         $userId = session('user_id');
+        $prodi_id = session('prodi_id');
+        $KPA_id = session('KPA_id');
+        $TM_id = session('TM_id');
+        $token = session('token');
         $roleId = session('role_id');
         $dosenrole = session('dosen_roles');
        

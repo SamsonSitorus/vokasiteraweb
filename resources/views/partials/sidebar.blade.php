@@ -120,7 +120,7 @@
             @elseif (session('role') == 'Mahasiswa')
             <li class="menu-header">MahaSiswa</li>
             <li class="{{ request()->routeIs('siswa.dashboard.*') ? 'active' : '' }}"><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
-            <li ><a class="nav-link" href="{{ route('artefak.index')}}"><i class="fas fa-file"></i> <span>Artefak</span></a></li>
+            <li ><a class="nav-link" href="{{ route('tugas.index')}}"><i class="fas fa-file"></i> <span>Artefak</span></a></li>
             <li ><a class="nav-link" href="{{route('bimbingan.index')}}"><i class="fas fa-list"></i> <span>Bimbingan</span></a></li>
             <li ><a class="nav-link" href="{{route('pengumuman.mahasiswa.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
             <li ><a class="nav-link" href="{{route('mahasiswa.jadwal.index')}}"><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>

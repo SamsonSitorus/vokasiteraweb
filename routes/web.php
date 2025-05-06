@@ -350,7 +350,8 @@ Route::prefix('NilaiIndividu')->group(function(){
     });
 //artefak untuk mahasiswa
 Route::prefix('artefak')->group(function(){
-    Route::get('/',[Artefak_Controller::class, 'index'])->name('artefak.index');
+    Route::get('/tugas',[Artefak_Controller::class, 'Tugas'])->name('tugas.index');
+    Route::get('/revisi',[Artefak_Controller::class, 'Revisi'])->name('revisi.index');
     Route::get('/create/{id}', [Artefak_Controller::class, 'create'])->name('artefak.create');
     Route::post('/{id}', [Artefak_Controller::class, 'submit'])->name('artefak.submit');
     Route::get('/edit/{id}',[Artefak_Controller::class, 'edit'])->name('artefak.edit');

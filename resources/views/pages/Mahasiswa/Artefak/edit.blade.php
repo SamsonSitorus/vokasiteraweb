@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Edit File</h4>
-                        <a href="{{ route('artefak.index') }}" class="btn btn-primary">Kembali</a>
+                        <a href="{{ route('tugas.index') }}" class="btn btn-primary">Kembali</a>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('artefak.update', ['id' => Crypt::encrypt($artefak->id)]) }}" enctype="multipart/form-data">
