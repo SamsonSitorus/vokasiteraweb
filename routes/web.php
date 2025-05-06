@@ -87,7 +87,7 @@ Route::prefix('kelompokMahasiswa')->group(function () {
 // koordinator CRUD Route tugas 
 Route::prefix('tugas')->group(function(){
     //untuk koordinator
-    Route::get('/koordinator',[TugasController::class, 'index'])->name('tugas.index');
+    Route::get('/koordinator',[TugasController::class, 'index'])->name('koordinator.tugas.index');
     Route::get('/create', [TugasController::class, 'create'])->name('tugas.create');
     Route::post('/', [TugasController::class, 'store'])->name('tugas.store');
     Route::get('/{id}', [TugasController::class, 'edit'])->name('tugas.edit');
@@ -350,7 +350,8 @@ Route::prefix('NilaiIndividu')->group(function(){
     });
 //artefak untuk mahasiswa
 Route::prefix('artefak')->group(function(){
-    Route::get('/',[Artefak_Controller::class, 'index'])->name('artefak.index');
+    Route::get('/tugas',[Artefak_Controller::class, 'Tugas'])->name('tugas.index');
+    Route::get('/revisi',[Artefak_Controller::class, 'Revisi'])->name('revisi.index');
     Route::get('/create/{id}', [Artefak_Controller::class, 'create'])->name('artefak.create');
     Route::post('/{id}', [Artefak_Controller::class, 'submit'])->name('artefak.submit');
     Route::get('/edit/{id}',[Artefak_Controller::class, 'edit'])->name('artefak.edit');
@@ -384,8 +385,8 @@ Route::prefix('jadwal')->group(function() {
 });
 // request bimbingan oleh mahasiswa
 
-// Jadwal mahasiswa
-Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
+// // Jadwal mahasiswa
+// Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
 Route::prefix('bimbingan')->group(function(){
     Route::get('/',[BimbinganController::class, 'index'])->name('bimbingan.index');
     Route::get('/create', [BimbinganController::class, 'create'])->name('bimbingan.create');
@@ -398,9 +399,10 @@ Route::prefix('bimbingan')->group(function(){
     Route::get('/export-pdf/{id}', [BimbinganController::class, 'exportToPdf'])->name('bimbingan.exportPdf');
 
 
-    // Jadwal mahasiswa
-    Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
+    // // Jadwal mahasiswa
+    // Route::get('/mahasiswa/jadwal',  [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
 });
+
 //request bimbingan dosen pembimbing
 Route::prefix('dosenpembimbing')->group(function(){
     Route::get('/',[BimbinganController::class, 'indexpembimbing'])->name('pembimbing.bimbingan.index');
@@ -418,20 +420,6 @@ Route::prefix('staff/jadwal')->group(function(){
     Route::get('/{id}/show',[JadwalStaffController::class, 'show'])->name('baak.jadwal.show');
     Route::get('/jadwal/get-kelompok', [JadwalStaffController::class, 'getKelompok'])->name('baak.jadwal.getKelompok');
 });
-// artefak oleh mahasiswa
-Route::prefix('artefak')->group (function(){
-    Route::get('/',[Artefak_Controller::class, 'index'])->name('artefak.index');
-    Route::get('/create/{id}', [Artefak_Controller::class, 'create'])->name('artefak.create');
-    Route::post('/{id}', [Artefak_Controller::class, 'submit'])->name('artefak.submit');
-    Route::get('/edit/{id}',[Artefak_Controller::class, 'edit'])->name('artefak.edit');
-    Route::put('/{id}',[Artefak_Controller::class, 'update'])->name('artefak.update');
-
-    //untuk menampilkan kepada dosen koordinator
-    Route::get('/koordinator/{id}',[Artefak_Controller::class,'index_koordinator'])->name('artefak.index.koordinator');
-    //untuk menampilkan kepada dosen pembimbing
-});
-
-
 
 // Routes untuk Mahasiswa
 Route::prefix('pengajuan-seminar')->name('PengajuanSeminar.')->group(function () {

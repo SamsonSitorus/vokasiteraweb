@@ -17,7 +17,11 @@ return new class extends Migration {
             $table->string('keperluan');
             $table->dateTime('rencana_mulai');
             $table->dateTime('rencana_selesai');
-            $table->string('lokasi');
+            // $table->string('lokasi');
+            $table->foreignId('ruangan_id')
+            ->constrained('ruangan')
+            ->onDelete('cascade');
+            
             $table->enum('status', ['menunggu', 'selesai', 'disetujui', 'ditolak'])
                   ->default('menunggu');
             $table->text('hasil_bimbingan')->nullable(); // Added to match model
