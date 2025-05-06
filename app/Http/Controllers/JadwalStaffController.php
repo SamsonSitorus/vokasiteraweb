@@ -13,6 +13,7 @@ use App\Models\DosenRole;
 use App\Models\KategoriPA;
 use App\Models\TahunMasuk;
 use App\Models\Role;
+use App\Models\Ruangan;
 use Exception;
 use Carbon\Carbon;
 
@@ -98,7 +99,8 @@ class JadwalStaffController extends Controller
             $prodi = Prodi::all();
             $tahun_masuk = TahunMasuk::all();
             $kelompok = Kelompok::all();
-            return view('pages.BAAK.jadwal.create', compact('kategori_pa', 'prodi', 'tahun_masuk', 'kelompok'));
+            $ruangan = Ruangan::all();
+            return view('pages.BAAK.jadwal.create', compact('kategori_pa', 'prodi', 'tahun_masuk', 'kelompok', 'ruangan'));
         } catch (Exception $e) {
             Log::error('Error loading create form: ' . $e->getMessage());
             return back()->with('error', 'Gagal memuat form');
@@ -125,7 +127,7 @@ class JadwalStaffController extends Controller
                             $fail("Jadwal untuk kelompok ini sudah ada.");
                         }
                     }],
-                'ruangan' => 'required|string|max:50',
+                'ruangan_id' => 'required|exists:ruangan,id',
                 'waktu' => 'required|date|after:now',
                 'KPA_id' => 'required',
                 'prodi_id'=>'required',
@@ -133,7 +135,7 @@ class JadwalStaffController extends Controller
             ]);   
             Jadwal::create([
                 'kelompok_id' => $validated['kelompok_id'],
-                'ruangan' => $validated['ruangan'],
+                'ruangan_id' => $validated['ruangan_id'],
                 'waktu' => $validated['waktu'],
                 'user_id' => $userID,
                 'KPA_id'=>$validated['KPA_id'],
@@ -179,8 +181,9 @@ class JadwalStaffController extends Controller
             $prodi = Prodi::all();
             $tahun_masuk = TahunMasuk::all();
             $kelompok = Kelompok::all();
+            $ruangan = Ruangan::all();
 
-            return view('pages.BAAK.jadwal.edit', compact('jadwal', 'kategori_pa', 'prodi', 'tahun_masuk', 'kelompok'));
+            return view('pages.BAAK.jadwal.edit', compact('jadwal', 'kategori_pa', 'prodi', 'tahun_masuk', 'kelompok', 'ruangan'));
         } catch (Exception $e) {
             Log::error('Error loading edit form: ' . $e->getMessage());
             return back()->with('error', 'Gagal memuat form edit');
@@ -193,7 +196,7 @@ class JadwalStaffController extends Controller
 
             $validated = $request->validate([
                 'kelompok_id' => 'required',
-                'ruangan' => 'required|string|max:50',
+                'ruangan_id' => 'required|exists:ruangan,id',
                 'waktu' => 'required|date|after:now',
                 // 'penguji1' => 'required|integer|different:penguji2',
                 // 'penguji2' => 'required|integer|different:penguji1',
@@ -206,7 +209,7 @@ class JadwalStaffController extends Controller
 
             $jadwal->update([
                 'kelompok_id' => $validated['kelompok_id'],
-                'ruangan' => $validated['ruangan'],
+                'ruangan_id' => $validated['ruangan_id'],
                 'waktu' => $validated['waktu'],
                 // 'penguji1' => $validated['penguji1'],
                 // 'penguji2' => $validated['penguji2'],

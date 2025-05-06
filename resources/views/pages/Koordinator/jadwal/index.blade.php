@@ -22,7 +22,7 @@
                                         <th>Kelompok</th>
                                         <th>Pembimbing</th> 
                                         <th>Tanggal</th>
-                                        <th>Lokasi</th>
+                                        <th>Ruangan</th>
                                         <th>Dosen Penguji</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -33,7 +33,8 @@
                                             <td>{{ $item->kelompok->nomor_kelompok ?? '-' }}</td>
                                             <td>{{ $item->pembimbing_nama ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->waktu)->format('d M Y H:i') }}</td>    
-                                            <td>{{ $item->ruangan }}</td>
+                                            <!-- <td>{{ $item->ruangan }}</td> -->
+                                             <td>{{ $item->ruangan->ruangan ?? '-'}}</td>
                                             <td>{!! $item->penguji_nama !!}</td>
                                             <td>
                                                 <div class="d-flex align-items-center">

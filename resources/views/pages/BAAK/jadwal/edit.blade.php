@@ -54,8 +54,21 @@
                             </div>
 
                             {{--Masukkan lokasi--}}
-                            <div class="form-group mt-3">
-                                <label for="ruangan">Lokasi</label>
+                            <div class="form-group">
+                                <label for="ruangan">Ruangan</label>
+                                <select name="ruangan_id" id="ruangan_id" class="select2 form-control" required>
+                                    <option value="">-- Pilih Ruangan --</option>
+                                    @foreach($ruangan as $item)
+                                    <option value="{{ $item->id}}" {{ (old('ruangan_id') ?? $jadwal->ruangan_id) == $item['id'] ? 'selected' : '' }}>
+                                        {{ $item->ruangan}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            
+                            {{--<div class="form-group mt-3">
+                                <label for="ruangan">Ruangan</label>
                                 <input type="text" name="ruangan" id="ruangan"
                                     class="form-control @error('ruangan') is-invalid @enderror"
                                     placeholder="Masukkan Ruangan"
@@ -63,7 +76,7 @@
                                 @error('ruangan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div>--}}
 
                             {{--Masukkan Jam--}}
                             <div class="form-group">

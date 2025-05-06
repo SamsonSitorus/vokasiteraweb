@@ -12,6 +12,7 @@ use App\Models\KategoriPA;
 use App\Models\Prodi;
 use App\Models\DosenRole;
 use App\Models\TahunMasuk;
+use App\Models\Ruangan;
 use App\Models\Role;
 use Exception;
 
@@ -97,11 +98,12 @@ class JadwalController extends Controller
             $kategoriPA = kategoriPA::find($KPA_id);
             $prodi = Prodi::find($prodi_id);
             $tahunMasuk = TahunMasuk::find($TM_id);
+            $ruangan = Ruangan::all();
         } catch (Exception $e) {
                 Log::error('Error loading create form: ' . $e->getMessage());
                 return back()->with('error', 'Gagal memuat form');
         }
-        return view('pages.Koordinator.jadwal.create', compact('kelompok','kategoriPA','prodi','tahunMasuk'));
+        return view('pages.Koordinator.jadwal.create', compact('kelompok','kategoriPA','prodi','tahunMasuk', 'ruangan'));
     }
     public function store(Request $request){
         try{
@@ -119,16 +121,16 @@ class JadwalController extends Controller
                         $fail('Jadwal untuk kelompok ini sudah ada.');
                     }
                 }],
-                'ruangan' => 'required|string|max:50',
                 'waktu' => 'required|date|after:now',
                 'KPA_id' => 'required|exists:kategori_pa,id',
+                'ruangan_id' => 'required|exists:ruangan,id',
                 'prodi_id' => 'required|exists:prodi,id',
                 'TM_id' => 'required|exists:tahun_masuk,id',
              ]);
 
              Jadwal::create([
                  'kelompok_id' => $validated['kelompok_id'],
-                 'ruangan' => $validated['ruangan'],
+                 'ruangan_id' => $validated['ruangan_id'],
                  'waktu' => $validated['waktu'],
                  'user_id' => $userID,
                  'KPA_id' => $validated['KPA_id'],
@@ -162,7 +164,7 @@ class JadwalController extends Controller
                 ->where('prodi_id', $prodi_id)
                 ->where('TM_id', $TM_id)
                 ->get();
-
+            $ruangan = Ruangan::all();
             $responseDosen = Http::withHeaders([
                 'Authorization' => "Bearer $token"
             ])->get(env('API_URL') . "library-api/dosen", ['limit' => 100]);
@@ -171,7 +173,7 @@ class JadwalController extends Controller
 
             $role = Role::all();
 
-            return view('pages.Koordinator.jadwal.edit', compact('jadwal', 'kelompok', 'dosen', 'role'));
+            return view('pages.Koordinator.jadwal.edit', compact('jadwal', 'kelompok', 'dosen', 'role','ruangan'));
 
         } catch (Exception $e) {
             Log::error('Error loading edit form: ' . $e->getMessage());
@@ -185,7 +187,7 @@ class JadwalController extends Controller
 
             $validated = $request->validate([
                 'kelompok_id' => 'required|exists:kelompok,id',
-                'ruangan' => 'required|string|max:50',
+                'ruangan_id' => 'required|exists:ruangan,id',
                 'waktu' => 'required|date|after:now',
             ]);
 
@@ -210,7 +212,7 @@ class JadwalController extends Controller
     try {
         $id = Crypt::decrypt($id);
 
-        $jadwal = Jadwal::with(['prodi', 'tahunMasuk', 'kategoriPA', 'kelompok.penguji', 'kelompok.pembimbing'])
+        $jadwal = Jadwal::with(['prodi', 'tahunMasuk', 'ruangan','kategoriPA', 'kelompok.penguji', 'kelompok.pembimbing'])
             ->findOrFail($id);
 
         $token = session('token');

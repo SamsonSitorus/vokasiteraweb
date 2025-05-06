@@ -43,15 +43,26 @@
                                     @endforeach
                                 </select>
                             </div>
-
                             {{-- Masukkan Lokasi --}}
+                            <div class="form-group">
+                                <label for="ruangan">Ruangan</label>
+                                <select name="ruangan_id" id="ruangan_id" class="form-control" required>
+                                    <option value="">-- Pilih Ruangan --</option>
+                                    @foreach($ruangan as $item)
+                                    <option value="{{ $item->id}}" {{ old('ruangan_id') == $item->id ? 'selected' : '' }}>
+                                        {{ $item->ruangan}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            {{-- Masukkan Lokasi 
                             <div class="form-group">
                                 <label for="ruangan">Lokasi</label>
                                 <input type="text" name="ruangan" id="ruangan" class="form-control @error('ruangan') is-invalid @enderror" placeholder="Masukkan Ruangan" value="{{ old('ruangan') }}">
                                 @error('ruangan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             {{-- Masukkan Waktu --}}
                             <div class="form-group">

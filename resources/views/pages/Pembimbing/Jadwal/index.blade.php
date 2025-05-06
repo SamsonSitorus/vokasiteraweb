@@ -20,9 +20,9 @@
                                         <th>Tahun Masuk</th>
                                         <th>Kategori PA</th>
                                         <th>Kelompok</th>
-                                        <th>Penguji</th> {{-- TAMBAH INI --}}
+                                        <th>Penguji</th>
                                         <th>Tanggal</th>
-                                        <th>Lokasi</th>
+                                        <th>Ruangan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -34,7 +34,7 @@
                                             <td>{{ $item->kelompok->nomor_kelompok ?? '-' }}</td>
                                             <td>{!! $item->penguji_nama ?? '-' !!}</td> {{-- TAMBAH INI --}}
                                             <td>{{ \Carbon\Carbon::parse($item->waktu)->format('d M Y H:i') }}</td>
-                                            <td>{{ $item->ruangan }}</td>
+                                            <td>{{ $item->ruangan->ruangan }}</td>
                                         </tr>
                                     @endforeach 
                                 </tbody>

@@ -36,7 +36,7 @@
                                 </tr>
                                 <tr>
                                     <th>Ruangan</th>
-                                    <td>{{ $jadwal->ruangan }}</td>
+                                    <td>{{ $jadwal->ruangan->ruangan }}</td>
                                 </tr>
                                 <tr>
                                     <th>Dosen Penguji</th>

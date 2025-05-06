@@ -124,7 +124,7 @@
             <li ><a class="nav-link" href="{{route('bimbingan.index')}}"><i class="fas fa-list"></i> <span>Bimbingan</span></a></li>
             <li ><a class="nav-link" href="{{route('pengumuman.mahasiswa.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
             <li ><a class="nav-link" href="{{route('mahasiswa.jadwal.index')}}"><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
-            <li ><a class="nav-link" href="{{--  --}}"><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
+            <!-- <li ><a class="nav-link" href="{{--  --}}"><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li> -->
             <li><a class="nav-link" href="{{ route('PengajuanSeminar.index') }}"><i class="fas fa-calendar-check"></i> <span>Pengajuan Seminar</span></a></li>
              {{-- Untuk Staff --}}
             @elseif (session('role') == 'Staff')

@@ -10,9 +10,9 @@ class Jadwal extends Model
 
     protected $fillable = [
         'kelompok_id',
-        'ruangan',
         'waktu',
         'user_id',
+        'ruangan_id',
         'KPA_id',
         'prodi_id',
         'TM_id'
@@ -39,5 +39,9 @@ class Jadwal extends Model
     public function tahunMasuk()
     {
         return $this->belongsTo(TahunMasuk::class, 'TM_id');
+    }
+
+    public function ruangan(){
+        return $this->belongsTo(Ruangan::class,'ruangan_id');
     }
 }

@@ -30,20 +30,33 @@
                             @method('PUT')
 
                             {{--Pilih Kelompok--}}
+                            <div class="form-group">
                             <label for="kelompok_id">Kelompok</label>
                             <select id="kelompok_id" name="kelompok_id" class="select2 form-control" required>
                                 <option value="">-- Pilih Kelompok --</option>
                                 @foreach ($kelompok as $item)
                                     <option 
                                         value="{{ $item['id'] }}" 
-                                        {{ (old('kelompok_id') ?? $jadwal->kelompok_id) == $item['id'] ? 'selected' : '' }}
-                                    >
+                                        {{ (old('kelompok_id') ?? $jadwal->kelompok_id) == $item['id'] ? 'selected' : '' }}>
                                         {{ $item['nomor_kelompok'] }}
                                     </option>
                                 @endforeach
                             </select>
+                            </div>
+                            {{-- Masukkan Ruangan --}}
+                            <div class="form-group">
+                                <label for="ruangan">Ruangan</label>
+                                <select name="ruangan_id" id="ruangan_id" class="select2 form-control" required>
+                                    <option value="">-- Pilih Ruangan --</option>
+                                    @foreach($ruangan as $item)
+                                    <option value="{{ $item->id}}" {{ (old('ruangan_id') ?? $jadwal->ruangan_id) == $item['id'] ? 'selected' : '' }}>
+                                        {{ $item->ruangan}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                            {{--Masukkan lokasi--}}
+                            {{--Masukkan lokasi
                             <div class="form-group mt-3">
                                 <label for="ruangan">Lokasi</label>
                                 <input type="text" name="ruangan" id="ruangan"
@@ -53,7 +66,7 @@
                                 @error('ruangan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div>--}}  
 
                             {{--Masukkan Jam--}}
                             <div class="form-group">

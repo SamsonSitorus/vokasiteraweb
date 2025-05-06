@@ -30,7 +30,7 @@
                                     </tr>
                                     <tr>
                                         <th>Ruangan</th>
-                                        <td>{{ $jadwalUtama->ruangan }}</td>
+                                        <td>{{ $jadwalUtama->ruangan->ruangan }}</td>
                                     </tr>
                                     <tr>
                                         <th>Waktu Sidang</th>
@@ -73,7 +73,7 @@
                                     @foreach($jadwalLain as $jadwal)
                                     <tr>
                                         <td>{{ $jadwal->kelompok->nomor_kelompok ?? '-' }}</td>
-                                        <td>{{ $jadwal->ruangan }}</td>
+                                        <td>{{ $jadwal->ruangan->ruangan }}</td>
                                         <td>{{ \Carbon\Carbon::parse($jadwal->waktu)->translatedFormat('l, d F Y - H:i') }}</td>
                                         <td>{!! $jadwal->penguji_nama !!}</td>
                                     </tr>
