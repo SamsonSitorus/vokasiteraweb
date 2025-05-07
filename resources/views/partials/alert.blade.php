@@ -15,7 +15,7 @@
                 <span>&times;</span>
             </button>
             @foreach ($errors->all() as $error)
-                {{ $error }}
+                {{ $error }}    
             @endforeach
         </div>
     </div>

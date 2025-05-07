@@ -12,7 +12,6 @@
                         </div>                    
                         <div class="card-body">
                             @include('partials.alert')
-<<<<<<< Updated upstream
                             <div class="table-responsive">
                                 <table class="table table-striped" id="table-2">
                                     <thead>
@@ -60,7 +59,7 @@
                                     
                                     </tbody>                                
                                 </table>
-=======
+
                             <div class="row">
                                 <div class="col-12">
                                     <ul class="nav nav-tabs mb-4" style="border-bottom: 1px solid #ddd;">
@@ -121,8 +120,6 @@
 
                             </div>
                         </div>
-
->>>>>>> Stashed changes
                             </div>
                         </div>
                     </div>
