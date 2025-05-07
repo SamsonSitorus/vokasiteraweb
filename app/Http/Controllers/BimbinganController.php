@@ -23,12 +23,15 @@ class BimbinganController extends Controller
         // dd($kelompokId);
         $bimbingan = Bimbingan::where ('kelompok_id',$kelompokId)->with('kelompok')->get();
 
-        foreach($bimbingan as $bimbinganItem){
-            if($bimbinganItem->rencana_selesai <=now() && $bimbinganItem->status !=='selesai'){
+        foreach ($bimbingan as $bimbinganItem) {
+            if ($bimbinganItem->status === 'disetujui' && $bimbinganItem->rencana_selesai <= now()) {
                 $bimbinganItem->status = 'selesai';
                 $bimbinganItem->save();
+            } elseif ($bimbinganItem->status === 'menunggu') {
+                // Tetap menunggu, tidak perlu update
             }
         }
+        
 
         return view('pages.Mahasiswa.Bimbingan.index',compact('bimbingan'));
     }

@@ -16,8 +16,7 @@ class PengajuanSeminar extends Model
         'pembimbing_id',
         'status',
         'catatan',
-    ];
-    
+    ];    
     public function kelompok()
     {
         return $this->belongsTo(Kelompok::class, 'kelompok_id');

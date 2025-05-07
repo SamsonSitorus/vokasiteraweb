@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('jadwal', function (Blueprint $table) {
             $table->id();
             $table->foreignId('kelompok_id')->constrained('kelompok')->onDelete('cascade');
-            $table->dateTime('waktu');
+            $table->dateTime('waktu_mulai');
+            $table->dateTime('waktu_selesai');
             $table->unsignedBigInteger('user_id');
             $table->foreignId('ruangan_id')->nullable()->constrained('ruangan')->onDelete('cascade');
             $table->foreignId('KPA_id')->nullable()->constrained('kategori_pa')->onDelete('cascade');

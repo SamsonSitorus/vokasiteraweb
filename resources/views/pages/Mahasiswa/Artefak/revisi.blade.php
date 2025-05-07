@@ -21,12 +21,12 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link {{--  --}}" href="{{--  --}}">
+                                            <a class="nav-link {{--  --}}" href="{{route('status_perizinan')}}">
                                                 STATUS PERIZINAN MAJU SIDANG
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link {{--  --}}" href="{{--  --}}">
+                                            <a class="nav-link {{--  --}}" href="{{route('jadwal.seminar')}}">
                                                 JADWAL SIDANG
                                             </a>
                                         </li>

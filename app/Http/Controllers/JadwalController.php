@@ -154,7 +154,33 @@ class JadwalController extends Controller
                 }
             ],
             'ruangan_id' => 'required|exists:ruangan,id',
-            'waktu' => 'required|date|after:now',
+            'waktu_mulai' => [
+                'required', 'date', 'after:now',
+                function($attribute, $value, $fail) use($request) {
+                    $waktuMulai = $value;
+                    $waktuSelesai = $request->waktu_selesai;
+
+                    if (!$waktuSelesai) return;
+
+                    $bentrok = Jadwal::where('KPA_id', $request->KPA_id)
+                        ->where('prodi_id', $request->prodi_id)
+                        ->where('TM_id', $request->TM_id)
+                        ->where(function ($query) use ($waktuMulai, $waktuSelesai) {
+                            $query->whereBetween('waktu_mulai', [$waktuMulai, $waktuSelesai])
+                                ->orWhereBetween('waktu_selesai', [$waktuMulai, $waktuSelesai])
+                                ->orWhere(function ($q) use ($waktuMulai, $waktuSelesai) {
+                                    $q->where('waktu_mulai', '<=', $waktuMulai)
+                                    ->where('waktu_selesai', '>=', $waktuSelesai);
+                                });
+                        })
+                        ->exists();
+
+                    if ($bentrok) {
+                        $fail("Sudah ada jadwal untuk waktu ini pada program dan tahun masuk yang sama.");
+                    }
+                }
+            ],
+            'waktu_selesai' => 'required|date|after:waktu_mulai',
             'KPA_id' => 'required|exists:kategori_pa,id',
             'prodi_id' => 'required|exists:prodi,id',
             'TM_id' => 'required|exists:tahun_masuk,id',
@@ -163,7 +189,8 @@ class JadwalController extends Controller
         Jadwal::create([
             'kelompok_id' => $validated['kelompok_id'],
             'ruangan_id' => $validated['ruangan_id'],
-            'waktu' => $validated['waktu'],
+            'waktu_mulai' => $validated['waktu_mulai'],
+            'waktu_selesai' => $validated['waktu_selesai'],
             'user_id' => $userID,
             'KPA_id' => $validated['KPA_id'],
             'prodi_id' => $validated['prodi_id'],
@@ -225,7 +252,8 @@ class JadwalController extends Controller
             $validated = $request->validate([
                 'kelompok_id' => 'required|exists:kelompok,id',
                 'ruangan_id' => 'required|exists:ruangan,id',
-                'waktu' => 'required|date|after:now',
+                'waktu_mulai' => 'required|date|after:now',
+                'waktu_selesai'=>'required|date|after:waktu_mulai'
             ]);
 
             $jadwal = Jadwal::findOrFail($id);

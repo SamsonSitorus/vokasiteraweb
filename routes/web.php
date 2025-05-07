@@ -350,8 +350,13 @@ Route::prefix('NilaiIndividu')->group(function(){
     });
 //artefak untuk mahasiswa
 Route::prefix('artefak')->group(function(){
+    //untuk artefak->navbar
     Route::get('/tugas',[Artefak_Controller::class, 'Tugas'])->name('tugas.index');
     Route::get('/revisi',[Artefak_Controller::class, 'Revisi'])->name('revisi.index');
+    Route::get('/status-pengajuan-seminar',[PengajuanSeminarController::class,'status_perizinan'])->name('status_perizinan');
+    Route::get('/jadwal-sidang',[JadwalMahasiswaController::class, 'jadwalSeminar'])->name('jadwal.seminar');
+
+    //untuk mahasiswa CRUD
     Route::get('/create/{id}', [Artefak_Controller::class, 'create'])->name('artefak.create');
     Route::post('/{id}', [Artefak_Controller::class, 'submit'])->name('artefak.submit');
     Route::get('/edit/{id}',[Artefak_Controller::class, 'edit'])->name('artefak.edit');
@@ -359,13 +364,10 @@ Route::prefix('artefak')->group(function(){
     //untuk menampilkan kepada dosen koordinator
     Route::get('/koordinator/{id}',[Artefak_Controller::class,'index_koordinator'])->name('artefak.index.koordinator');
     //untuk menampilkan kepada dosen pembimbing
-
     // feedback 
     Route::get('/feedback/{id}/edit', [Artefak_Controller::class, 'editFeedback'])->name('feedback.edit');
     Route::post('/feedback/{id}', [Artefak_Controller::class, 'updateFeedback'])->name('feedback.update');
 
-
-   
 });
 // Jadwal dari dosen 
 Route::prefix('jadwal')->group(function() {

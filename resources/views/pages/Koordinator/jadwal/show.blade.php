@@ -31,8 +31,12 @@
                                     <td>{{ $jadwal->kelompok->nomor_kelompok ?? '-' }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Tanggal & Waktu</th>
-                                    <td>{{ \Carbon\Carbon::parse($jadwal->waktu)->translatedFormat('l, d F Y - H:i') }}</td>
+                                    <th>Tanggal & Waktu Mulai</th>
+                                    <td>{{ \Carbon\Carbon::parse($jadwal->waktu_mulai)->translatedFormat('l, d F Y - H:i') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tanggal & Waktu Selesai</th>
+                                    <td>{{ \Carbon\Carbon::parse($jadwal->waktu_selesai)->translatedFormat('l, d F Y - H:i') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Ruangan</th>

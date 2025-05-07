@@ -13,6 +13,8 @@ class JadwalMahasiswaController extends Controller
     {
         $userId = session('user_id');
         $token = session('token');
+        $kelompokId = session('kelompok_id');
+        // dd($kelompokId);
 
         $kelompokMahasiswa = KelompokMahasiswa::with(['kelompok.jadwal', 'kelompok.pembimbing', 'kelompok.penguji'])
             ->where('user_id', $userId)
@@ -79,10 +81,65 @@ class JadwalMahasiswaController extends Controller
             }
             $jadwal->penguji_nama = !empty($pengujiLainNama) ? implode('<br>', $pengujiLainNama) : '-';
         }
-
         return view('pages.Mahasiswa.jadwal.index', [
             'jadwalUtama' => $jadwalUtama,
             'jadwalLain' => $jadwalLain,
+            'kelompok' => $kelompok,
+            'pembimbingNama' => $pembimbingNama,
+            'pengujiNama' => $pengujiNama
+        ]);
+    }
+
+    public function jadwalSeminar(){
+        $userId = session('user_id');
+        $token = session('token');
+
+        $kelompokMahasiswa = KelompokMahasiswa::with(['kelompok.jadwal', 'kelompok.pembimbing', 'kelompok.penguji'])
+            ->where('user_id', $userId)
+            ->first();
+
+        if (!$kelompokMahasiswa || !$kelompokMahasiswa->kelompok) {
+            return back()->with('error', 'Anda belum tergabung dalam kelompok.');
+        }
+
+        $kelompok = $kelompokMahasiswa->kelompok;
+        $jadwalUtama = $kelompok->jadwal;
+
+            // return view('pages.Mahasiswa.Artefak.jadwal', compact('kelompok'))
+            //     ->with('error', 'Jadwal belum tersedia untuk kelompok Anda.');
+        
+        $responseDosen = Http::withHeaders([
+            'Authorization' => "Bearer $token"
+        ])->get(env('API_URL') . "library-api/dosen", ['limit' => 100]);
+
+        $dosenData = $responseDosen->successful() ? $responseDosen->json()['data']['dosen'] : [];
+
+        $dosenArray = [];
+        foreach ($dosenData as $dosen) {
+            $dosenArray[$dosen['user_id']] = $dosen['nama'];
+        }
+
+        // Ambil nama pembimbing
+        $pembimbingNama = [];
+        if ($kelompok->pembimbing && $kelompok->pembimbing->isNotEmpty()) {
+            foreach ($kelompok->pembimbing as $pembimbing) {
+                $userIdPembimbing = $pembimbing->user_id;
+                $pembimbingNama[] = $dosenArray[$userIdPembimbing] ?? 'Tidak Ditemukan';
+            }
+        }
+
+        // Ambil nama penguji untuk kelompok sendiri
+        $pengujiNama = '-';
+        if ($kelompok->penguji && $kelompok->penguji->isNotEmpty()) {
+            $pengujiNamaArray = [];
+            foreach ($kelompok->penguji as $penguji) {
+                $userIdPenguji = $penguji->user_id;
+                $pengujiNamaArray[] = $dosenArray[$userIdPenguji] ?? 'Tidak Ditemukan';
+            }
+            $pengujiNama = implode('<br>', $pengujiNamaArray);
+        }
+        return view('pages.Mahasiswa.Artefak.jadwal', [
+            'jadwalUtama' => $jadwalUtama,
             'kelompok' => $kelompok,
             'pembimbingNama' => $pembimbingNama,
             'pengujiNama' => $pengujiNama

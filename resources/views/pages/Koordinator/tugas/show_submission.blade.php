@@ -37,12 +37,11 @@
                                             <td>
                                                 <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank">Lihat File</a>
                                             </td>
-                                            <td>
-                                                <strong>Status:</strong> {{ $item->status ?? '-' }} <br>
-                                                <strong>Feedback:</strong>
+                                            <td> {{ $item->status ?? '-' }} <br>
+                                                {{-- <strong>Feedback:</strong>
                                                 {{ \Illuminate\Support\Str::length($feedback) > 20 
                                                     ? \Illuminate\Support\Str::limit($feedback, 20, '...') 
-                                                    : $feedback }}
+                                                    : $feedback }} --}}
                                             </td> 
                                             <td>
                                                 <div class="d-flex">

@@ -41,7 +41,11 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="files">Dokumen Pengajuan (Maksimal 5 File)</label>
+                                    <label for="files">Silahkan Kumpulkan Dokumen Pengajuan Yang meliputi <br>
+                                        1.Dokumen Pengembangan Produk <br>
+                                        2.Slide Presentasi <br>
+                                        3.Kartu Bimbingan <br>
+                                        (Maksimal 5 File)</label>
                                     <div id="drop-area" 
                                         class="border p-4 text-center" 
                                         style="border: 2px dashed #ccc; position: relative; transition: background-color 0.3s ease;"

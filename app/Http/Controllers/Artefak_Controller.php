@@ -297,12 +297,12 @@ class Artefak_Controller extends Controller
                       ->where('TM_id', $TM_id);
             })
             ->get();
-            foreach($artefak as $artefakItem){
-                if($artefakItem->tanggal_pengumpulan <=now() && $artefakItem->status !=='selesai'){
-                    $artefakItem->status = 'selesai';
-                    $artefakItem->save();
-                }
-              }
+            // foreach($artefak as $artefakItem){
+            //     if($artefakItem->tanggal_pengumpulan <=now() && $artefakItem->status !=='selesai'){
+            //         $artefakItem->status = 'selesai';
+            //         $artefakItem->save();
+            //     }
+             // }
         return view('pages.Koordinator.tugas.show_submission', compact('artefak'));
     }   
     

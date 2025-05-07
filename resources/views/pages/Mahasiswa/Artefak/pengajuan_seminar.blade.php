@@ -22,12 +22,12 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link {{--  --}}" href="{{route('status_perizinan')}}">
-                                                STATUS PERIZINAN MAJU SIDANG
+                                                STATUS PERIZINAN MAJU SEMINAR
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link {{--  --}}" href="{{ route('jadwal.seminar')}}">
-                                                JADWAL SIDANG
+                                                JADWAL SEMINAR
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -36,43 +36,42 @@
                                             </a>
                                         </li>
                                     </ul>
-                    {{-- Konten Utama --}}
-                        <div class="card">
-                            <div class="card-body">
-                                @foreach ($artefak as $item)
-                                    @php
-                                        $status = $statusByTugas->get($item->id);
-                                    @endphp
-                                    <div class="card mb-4 shadow-sm border">
+                                {{-- Konten Utama --}}
+                                @foreach ($pengajuanSeminar as $item)
+                                @if($item->status == 'disetujui')
+                                    <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title font-weight-bold">{{ $item->Judul_Tugas }}</h5>
-                                            <p class="mb-2">{{ $item->Deskripsi_Tugas }}</p>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <strong>Deadline:</strong> 
-                                                    <span class="text-danger">{{ $item->formatted_deadline }}</span>
-                                                </li>
-                                            </ul>
-                                            <div class="mb-2">
-                                                <span class="badge badge-{{ $status ? 'success' : 'secondary' }}">
-                                                    {{ $status ? $status->status : 'Belum dikumpulkan' }}
-                                                </span>
-                                                <a href="{{ route('artefak.create', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-primary ml-2">Lihat Detail</a>
-                                            </div>
-                                            <div class="mb-2 {{ $item->status_class }}">
-                                                ⏳ <span class="countdown" data-deadline="{{ $item->tanggal_pengumpulan }}"></span>
+                                            <p><strong>Kelompok:</strong> {{ $item->kelompok->nomor_kelompok }}</p>
+                                            <div class="border p-3 rounded">
+                                                <p><strong>Dosen Pembimbing:</strong></p>
+                                                <ul>
+                                                    <li>
+                                                        @php
+                                                            $userId = $item->pembimbing->user_id ?? null;
+                                                            $namaDosen = $userId && isset($dosen_map[$userId]) 
+                                                                ? $dosen_map[$userId]['nama'] 
+                                                                : 'Nama tidak ditemukan';
+                                                        @endphp
+                                                        {{ $namaDosen }}, <strong>{{ $item->status }}</strong>
+                                                        <span class="text-success"><i class="fas fa-check-circle"></i> telah menyetujui untuk maju sidang</span>
+                                                    </li>
+                                                </ul>
+                                                <small class="text-muted">
+                                                    Silakan mengumpulkan berkas hardcopy jika pembimbing telah menyetujui Anda untuk maju sidang, baik diizinkan langsung oleh pembimbing atau melalui kaprodi.
+                                                </small>
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
-
-                                @if ($artefak->isEmpty())
-                                    <div class="alert alert-info">Tidak ada tugas yang tersedia.</div>
+                                @elseif($item->status == 'menunggu')
+                                    <div class="alert alert-warning">
+                                        Status pengajuan kelompok {{ $item->kelompok->nomor_kelompok }} belum disetujui oleh pembimbing.
+                                    </div>
+                                @else
+                                <div class="alert alert-info">
+                                    Status pengajuan kelompok {{ $item->kelompok->nomor_kelompok }} belum Request.
+                                </div>
                                 @endif
-
-                            </div>
-                        </div>
-
+                            @endforeach         
                             </div>
                         </div>
                     </div>

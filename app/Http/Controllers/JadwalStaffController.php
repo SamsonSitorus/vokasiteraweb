@@ -70,7 +70,7 @@ class JadwalStaffController extends Controller
             return response()->json($kelompok);
 
         } catch (Exception $e) {
-            \Log::error('Error in getKelompok: '.$e->getMessage());
+            Log::error('Error in getKelompok: '.$e->getMessage());
             return response()->json([], 500);
         }
     }
@@ -128,7 +128,8 @@ class JadwalStaffController extends Controller
                         }
                     }],
                 'ruangan_id' => 'required|exists:ruangan,id',
-                'waktu' => 'required|date|after:now',
+                'waktu_mulai' => 'required|date|after:now',
+                'waktu_selesai'=> 'required|date|after:waktu_mulai',
                 'KPA_id' => 'required',
                 'prodi_id'=>'required',
                 'TM_id'=>'required',
@@ -136,7 +137,8 @@ class JadwalStaffController extends Controller
             Jadwal::create([
                 'kelompok_id' => $validated['kelompok_id'],
                 'ruangan_id' => $validated['ruangan_id'],
-                'waktu' => $validated['waktu'],
+                'waktu_mulai' => $validated['waktu_mulai'],
+                'waktu_selesai' => $validated['waktu_selesai'],
                 'user_id' => $userID,
                 'KPA_id'=>$validated['KPA_id'],
                 'prodi_id'=>$validated['prodi_id'],

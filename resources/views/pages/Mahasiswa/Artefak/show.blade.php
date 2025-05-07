@@ -46,6 +46,14 @@
                                 <th>Status</th>
                                 <td>{{ $tugas->status }}</td>
                             </tr>
+                            <tr>
+                                <th>Feedback Koordinator</th>
+                                <td>{{ $existingSubmission->feedback ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Feedback Pembimbing</th>
+                                <td>{{ $existingSubmission->feedback_pembimbing ?? '-' }}</td>
+                            </tr>
                         </table>
 
                         {{-- Form Upload File --}}
