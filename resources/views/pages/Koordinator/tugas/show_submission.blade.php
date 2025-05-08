@@ -9,9 +9,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>List Tugas</h4>
-                        <a href="{{ route('tugas.create') }}" class="btn btn-primary">
-                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Tugas
-                        </a>
+                        <a href="{{ route('koordinator.tugas.index') }}" class="btn btn-primary">Kembali</a>
                     </div> 
                     <div class="card-body">
                         @include('partials.alert')
@@ -39,12 +37,11 @@
                                             <td>
                                                 <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank">Lihat File</a>
                                             </td>
-                                            <td>
-                                                <strong>Status:</strong> {{ $item->status ?? '-' }} <br>
-                                                <strong>Feedback:</strong>
+                                            <td> {{ $item->status ?? '-' }} <br>
+                                                {{-- <strong>Feedback:</strong>
                                                 {{ \Illuminate\Support\Str::length($feedback) > 20 
                                                     ? \Illuminate\Support\Str::limit($feedback, 20, '...') 
-                                                    : $feedback }}
+                                                    : $feedback }} --}}
                                             </td> 
                                             <td>
                                                 <div class="d-flex">

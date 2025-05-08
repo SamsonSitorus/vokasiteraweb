@@ -50,10 +50,8 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{ route('bimbingan.kartu', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm mr-2">
-                                                        <i class="nav-icon fas fa-eye"></i> &nbsp;Kartu bimbingan
-                                                    </a>
-                                                        <a href="{{ route('bimbingan.edit', Crypt::encrypt($item->id)) }}" 
+                                                    @if($item->status == 'menunggu') 
+                                                    <a href="{{ route('bimbingan.edit', Crypt::encrypt($item->id)) }}" 
                                                         class="btn btn-sm btn-primary mr-2">
                                                         <i class="fas fa-edit"></i> Edit
                                                         </a>
@@ -65,6 +63,13 @@
                                                                 <i class="fas fa-trash"></i> Hapus
                                                             </button>
                                                         </form>
+                                                        @else
+                                                    {{-- @else($item->status == 'selesai')  --}}
+                                                    <a href="{{ route('bimbingan.kartu', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm mr-2">
+                                                        <i class="nav-icon fas fa-eye"></i> &nbsp;Kartu bimbingan
+                                                    </a>
+                                                    {{-- @else badge-warning --}}
+                                                    @endif    
                                                 </div>
                                             </td>
                                         </tr>

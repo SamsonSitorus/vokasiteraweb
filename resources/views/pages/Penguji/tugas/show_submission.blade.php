@@ -21,7 +21,7 @@
                                         <th>Waktu Submit</th>
                                         <th>File</th>
                                         <th>Status</th>
-                                        <th>Aksi</th>
+                                        {{-- <th>Aksi</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -35,13 +35,13 @@
                                             </td>
                                             
                                             <td>{{ $item->status }}</td> 
-                                            <td>
+                                            {{-- <td>
                                                 <div class="d-flex">
                                                     <a href="{{route('tugas.show', $item->id)}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-comments"></i> &nbsp; FeedBack</a>&nbsp;&nbsp;
                                                    
                                                    
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach 
                                 </tbody>

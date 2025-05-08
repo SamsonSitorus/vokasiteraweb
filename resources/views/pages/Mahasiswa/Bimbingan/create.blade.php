@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Tambah Kelompok')
+@section('title', 'Tambah Bimbingan')
 
 @section('content')
 <section class="section custom-section">
@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4>Tambah Kelompok</h4>
+                        <h4>Tambah Request Bimbingan</h4>
                         <a class="btn btn-primary btn-sm" href="{{ route('bimbingan.index') }}">Kembali</a>
                     </div>  
                     <div class="card-body">

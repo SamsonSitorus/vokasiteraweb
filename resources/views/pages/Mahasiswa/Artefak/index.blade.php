@@ -12,6 +12,7 @@
                         </div>                    
                         <div class="card-body">
                             @include('partials.alert')
+<<<<<<< Updated upstream
                             <div class="table-responsive">
                                 <table class="table table-striped" id="table-2">
                                     <thead>
@@ -59,7 +60,7 @@
                                     
                                     </tbody>                                
                                 </table>
-
+=======
                             <div class="row">
                                 <div class="col-12">
                                     <ul class="nav nav-tabs mb-4" style="border-bottom: 1px solid #ddd;">
@@ -69,12 +70,12 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link {{--  --}}" href="{{--  --}}">
+                                            <a class="nav-link {{--  --}}" href="{{route('status_perizinan')}}">
                                                 STATUS PERIZINAN MAJU SIDANG
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link {{--  --}}" href="{{ route('mahasiswa.jadwal.index')}}">
+                                            <a class="nav-link {{--  --}}" href="{{ route('jadwal.seminar')}}">
                                                 JADWAL SIDANG
                                             </a>
                                         </li>
@@ -120,6 +121,8 @@
 
                             </div>
                         </div>
+
+>>>>>>> Stashed changes
                             </div>
                         </div>
                     </div>
@@ -172,7 +175,7 @@
                     el.textContent = `Selesai ${hours} jam ${minutes} menit yang lalu`;
                     el.classList.remove('text-warning');
                     el.classList.add('text-success');
-                }
+              }
             });
         }
 

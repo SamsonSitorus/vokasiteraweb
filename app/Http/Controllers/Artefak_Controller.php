@@ -59,7 +59,7 @@ class Artefak_Controller extends Controller
                         $minutes = floor(($diffInSeconds % 3600) / 60);
                         $item->time_remaining = "Selesai {$hours} jam {$minutes} menit yang lalu";
                     }
-                    $item->status_class = 'text-success';
+                    $item->status_class = 'text-warning';
                 }
             }
 
@@ -73,6 +73,7 @@ class Artefak_Controller extends Controller
 
         return view('pages.Mahasiswa.Artefak.index', compact('artefak','statusByTugas'));
     }
+    
     public function Revisi(Request $request)
     {
         $prodi_id = session('prodi_id');
@@ -136,7 +137,7 @@ class Artefak_Controller extends Controller
         return view('pages.Mahasiswa.Artefak.revisi', compact('artefak','statusByTugas'));
     }
 
-    public function create( $encryptedId){
+  public function create( $encryptedId){
         try {
             $id = Crypt::decrypt($encryptedId);
             $tugas = Tugas::findOrFail($id);
@@ -215,7 +216,7 @@ class Artefak_Controller extends Controller
         // Simpan ke database
         pengumpulan_tugas::create($validated);
     
-        return redirect()->route('artefak.index')->with('success', 'Data berhasil disimpan.');
+        return redirect()->route('tugas.index')->with('success', 'Data berhasil disimpan.');
         
     }
 
@@ -244,7 +245,7 @@ class Artefak_Controller extends Controller
         // Update the tugas attributes
         $artefak->update($validated);
         
-        return redirect()->route('artefak.index')->with('success', 'Tugas berhasil diperbarui!');
+        return redirect()->route('tugas.index')->with('success', 'Tugas berhasil diperbarui!');
     
     }
     public function editFeedback($id)
@@ -296,12 +297,12 @@ class Artefak_Controller extends Controller
                       ->where('TM_id', $TM_id);
             })
             ->get();
-            foreach($artefak as $artefakItem){
-                if($artefakItem->tanggal_pengumpulan <=now() && $artefakItem->status !=='selesai'){
-                    $artefakItem->status = 'selesai';
-                    $artefakItem->save();
-                }
-              }
+            // foreach($artefak as $artefakItem){
+            //     if($artefakItem->tanggal_pengumpulan <=now() && $artefakItem->status !=='selesai'){
+            //         $artefakItem->status = 'selesai';
+            //         $artefakItem->save();
+            //     }
+             // }
         return view('pages.Koordinator.tugas.show_submission', compact('artefak'));
     }   
     

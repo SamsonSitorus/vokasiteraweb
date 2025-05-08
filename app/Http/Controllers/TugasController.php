@@ -96,7 +96,7 @@ public function store(Request $request)
     }
 
     Tugas::create($validated);
-    return redirect()->route('tugas.index')->with('success', 'Tugas berhasil disimpan.');
+    return redirect()->route('koordinator.tugas.index')->with('success', 'Tugas berhasil disimpan.');
 }
 
 public function edit($encryptedId)
@@ -169,7 +169,7 @@ public function update(Request $request, $encryptedId)
     // Update the tugas attributes
     $tugas->update($validated);
     
-    return redirect()->route('tugas.index')->with('success', 'Tugas berhasil diperbarui!');
+    return redirect()->route('koordinator.tugas.index')->with('success', 'Tugas berhasil diperbarui!');
 }
 
     

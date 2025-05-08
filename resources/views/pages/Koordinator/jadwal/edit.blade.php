@@ -68,13 +68,24 @@
                                 @enderror
                             </div>--}}  
 
-                            {{--Masukkan Jam--}}
+                            {{--Masukkan Jam Mulai--}}
                             <div class="form-group">
-                                <label for="waktu">Tanggal</label>
-                                <input type="datetime-local" name="waktu" id="waktu"
-                                     class="form-control @error('waktu') is-invalid @enderror"
-                                    value="{{ old('waktu', \Carbon\Carbon::parse($jadwal->waktu)->format('Y-m-d\TH:i')) }}">
-                                @error('waktu')
+                                <label for="waktu_mulai">Tanggal</label>
+                                <input type="datetime-local" name="waktu_mulai" id="waktu_mulai"
+                                     class="form-control @error('waktu_mulai') is-invalid @enderror"
+                                    value="{{ old('waktu_mulai', \Carbon\Carbon::parse($jadwal->waktu_mulai)->format('Y-m-d\TH:i')) }}">
+                                @error('waktu_mulai')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror 
+                            </div>
+
+                            {{--Masukkan Jam Selsai--}}
+                            <div class="form-group">
+                                <label for="waktu_selesai">Tanggal</label>
+                                <input type="datetime-local" name="waktu_selesai" id="waktu_selesai"
+                                     class="form-control @error('waktu_selesai') is-invalid @enderror"
+                                    value="{{ old('waktu_selesai', \Carbon\Carbon::parse($jadwal->waktu_selesai)->format('Y-m-d\TH:i')) }}">
+                                @error('waktu_selesai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror 
                             </div>

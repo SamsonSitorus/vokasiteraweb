@@ -26,6 +26,33 @@ class PengajuanSeminarController extends Controller
         return view('pages.Mahasiswa.Pengajuan_Seminar.index', compact('pengajuanSeminars'));
     }
 
+    public function status_perizinan(){
+        $kelompokId = session('kelompok_id');
+        $pengajuanSeminar = PengajuanSeminar::with('kelompok','pembimbing')
+        ->where('kelompok_id', $kelompokId)
+        ->get();
+
+        $token = session('token');
+        $responseDosen = Http::withHeaders([
+            'Authorization' =>"Bearer $token"
+        ])->get(env('API_URL'). "library-api/dosen");
+        
+        if($responseDosen->successful()){
+            $dosen_list =  $responseDosen->json()['data']['dosen'] ?? [];
+        if(!$pengajuanSeminar){
+            return view('pages.Mahasiswa.Artefak.pengajuan_seminar', compact('kelompok'))
+            ->with('error','Belum ada request');
+        }
+            
+        // Buat map berdasarkan user_id
+        $dosen_map = collect($dosen_list)->keyBy('user_id');
+
+        // dd($pengajuanSeminar);
+        return view('pages.Mahasiswa.Artefak.pengajuan_seminar', compact('pengajuanSeminar','dosen_map'));
+      
+    }
+}
+
     public function create()
     {
         $kelompokId = session('kelompok_id');
@@ -515,13 +542,7 @@ public function update(Request $request, $id)
             return redirect()->route('PembimbingPengajuanSeminar.index')->with('error', 'Terjadi kesalahan saat menolak pengajuan: ' . $e->getMessage());
         }
     }
-    
-    // Add a model relationship to make queries cleaner
-    public function pembimbing()
-    {
-        return $this->belongsTo(Pembimbing::class, 'pembimbing_id');
-    }
-    
+
     // Debug route remains unchanged
     public function debugPengajuanSeminar()
     {
