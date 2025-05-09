@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Tambah Tugas</h4>
-                        <a class="btn btn-primary btn-sm" href="{{ route('koordinator.tugas.index') }}">Kembali</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('Mahasiswa.tugas.index') }}">Kembali</a>
                     </div>
                     <div class="card-body">
                         {{-- Tampilkan Error jika ada --}}
@@ -25,13 +25,13 @@
                                 </div>
                             </div>
                         @endif
-                    <form method="POST" action="{{ route('tugas.store') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('Mahasiswa.tugas.submit') }}" enctype="multipart/form-data">
                             @csrf
                            
                             {{--  input user_id hide --}}
                             <input type="hidden" name="user_id" value="{{ $user_id }}">
                             {{--  input TA_id hide --}}
-                            <input type="hidden" name="TM_id" value="{{ $tahun_masuk->id }}">
+                            <input type="hidden" name="TA_id" value="{{ $tahun_ajaran->id }}">
                             {{--  input prodi_id hide --}}
                             <input type="hidden" name="prodi_id" value="{{ $prodi->id }}">
                              {{--  KPA_id hide --}}
@@ -47,21 +47,12 @@
 
                             <div class="form-group">
                                 <label for="Deskripsi_Tugas">Deskripsi Tugas</label>
-                                <textarea name="Deskripsi_Tugas" id="Deskripsi_Tugas"
-                                    class="form-control @error('Deskripsi_Tugas') is-invalid @enderror"
-                                    placeholder="Masukkan Deskripsi Tugas"
-                                    rows="5">{{ old('Deskripsi_Tugas') }}</textarea>
-                                </div>
-
-                            <div class="form-group">
-                                <label for="kategori_tugas">Kategori </label>
-                                <select name="kategori_tugas" id="kategori_tugas" class="form-control">
-                                    <option value="Tugas" >Tugas(submitan Progres)</option>
-                                    <option value="Artefak">Artefak(Submitan Final)</option>
-                                    <option value="Revisi">Revisi(Submitan Perbaikan)</option>
-                                </select>
+                                <input type="text" name="Deskripsi_Tugas" id="Deskripsi_Tugas" class="form-control @error('Deskripsi_Tugas') is-invalid @enderror" placeholder="Masukkan Deskripsi Tugas" value="{{ old('Deskripsi_Tugas') }}">
+                                @error('Deskripsi_Tugas')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="tanggal_pengumpulan">Batas Pengumpulan</label>
                                 <input type="datetime-local" name="tanggal_pengumpulan" id="tanggal_pengumpulan" class="form-control @error('tanggal_pengumpulan') is-invalid @enderror" value="{{ old('tanggal_pengumpulan') ? old('tanggal_pengumpulan') : '' }}">

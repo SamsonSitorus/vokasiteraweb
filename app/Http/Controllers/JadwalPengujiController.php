@@ -28,7 +28,7 @@ class JadwalPengujiController extends Controller
                     $query->where('user_id', $userID);
                 })
                 ->with(['kelompok.penguji'])
-                ->orderBy('waktu', 'asc')
+                ->orderBy('waktu_mulai', 'asc')
                 ->get();
     
             // Ambil data nama dosen dari API eksternal
@@ -66,7 +66,7 @@ class JadwalPengujiController extends Controller
             return view('pages.Penguji.jadwal.index', compact('jadwal', 'namaDosen'));
     
         } catch (\Exception $e) {
-            \Log::error('Error fetching jadwal penguji: ' . $e->getMessage());
+            Log::error('Error fetching jadwal penguji: ' . $e->getMessage());
             return back()->with('error', 'Gagal mengambil data jadwal.');
         }
     }

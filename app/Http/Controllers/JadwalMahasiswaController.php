@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\KelompokMahasiswa;
+use App\Models\Tugas;
 use App\Models\Jadwal;
 use Illuminate\Support\Facades\Http;
 
@@ -138,11 +139,23 @@ class JadwalMahasiswaController extends Controller
             }
             $pengujiNama = implode('<br>', $pengujiNamaArray);
         }
+        $prodi_id = session('prodi_id');
+            $KPA_id = session('KPA_id');
+            $TM_id = session('TM_id');
+            
+            $artefak = Tugas::with(['prodi', 'tahunMasuk', 'kategoripa'])
+            ->where('prodi_id', $prodi_id)
+            ->where('KPA_id', $KPA_id)
+            ->where('TM_id', $TM_id)
+            ->where('kategori_tugas','Artefak')
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('pages.Mahasiswa.Artefak.jadwal', [
             'jadwalUtama' => $jadwalUtama,
             'kelompok' => $kelompok,
             'pembimbingNama' => $pembimbingNama,
-            'pengujiNama' => $pengujiNama
+            'pengujiNama' => $pengujiNama,
+            'artefak' =>$artefak
         ]);
     }
 }

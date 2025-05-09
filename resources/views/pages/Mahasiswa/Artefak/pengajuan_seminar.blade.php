@@ -16,10 +16,18 @@
                                 <div class="col-12">
                                     <ul class="nav nav-tabs mb-4" style="border-bottom: 1px solid #ddd;">
                                         <li class="nav-item">
-                                            <a class="nav-link {{--  --}}" href="{{route('tugas.index')}}">
+                                            <a class="nav-link {{--  --}}" href="{{route('artefak.index')}}">
                                                 PENGUMPULAN BERKAS
                                             </a>
                                         </li>
+                                        @foreach ($artefak as $item)
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('feedback.show', Crypt::encrypt($item->id)) }}">
+                                                FEEDBACK
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                    
                                         <li class="nav-item">
                                             <a class="nav-link {{--  --}}" href="{{route('status_perizinan')}}">
                                                 STATUS PERIZINAN MAJU SEMINAR
@@ -56,9 +64,9 @@
                                                         <span class="text-success"><i class="fas fa-check-circle"></i> telah menyetujui untuk maju sidang</span>
                                                     </li>
                                                 </ul>
-                                                <small class="text-muted">
+                                                <large class="text-muted">
                                                     Silakan mengumpulkan berkas hardcopy jika pembimbing telah menyetujui Anda untuk maju sidang, baik diizinkan langsung oleh pembimbing atau melalui kaprodi.
-                                                </small>
+                                                </large>
                                             </div>
                                         </div>
                                     </div>

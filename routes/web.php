@@ -351,7 +351,8 @@ Route::prefix('NilaiIndividu')->group(function(){
 //artefak untuk mahasiswa
 Route::prefix('artefak')->group(function(){
     //untuk artefak->navbar
-    Route::get('/tugas',[Artefak_Controller::class, 'Tugas'])->name('tugas.index');
+    Route::get('/Artefak',[Artefak_Controller::class, 'Artefak'])->name('artefak.index');
+    Route::get('/show/{id}',[Artefak_Controller::class, 'show'])->name('feedback.show');
     Route::get('/revisi',[Artefak_Controller::class, 'Revisi'])->name('revisi.index');
     Route::get('/status-pengajuan-seminar',[PengajuanSeminarController::class,'status_perizinan'])->name('status_perizinan');
     Route::get('/jadwal-sidang',[JadwalMahasiswaController::class, 'jadwalSeminar'])->name('jadwal.seminar');
@@ -423,9 +424,8 @@ Route::prefix('staff/jadwal')->group(function(){
     Route::get('/jadwal/get-kelompok', [JadwalStaffController::class, 'getKelompok'])->name('baak.jadwal.getKelompok');
 });
 
-// Routes untuk Mahasiswa
+// Pengajuan Seminar Routes untuk Mahasiswa
 Route::prefix('pengajuan-seminar')->name('PengajuanSeminar.')->group(function () {
-    Route::get('/', [PengajuanSeminarController::class, 'index'])->name('index');
     Route::get('/create', [PengajuanSeminarController::class, 'create'])->name('create');
     Route::post('/', [PengajuanSeminarController::class, 'store'])->name('store');
     Route::get('/{id}/edit', [PengajuanSeminarController::class, 'edit'])->name('edit');
@@ -433,9 +433,18 @@ Route::prefix('pengajuan-seminar')->name('PengajuanSeminar.')->group(function ()
     Route::delete('/{id}', [PengajuanSeminarController::class, 'destroy'])->name('destroy');
 });
 
-// Routes untuk Pembimbing
+// pengajuan seminar Routes untuk Pembimbing
 Route::prefix('pembimbing-pengajuan-seminar')->name('PembimbingPengajuanSeminar.')->group(function () {
     Route::get('/', [PengajuanSeminarController::class, 'indexPembimbing'])->name('index');
     Route::put('/{id}/setujui', [PengajuanSeminarController::class, 'setujui'])->name('setujui');
     Route::put('/{id}/tolak', [PengajuanSeminarController::class, 'tolak'])->name('tolak');
+});
+
+//CRUD Tugas untuk mahasiswa
+Route::prefix('/Mahasiswa/Tugas')->group(function(){
+    Route::get('/',[Artefak_Controller::class, 'Mahasiswatugas'])->name('Mahasiswa.tugas.index');
+    Route::get('/create/{id}',[Artefak_Controller::class, 'Mahasiswacreate'])->name('Mahasiswa.tugas.create');
+    Route::post('/{id}',[Artefak_Controller::class, 'Mahasiswasubmit'])->name('Mahasiswa.tugas.submit');
+    Route::get('/edit/{id}',[Artefak_Controller::class, 'Mahasiswaedit'])->name('Mahasiswa.tugas.edit');
+    Route::put('/{id}',[Artefak_Controller::class, 'Mahasiswaupdate'])->name('Mahasiswa.tugas.update');
 });

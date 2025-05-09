@@ -27,7 +27,7 @@ class JadwalPembimbingController extends Controller
                     $query->where('user_id', $userID);
                 })
                 ->with(['kelompok.pembimbing'])
-                ->orderBy('waktu', 'asc')
+                ->orderBy('waktu_mulai', 'asc')
                 ->get();
     
             $response = Http::withHeaders([

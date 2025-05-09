@@ -59,15 +59,7 @@
             @if (in_array(2, $dosenRoles) || in_array(4, $dosenRoles)) 
             <li class="menu-header">Penguji</li>            <li class="{{ request()->routeIs('siswa.dashboard.*') ? 'active' : '' }}"><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li ><a class="nav-link" href="{{route('penguji.tugas.index')}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
-            {{--<li class="nav-item dropdown {{ request()->is('nilai*') ? 'active' : '' }}">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
-                    <i class="fas fa-calendar"></i> <span>Nilai</span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="nav-link {{ request()->routeIs('NilaiKelompok.index') ? 'active' : '' }}" href="{{ route('NilaiKelompok.index') }}">Nilai Kelompok </a></li>
-                    <li><a class="nav-link {{ request()->routeIs('pembimbing2.NilaiIndividu.index') ? 'active' : '' }}" href="{{ route('pembimbing2.NilaiIndividu.index') }}">Nilai Individu</a></li>
-                </ul>
-            </li> --}}
+           
             <li ><a class="nav-link" href="{{ route('penguji.jadwal.index') }}"><i class="fas fa-file"></i> <span>Jadwal</span></a></li>
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown {{ request()->is('nilai*') ? 'active' : '' }}" data-toggle="dropdown">
@@ -120,13 +112,13 @@
             @elseif (session('role') == 'Mahasiswa')
             <li class="menu-header">MahaSiswa</li>
             <li class="{{ request()->routeIs('siswa.dashboard.*') ? 'active' : '' }}"><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
-            <li ><a class="nav-link" href="{{ route('tugas.index')}}"><i class="fas fa-file"></i> <span>Artefak</span></a></li>
+            <li ><a class="nav-link" href="{{route('Mahasiswa.tugas.index')}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
+            <li ><a class="nav-link" href="{{ route('artefak.index')}}"><i class="fas fa-file"></i> <span>Artefak</span></a></li>
             <li ><a class="nav-link" href="{{route('bimbingan.index')}}"><i class="fas fa-list"></i> <span>Bimbingan</span></a></li>
             <li ><a class="nav-link" href="{{route('pengumuman.mahasiswa.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
             <li ><a class="nav-link" href="{{route('mahasiswa.jadwal.index')}}"><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
-            <!-- <li ><a class="nav-link" href="{{--  --}}"><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li> -->
-            <li><a class="nav-link" href="{{ route('PengajuanSeminar.index') }}"><i class="fas fa-calendar-check"></i> <span>Pengajuan Seminar</span></a></li>
-             {{-- Untuk Staff --}}
+     
+            {{-- Untuk Staff --}}
             @elseif (session('role') == 'Staff')
             <li class="menu-header">Staff</li>
             <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>

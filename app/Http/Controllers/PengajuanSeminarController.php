@@ -6,6 +6,7 @@ use App\Models\PengajuanSeminarFile;
 use App\Models\Kelompok;
 use App\Models\Pembimbing;
 use Illuminate\Http\Request;
+use App\Models\Tugas;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
@@ -15,16 +16,6 @@ use Illuminate\Support\Facades\DB;
 class PengajuanSeminarController extends Controller
 {
     // Untuk Mahasiswa methods remain unchanged
-    public function index()
-    {
-        $kelompokId = session('kelompok_id');
-        $pengajuanSeminars = PengajuanSeminar::where('kelompok_id', $kelompokId)
-            ->orderBy('created_at', 'desc')
-            ->with('files') // Load the files relationship
-            ->get();
-            
-        return view('pages.Mahasiswa.Pengajuan_Seminar.index', compact('pengajuanSeminars'));
-    }
 
     public function status_perizinan(){
         $kelompokId = session('kelompok_id');
@@ -36,21 +27,41 @@ class PengajuanSeminarController extends Controller
         $responseDosen = Http::withHeaders([
             'Authorization' =>"Bearer $token"
         ])->get(env('API_URL'). "library-api/dosen");
-        
+       
         if($responseDosen->successful()){
             $dosen_list =  $responseDosen->json()['data']['dosen'] ?? [];
         if(!$pengajuanSeminar){
-            return view('pages.Mahasiswa.Artefak.pengajuan_seminar', compact('kelompok'))
+            return view('pages.Mahasiswa.Artefak.pengajuan_seminar', compact('kelompok','artefak'))
             ->with('error','Belum ada request');
         }
             
         // Buat map berdasarkan user_id
         $dosen_map = collect($dosen_list)->keyBy('user_id');
-
+        $prodi_id = session('prodi_id');
+        $KPA_id = session('KPA_id');
+        $TM_id = session('TM_id');
+        
+        $artefak = Tugas::with(['prodi', 'tahunMasuk', 'kategoripa'])
+        ->where('prodi_id', $prodi_id)
+        ->where('KPA_id', $KPA_id)
+        ->where('TM_id', $TM_id)
+        ->where('kategori_tugas','Artefak')
+        ->orderBy('created_at', 'desc')
+        ->get();
         // dd($pengajuanSeminar);
-        return view('pages.Mahasiswa.Artefak.pengajuan_seminar', compact('pengajuanSeminar','dosen_map'));
+        return view('pages.Mahasiswa.Artefak.pengajuan_seminar', compact('pengajuanSeminar','dosen_map','artefak'));
       
     }
+}   
+public function index()
+{
+    $kelompokId = session('kelompok_id');
+    $pengajuanSeminars = PengajuanSeminar::where('kelompok_id', $kelompokId)
+        ->orderBy('created_at', 'desc')
+        ->with('files') // Load the files relationship
+        ->get();
+        
+    return view('pages.Mahasiswa.Pengajuan_Seminar.index', compact('pengajuanSeminars'));
 }
 
     public function create()
@@ -258,7 +269,7 @@ public function update(Request $request, $id)
             // Commit the transaction
             DB::commit();
             
-            return redirect()->route('PengajuanSeminar.index')->with('success', 'Pengajuan seminar berhasil disimpan dan dikirim ke pembimbing!');
+            return redirect()->route('artefak.index')->with('success', 'Pengajuan seminar berhasil disimpan dan dikirim ke pembimbing!');
         } catch (\Exception $e) {
             // Rollback the transaction if something goes wrong
             DB::rollBack();

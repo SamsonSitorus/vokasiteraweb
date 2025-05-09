@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Detail Tugas</h4>
-                        <a class="btn btn-primary btn-sm" href="{{ route('artefak.index') }}">Kembali</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('Mahasiswa.tugas.index') }}">Kembali</a>
                     </div>
                     <div class="card-body">
                         @include('partials.alert')
@@ -46,11 +46,30 @@
                                 <th>Status</th>
                                 <td>{{ $tugas->status }}</td>
                             </tr>
+                            @if($existingSubmission && $existingSubmission->status === 'Submitted')
+                            <tr>
+                                <th>Feedback Koordinator</th>
+                                <td>{{ $existingSubmission->feedback ?? 'Feedback Null' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Feedback Pembimbing</th>
+                                <td>{{ $existingSubmission->feedback_pembimbing ?? 'Feedback Null' }}</td>
+                            </tr>
+                        @elseif($existingSubmission && $existingSubmission->status === '')
+                            <tr>
+                                <td colspan="2"><span class="text-muted">Belum terdapat tanggapan.</span></td>
+                            </tr>
+                        @else
+                            <tr>
+                                <td colspan="2"><span class="text-muted">Belum terdapat tanggapan.</span></td>
+                            </tr>
+                        @endif
+                           
                         </table>
 
                         {{-- Form Upload File --}}
                         @if (!$hasSubmitted)
-                            <form method="POST" action="{{ route('artefak.submit', $tugas->id) }}" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('Mahasiswa.tugas.submit', $tugas->id) }}" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="kelompok_id" value="{{ $kelompokId }}">
                                 <input type="hidden" name="tugas_id" value="{{ $idTugas }}"> 
@@ -118,8 +137,7 @@
                         @endif
                         
                             <div class="text-right">
-                                {{-- <a href="{{ route('artefak.edit', Crypt::encrypt($artefak->id)) }}" class="btn btn-warning">Edit File</a> --}}
-                                <a href="{{ route('artefak.edit', Crypt::encrypt($existingSubmission->id)) }}" class="btn btn-warning">Edit File</a>
+                                 <a href="{{ route('Mahasiswa.tugas.edit', Crypt::encrypt($existingSubmission->id)) }}" class="btn btn-warning">Edit File</a>
                             </div>
                         @endif
                     </div>

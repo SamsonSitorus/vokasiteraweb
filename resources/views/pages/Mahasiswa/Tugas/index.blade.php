@@ -1,5 +1,5 @@
     @extends('layouts.main')
-    @section('title', 'Revisi')
+    @section('title', 'Tugas')
 
     @section('content')
     <section class="section custom-section">
@@ -8,45 +8,12 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4>Proyek Akhir</h4>
+                            <h4>List Progres</h4>
                         </div>                    
-                        <div class="card-body">
-                            @include('partials.alert')
-                            <div class="row">
-                                <div class="col-12">
-                                    <ul class="nav nav-tabs mb-4" style="border-bottom: 1px solid #ddd;">
-                                        <li class="nav-item">
-                                            <a class="nav-link {{--  --}}" href="{{route('artefak.index')}}">
-                                                PENGUMPULAN BERKAS
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            @foreach ($artefak as $item)
-                                            <a class="nav-link {{--  --}}" href="{{ route('feedback.show', Crypt::encrypt($item->id)) }}">
-                                                FEEDBACK
-                                                @endforeach
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link {{--  --}}" href="{{route('status_perizinan')}}">
-                                                STATUS PERIZINAN MAJU SEMINAR
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link {{--  --}}" href="{{route('jadwal.seminar')}}">
-                                                JADWAL SEMINAR
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link {{--  --}}" href="{{route('revisi.index')}}">
-                                                BERKAS FINAL
-                                            </a>
-                                        </li>
-                                    </ul>
                     {{-- Konten Utama --}}
                         <div class="card">
                             <div class="card-body">
-                                @foreach ($artefak as $item)
+                                @foreach ($tugas as $item)
                                     @php
                                         $status = $statusByTugas->get($item->id);
                                     @endphp
@@ -64,7 +31,7 @@
                                                 <span class="badge badge-{{ $status ? 'success' : 'secondary' }}">
                                                     {{ $status ? $status->status : 'Belum dikumpulkan' }}
                                                 </span>
-                                                <a href="{{ route('artefak.create', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-primary ml-2">Lihat Detail</a>
+                                                <a href="{{ route('Mahasiswa.tugas.create', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-primary ml-2">Lihat Detail</a>
                                             </div>
                                             <div class="mb-2 {{ $item->status_class }}">
                                                 ⏳ <span class="countdown" data-deadline="{{ $item->tanggal_pengumpulan }}"></span>
@@ -73,7 +40,7 @@
                                     </div>
                                 @endforeach
 
-                                @if ($artefak->isEmpty())
+                                @if ($tugas->isEmpty())
                                     <div class="alert alert-info">Tidak ada tugas yang tersedia.</div>
                                 @endif
 
@@ -132,7 +99,7 @@
                     el.textContent = `Selesai ${hours} jam ${minutes} menit yang lalu`;
                     el.classList.remove('text-warning');
                     el.classList.add('text-success');
-                }
+              }
             });
         }
 

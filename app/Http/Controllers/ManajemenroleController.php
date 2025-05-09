@@ -93,36 +93,71 @@ class ManajemenroleController extends Controller
     
         // Ambil role_name berdasarkan role_id
         $role = Role::find($validated['role_id']);
-    
-        // Jika role adalah Koordinator
+        $rolesToCheck = ['penguji 1', 'pembimbing 1', 'penguji 2', 'pembimbing 2']; 
+        if (in_array(strtolower($role->role_name), $rolesToCheck)) {
+            if($validated['status'] === 'Aktif'){
+                $existingDosen = DosenRole::where('user_id', $validated['user_id'])
+                ->where('role_id',$validated['role_id'])
+                ->where('prodi_id', $validated['prodi_id'])
+                ->where('KPA_id', $validated['KPA_id'])
+                ->where('TM_id', $validated['TM_id'])
+                ->where('status','Aktif')
+                ->exists();
+                if ($existingDosen) {
+                    return back()->withErrors([
+                        'user_id' => 'Dosen ini sudah terdaftar sebagai ' . $role->role_name . ' untuk kombinasi Prodi, PA, dan Tahun Ajaran ini.',
+                    ])->withInput();
+                }
+            }
+        
+        }
         if (strtolower($role->role_name) === 'koordinator') {
-            // Validasi agar dosen tidak menjadi koordinator ganda (per dosen)
+
+            // Jika status yang dikirim adalah Aktif, cek apakah sudah pernah jadi Koordinator Aktif
+            if ($validated['status'] === 'Aktif') {
+                $existingKoordinatorAktif = DosenRole::where('user_id', $validated['user_id'])
+                    ->where('role_id', $validated['role_id'])
+                    ->where('status', 'Aktif') // hanya cek yang Aktif
+                    ->exists();
+        
+                if ($existingKoordinatorAktif) {
+                    return back()->withErrors([
+                        'user_id' => 'Dosen ini sudah pernah menjadi Koordinator Aktif dan tidak bisa menjadi Koordinator lagi.',
+                    ])->withInput();
+                }
+            }
+        
+            // Validasi kombinasi yang sama tidak boleh ganda (terlepas dari status)
             $existingPerDosen = DosenRole::where('user_id', $validated['user_id'])
-                // ->where('prodi_id', $validated['prodi_id'])
-                // ->where('KPA_id', $validated['KPA_id'])
+                ->where('prodi_id', $validated['prodi_id'])
+                ->where('KPA_id', $validated['KPA_id'])
                 ->where('TM_id', $validated['TM_id'])
                 ->where('role_id', $validated['role_id'])
                 ->first();
-    
+        
             if ($existingPerDosen) {
                 return back()->withErrors([
                     'user_id' => 'Dosen ini sudah menjadi Koordinator di Prodi, PA, dan Tahun Ajaran tersebut.',
                 ])->withInput();
             }
-    
-            // Validasi agar hanya satu koordinator untuk kombinasi jenis_pa dan tahun ajaran
-            $existingGlobal = DosenRole::where('role_id', $validated['role_id'])
-                ->where('TM_id', $validated['TM_id'])
-                ->where('prodi_id', $validated ['prodi_id'])
-                ->where('KPA_id', $validated['KPA_id'])
-                ->exists();
-    
-            if ($existingGlobal) {
-                return back()->withErrors([
-                    'KPA_id' => 'Sudah ada Koordinator untuk PA ' . $validated['KPA_id'] . ' pada Tahun Ajaran ini.',
-                ])->withInput();
+        
+            // Validasi hanya satu Koordinator Aktif per kombinasi PA + Prodi + Tahun
+            if ($validated['status'] === 'Aktif') {
+                $existingGlobal = DosenRole::where('role_id', $validated['role_id'])
+                    ->where('TM_id', $validated['TM_id'])
+                    ->where('prodi_id', $validated['prodi_id'])
+                    ->where('KPA_id', $validated['KPA_id'])
+                    ->where('status', 'Aktif')
+                    ->exists();
+        
+                if ($existingGlobal) {
+                    return back()->withErrors([
+                        'KPA_id' => 'Sudah ada Koordinator Aktif untuk PA ' . $validated['KPA_id'] . ' pada Tahun Ajaran ini.',
+                    ])->withInput();
+                }
             }
         }
+        
     
         // Simpan data
         DosenRole::create([
@@ -180,16 +215,37 @@ class ManajemenroleController extends Controller
     
     // Ambil role berdasarkan role_id
     $role = Role::find($validated['role_id']);
+    $rolesToCheck = ['penguji 1', 'pembimbing 1', 'penguji 2', 'pembimbing 2']; 
+    if (in_array(strtolower($role->role_name), $rolesToCheck)) {
+        if($validated['status'] === 'Aktif'){
+            $existingDosen = DosenRole::where('user_id', $validated['user_id'])
+            ->where('role_id',$validated['role_id'])
+            ->where('prodi_id', $validated['prodi_id'])
+            ->where('KPA_id', $validated['KPA_id'])
+            ->where('TM_id', $validated['TM_id'])
+            ->where('status','Aktif')
+            ->exists();
+            if ($existingDosen) {
+                return back()->withErrors([
+                    'user_id' => 'Dosen ini sudah terdaftar sebagai ' . $role->role_name . ' untuk kombinasi Prodi, PA, dan Tahun Ajaran ini.',
+                ])->withInput();
+            }
+        }
     
+    }
     // Jika role adalah Koordinator, lakukan validasi
     if (strtolower($role->role_name) === 'koordinator') {
-        //  Validasi agar dosen tidak menjadi koordinator ganda (per dosen)
+
+    // Jika status ingin diubah menjadi "Aktif", baru lakukan semua validasi
+    if ($validated['status'] === 'Aktif') {
+
+        // Validasi: dosen tidak boleh punya entri koordinator untuk kombinasi ini
         $existingPerDosen = DosenRole::where('user_id', $validated['user_id'])
             ->where('prodi_id', $validated['prodi_id'])
             ->where('KPA_id', $validated['KPA_id'])
             ->where('TM_id', $validated['TM_id'])
             ->where('role_id', $validated['role_id'])
-            ->where('id', '<>', $dosenRole->id) // Menghindari duplikasi pada data yang sama
+            ->where('id', '<>', $dosenRole->id) // Hindari konflik dengan data yang sedang diedit
             ->first();
 
         if ($existingPerDosen) {
@@ -198,19 +254,36 @@ class ManajemenroleController extends Controller
             ])->withInput();
         }
 
-        //  Validasi agar hanya satu koordinator untuk kombinasi jenis_pa dan tahun ajaran
+        // Validasi: hanya satu koordinator Aktif untuk kombinasi PA dan TM_id
         $existingGlobal = DosenRole::where('KPA_id', $validated['KPA_id'])
             ->where('TM_id', $validated['TM_id'])
+            ->where('prodi_id', $validated['prodi_id'])
             ->where('role_id', $validated['role_id'])
-            ->where('id', '<>', $dosenRole->id) // Menghindari duplikasi pada data yang sama
+            ->where('status', 'Aktif')
+            ->where('id', '<>', $dosenRole->id) // hindari data yang sedang diedit
             ->exists();
 
         if ($existingGlobal) {
             return back()->withErrors([
-                'KPA_id' => 'Sudah ada Koordinator untuk PA ' . $validated['KPA_id'] . ' pada Tahun Ajaran ini.',
+                'KPA_id' => 'Sudah ada Koordinator Aktif untuk PA ' . $validated['KPA_id'] . ' pada Tahun Ajaran ini.',
+            ])->withInput();
+        }
+
+        // Validasi: dosen tidak boleh pernah menjadi koordinator AKTIF sebelumnya (selain entri ini)
+        $pernahKoordinatorAktif = DosenRole::where('user_id', $validated['user_id'])
+            ->where('role_id', $validated['role_id'])
+            ->where('status', 'Aktif')
+            ->where('id', '<>', $dosenRole->id)
+            ->exists();
+
+        if ($pernahKoordinatorAktif) {
+            return back()->withErrors([
+                'user_id' => 'Dosen ini sudah menjadi Koordinator Aktif dan tidak bisa menjadi Koordinator lagi.',
             ])->withInput();
         }
     }
+}
+
 
     // Lakukan pembaruan data dosenRole
     $dosenRole->update($validated);
@@ -236,8 +309,5 @@ public function destroy($id)
 
     // Redirect ke halaman koordinator dengan pesan sukses
     return redirect()->route('manajemen-role.index')->with('success', 'Data berhasil dihapus.');
-}
-
-
-  
+}  
 }  

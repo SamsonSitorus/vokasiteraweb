@@ -10,7 +10,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <h4>Tambah Pengajuan Seminar</h4>
-                            <a class="btn btn-primary btn-sm" href="{{ route('PengajuanSeminar.index') }}">Kembali</a>
+                            <a class="btn btn-primary btn-sm" href="{{route('artefak.index')}}">Kembali</a>
                         </div>
                         <div class="card-body">
                             @if ($errors->any())
@@ -26,6 +26,7 @@
                                 </div>
                             @endif
 
+                            
                             <form method="POST" action="{{ route('PengajuanSeminar.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">

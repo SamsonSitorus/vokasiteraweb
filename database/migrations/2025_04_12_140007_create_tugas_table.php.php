@@ -22,7 +22,7 @@ return new class extends Migration
                 $table->dateTime('tanggal_pengumpulan');
                 $table->string('file')->nullable();
                 $table->enum('status',['selesai','berlangsung']);
-                $table->enum('kategori_tugas',['Tugas','Revisi']);
+                $table->enum('kategori_tugas',['Tugas','Revisi','Artefak']);
                 $table->timestamps();
             });
         

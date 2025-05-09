@@ -16,18 +16,25 @@
                                 <div class="col-12">
                                     <ul class="nav nav-tabs mb-4" style="border-bottom: 1px solid #ddd;">
                                         <li class="nav-item">
-                                            <a class="nav-link {{--  --}}" href="{{route('tugas.index')}}">
+                                            <a class="nav-link {{--  --}}" href="{{route('artefak.index')}}">
                                                 PENGUMPULAN BERKAS
                                             </a>
                                         </li>
                                         <li class="nav-item">
+                                            @foreach ($artefak as $item)
+                                            <a class="nav-link {{--  --}}" href="{{ route('feedback.show', Crypt::encrypt($item->id)) }}">
+                                                FEEDBACK
+                                                @endforeach
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a class="nav-link {{--  --}}" href="{{route('status_perizinan')}}">
-                                                STATUS PERIZINAN MAJU SIDANG
+                                                STATUS PERIZINAN MAJU SEMINAR
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link {{--  --}}" href="{{ route('jadwal.seminar')}}">
-                                                JADWAL SIDANG
+                                                JADWAL SEMINAR
                                             </a>
                                         </li>
                                         <li class="nav-item">

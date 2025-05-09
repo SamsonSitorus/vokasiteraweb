@@ -10,10 +10,10 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Edit File</h4>
-                        <a href="{{ route('artefak.index') }}" class="btn btn-primary">Kembali</a>
+                        <a href="{{route('Mahasiswa.tugas.index')}}" class="btn btn-primary">Kembali</a>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('artefak.update', ['id' => Crypt::encrypt($artefak->id)]) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('Mahasiswa.tugas.update', ['id' => Crypt::encrypt($artefak->id)]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="form-group mt-4">
