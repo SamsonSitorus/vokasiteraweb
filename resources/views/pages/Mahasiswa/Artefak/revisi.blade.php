@@ -21,13 +21,6 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            @foreach ($artefak as $item)
-                                            <a class="nav-link {{--  --}}" href="{{ route('feedback.show', Crypt::encrypt($item->id)) }}">
-                                                FEEDBACK
-                                                @endforeach
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
                                             <a class="nav-link {{--  --}}" href="{{route('status_perizinan')}}">
                                                 STATUS PERIZINAN MAJU SEMINAR
                                             </a>
@@ -35,6 +28,13 @@
                                         <li class="nav-item">
                                             <a class="nav-link {{--  --}}" href="{{route('jadwal.seminar')}}">
                                                 JADWAL SEMINAR
+                                            </a>
+                                        </li>
+                                         <li class="nav-item">
+                                            @foreach ($artefak as $item)
+                                            <a class="nav-link {{--  --}}" href="{{ route('feedback.show', Crypt::encrypt($item->id)) }}">
+                                                FEEDBACK
+                                                @endforeach
                                             </a>
                                         </li>
                                         <li class="nav-item">

@@ -13,11 +13,10 @@ class Pembimbing_tugas_Controller extends Controller
         $KPA_id = session('KPA_id');
         $TM_id = session('TM_id');
         $user_id = session('user_id');
-
-      $tugas = tugas::with(['prodi', 'tahunMasuk', 'kategoripa'])
+      $tugas = Tugas::with(['prodi', 'tahunMasuk', 'kategoriPA'])
       ->where('prodi_id', $prodi_id)
-      ->where('KPA_id', $KPA_id)
-      ->where('TM_id', $TM_id)
+          ->where('TM_id', $TM_id)
+          ->where('KPA_id', $KPA_id)
       ->get();
     
       return view('pages.Pembimbing.tugas.index',compact('tugas'));

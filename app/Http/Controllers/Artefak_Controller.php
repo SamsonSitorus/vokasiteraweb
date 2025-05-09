@@ -9,6 +9,7 @@ use App\Models\pengumpulan_tugas;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Exception;
+use App\Models\PengajuanSeminar;
 use App\Models\pembimbing;
 use Illuminate\Support\Facades\Http;
 class Artefak_Controller extends Controller
@@ -72,8 +73,12 @@ class Artefak_Controller extends Controller
             ->get();
             $statusByTugas = $status->keyBy('tugas_id');
 
-           
-        return view('pages.Mahasiswa.Artefak.index', compact('artefak','statusByTugas'));
+            $pengajuanSeminars = PengajuanSeminar::where('kelompok_id', $kelompokId)
+                    ->orderBy('created_at', 'desc')
+                    ->with('files') // 
+                    ->get();
+                    
+        return view('pages.Mahasiswa.Artefak.index', compact('artefak','statusByTugas','pengajuanSeminars','status'));
     }
     
     public function Revisi(Request $request)

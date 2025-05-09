@@ -20,14 +20,6 @@
                                                 PENGUMPULAN BERKAS
                                             </a>
                                         </li>
-                                        @foreach ($artefak as $item)
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('feedback.show', Crypt::encrypt($item->id)) }}">
-                                                FEEDBACK
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                    
                                         <li class="nav-item">
                                             <a class="nav-link {{--  --}}" href="{{route('status_perizinan')}}">
                                                 STATUS PERIZINAN MAJU SEMINAR
@@ -39,13 +31,20 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
+                                            @foreach ($artefak as $item)
+                                            <a class="nav-link {{--  --}}" href="{{ route('feedback.show', Crypt::encrypt($item->id)) }}">
+                                                FEEDBACK
+                                                @endforeach
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a class="nav-link {{--  --}}" href="{{route('revisi.index')}}">
                                                 BERKAS FINAL
                                             </a>
                                         </li>
                                     </ul>
                                 {{-- Konten Utama --}}
-                                @foreach ($pengajuanSeminar as $item)
+                                @foreach ($pengajuanSeminar as $item)   
                                 @if($item->status == 'disetujui')
                                     <div class="card">
                                         <div class="card-body">
@@ -73,6 +72,10 @@
                                 @elseif($item->status == 'menunggu')
                                     <div class="alert alert-warning">
                                         Status pengajuan kelompok {{ $item->kelompok->nomor_kelompok }} belum disetujui oleh pembimbing.
+                                    </div>
+                                  @elseif($item->status == 'ditolak')
+                                    <div class="alert alert-warning">
+                                        Status pengajuan kelompok {{ $item->kelompok->nomor_kelompok }} ditolak dengan ALasan: {{ $item->catatan }}.
                                     </div>
                                 @else
                                 <div class="alert alert-info">

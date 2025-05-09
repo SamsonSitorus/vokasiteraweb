@@ -30,9 +30,9 @@
                         </div>
                           {{--  input TA --}}
                         <div class="form-group">
-                            <label for="TM_id">Pilih Tahun Ajaran</label>
+                            <label for="TM_id">Pilih Tahun Masuk Mahasiswa</label>
                             <select name="TM_id" id="TM_id" class="select2 form-control" required>
-                                <option value="">-- pilih Tahun Ajaran --</option>
+                                <option value="">-- pilih Tahun Masuk Mahasiswa --</option>
                                 @foreach($TM as $item)
                                 <option value="{{ $item->id }}"
                                     {{ old('TM_id') == $item->id ? 'selected' : ''}} > {{ $item->Tahun_Masuk }}</option>

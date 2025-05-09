@@ -21,8 +21,8 @@ class NilaiMahasiswa_Controller extends Controller
         ->join('kelompok as k', 'km.kelompok_id', '=', 'k.id')
         ->where('k.KPA_id', $KPA_id)
         ->where('k.TM_id', $TM_id)
-        ->where('prodi_id', $prodi_id)
-        ->where('status','Aktif')
+        ->where('k.prodi_id', $prodi_id)
+        ->where('k.status','Aktif')
         ->select(
             'km.user_id',
             'km.kelompok_id',

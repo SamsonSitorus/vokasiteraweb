@@ -22,7 +22,6 @@ class PengajuanSeminarController extends Controller
         $pengajuanSeminar = PengajuanSeminar::with('kelompok','pembimbing')
         ->where('kelompok_id', $kelompokId)
         ->get();
-
         $token = session('token');
         $responseDosen = Http::withHeaders([
             'Authorization' =>"Bearer $token"
@@ -109,22 +108,42 @@ public function index()
 public function edit($id)
 {
     try {
+        $token = session('token');
         $id = Crypt::decrypt($id);
         $pengajuanSeminar = PengajuanSeminar::with('files')->findOrFail($id);
         
         // Pastikan pengajuan ini milik kelompok yang sedang login
         $kelompokId = session('kelompok_id');
         if ($pengajuanSeminar->kelompok_id != $kelompokId) {
-            return redirect()->route('PengajuanSeminar.index')
+            return redirect()->route('artefak.index')
                 ->with('error', 'Anda tidak memiliki akses untuk mengedit pengajuan ini.');
         }
         
         $kelompok = Kelompok::findOrFail($pengajuanSeminar->kelompok_id);
         $pembimbing = Pembimbing::findOrFail($pengajuanSeminar->pembimbing_id);
+
+         $responseDosen = Http::withHeaders([
+            'Authorization' => "Bearer $token"
+        ])->get(env('API_URL'). "library-api/dosen");
         
+        if ($responseDosen->successful()) {
+            $dosen_list = $responseDosen->json()['data']['dosen'] ?? [];
+            // Create map of user_id => nama
+            $dosen_map = collect($dosen_list)->keyBy('user_id');
+            
+            // If pembimbing has user_id, update the nama property with the actual name from API
+            if (isset($pembimbing->user_id) && isset($dosen_map[$pembimbing->user_id])) {
+                $pembimbing->nama = $dosen_map[$pembimbing->user_id]['nama'] ?? $pembimbing->nama;
+            }
+        } else {
+            // Handle API failure - keep existing name or set default
+            if (!isset($pembimbing->nama)) {
+                $pembimbing->nama = 'Nama Pembimbing Tidak Tersedia';
+            }
+        }
         // Jika status ditolak, kita bisa menampilkan catatan penolakan
         $catatan = $pengajuanSeminar->catatan;
-        
+        // dd($pembimbing);
         return view('pages.Mahasiswa.Pengajuan_Seminar.edit', compact('pengajuanSeminar', 'kelompok', 'pembimbing', 'catatan'));
     } catch (\Exception $e) {
         Log::error('Error editing pengajuan seminar', [
@@ -133,7 +152,7 @@ public function edit($id)
             'trace' => $e->getTraceAsString()
         ]);
         
-        return redirect()->route('PengajuanSeminar.index')
+        return redirect()->route('artefak.index')
             ->with('error', 'Terjadi kesalahan saat membuka form edit: ' . $e->getMessage());
     }
 }
@@ -194,7 +213,7 @@ public function update(Request $request, $id)
         // Commit transaksi
         DB::commit();
         
-        return redirect()->route('PengajuanSeminar.index')
+        return redirect()->route('artefak.index')
             ->with('success', 'Pengajuan seminar berhasil diperbarui dan dikirim kembali ke pembimbing!');
     } catch (\Exception $e) {
         // Rollback transaksi jika terjadi kesalahan
@@ -211,10 +230,6 @@ public function update(Request $request, $id)
             ->withInput();
     }
 }
-
-
-
-
 
     public function store(Request $request)
     {
@@ -281,6 +296,15 @@ public function update(Request $request, $id)
             
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan pengajuan: ' . $e->getMessage())->withInput();
         }
+    }
+
+    public function destroy($id)
+    {
+        $decryptId = Crypt::decrypt($id); // Tambahkan ini
+        $pengajuanSeminar = PengajuanSeminar::findOrFail($decryptId);
+        $pengajuanSeminar->delete();
+
+        return redirect()->back()->with('success', 'Data kelompok berhasil dihapus.');
     }
 
     // IMPROVED: indexPembimbing method to show submissions across different study programs

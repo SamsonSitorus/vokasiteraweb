@@ -54,6 +54,7 @@
 
 @push('script')
 <script type="text/javascript">
+  window.location.reload = "{{ route('pembimbing.Nilaiseminar.index') }}";
     $('.show_confirm').click(function(event) {
         var form = $(this).closest("form");
         event.preventDefault();

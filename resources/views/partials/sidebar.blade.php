@@ -48,9 +48,7 @@
                     <li>
                         <a class="nav-link {{--  --}}" href="{{ route('NilaiAkhir.index') }}">Nilai Mahasiswa</a>
                     </li>
-                    <li>
-                        <a class="nav-link {{----}}" href="{{ route('pembimbing.Nilaiseminar.index') }}">Nilai Seminar</a>
-                    </li>
+                   
                       </ul>
             </li>    
             <li ><a class="nav-link" href="{{ route('pengumuman.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>

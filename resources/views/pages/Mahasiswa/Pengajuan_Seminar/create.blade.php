@@ -42,50 +42,52 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="files">Silahkan Kumpulkan Dokumen Pengajuan Yang meliputi <br>
-                                        1.Dokumen Pengembangan Produk <br>
-                                        2.Slide Presentasi <br>
-                                        3.Kartu Bimbingan <br>
-                                        (Maksimal 5 File)</label>
-                                    <div id="drop-area" 
-                                        class="border p-4 text-center" 
-                                        style="border: 2px dashed #ccc; position: relative; transition: background-color 0.3s ease;"
-                                        ondragover="handleDragOver(event)" 
-                                        ondragleave="handleDragLeave(event)" 
-                                        ondrop="handleFileDrop(event)">
-                                        
-                                        <!-- Bagian instruksi dan tombol -->
-                                        <div id="upload-instructions">
-                                            <i class="fas fa-upload fa-2x mb-2"></i>
-                                            <p>Drag File Anda Disini</p>
-                                            <p>Atau</p>
-                                            <label class="btn btn-primary">
-                                                Pilih File
-                                                <input type="file" name="files[]" id="files" 
-                                                    class="d-none @error('files') is-invalid @enderror" 
-                                                    onchange="updateFileList(event)"
-                                                    multiple>
-                                            </label>
-                                        </div>
-                                        
-                                        <!-- Informasi file yang dipilih -->
-                                        <div id="file-info" class="mt-3">
-                                            <p class="text-muted">Format: pdf, jpg, jpeg, png, docx (Max: 10MB per file)</p>
-                                            <p id="file-count" class="text-muted">Belum ada file yang dipilih</p>
-                                        </div>
-                                        
-                                        <!-- Preview file yang dipilih -->
-                                        <div id="file-preview-container" class="mt-3 row justify-content-center" style="display: none;">
-                                            <!-- File previews will be added here dynamically -->
-                                        </div>
+                                <label for="files" class="font-weight-bold mb-2">
+                                    Silakan unggah dokumen pengajuan yang meliputi:
+                                </label>
+                                <ul class="mb-3 pl-4 text-muted">
+                                    <li>Dokumen Pengembangan Produk</li>
+                                    <li>Slide Presentasi</li>
+                                    <li>Kartu Bimbingan</li>
+                                    <li>Surat Pernyataan Siap Maju Proyek AKhir </li>
+                                    <li><strong>Maksimal 5 file, maksimal 10MB per file</strong></li>
+                                    <li>Format yang diperbolehkan: pdf, jpg, jpeg, png, docx</li>
+                                </ul>
+                                <div id="drop-area"
+                                    class="border rounded p-4 text-center"
+                                    style="border: 2px dashed #aaa; background-color: #fafafa; cursor: pointer;"
+                                    ondragover="handleDragOver(event)"
+                                    ondragleave="handleDragLeave(event)"
+                                    ondrop="handleFileDrop(event)"
+                                >
+                                    <div id="upload-instructions">
+                                        <i class="fas fa-cloud-upload-alt fa-3x mb-2 text-primary"></i>
+                                        <p class="mb-1">Seret file ke sini</p>
+                                        <p class="mb-2">atau</p>
+                                        <label class="btn btn-outline-primary">
+                                            Pilih File
+                                            <input type="file" name="files[]" id="files"
+                                                class="d-none @error('files') is-invalid @enderror"
+                                                onchange="updateFileList(event)"
+                                                multiple
+                                            >
+                                        </label>
                                     </div>
-                                    @error('files')
-                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                    @enderror
-                                    @error('files.*')
-                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                    @enderror
+                                    <div id="file-info" class="mt-3">
+                                        <p id="file-count" class="text-muted">Belum ada file yang dipilih</p>
+                                    </div>
+                                    <div id="file-preview-container" class="mt-3 row justify-content-start" style="display: none;">
+                                        <!-- Preview akan ditambahkan via JS -->
+                                    </div>
                                 </div>
+                                @error('files')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                                @error('files.*')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+
 
                                 <input type="hidden" name="status" value="menunggu">
 

@@ -30,9 +30,9 @@ class Tugas extends Model
         return $this->belongsTo(Prodi::class, 'prodi_id');
     }
     public function tahunMasuk()
-{
+    {
     return $this->belongsTo(tahunMasuk::class, 'TM_id');
-}
+    }
     public function kategoriPA()
     {
         return $this->belongsTo(KategoriPA::class, 'KPA_id');

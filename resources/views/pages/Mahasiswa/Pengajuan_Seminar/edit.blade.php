@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Edit Pengajuan Seminar</h4>
-                        <a class="btn btn-primary btn-sm" href="{{ route('PengajuanSeminar.index') }}">Kembali</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('artefak.index') }}">Kembali</a>
                     </div>
                     <div class="card-body">
                         @if ($errors->any())
@@ -36,7 +36,7 @@
 
                             <div class="form-group">
                                 <label for="pembimbing_id">Pembimbing</label>
-                                <input type="text" class="form-control" value="{{ $pengajuanSeminar->pembimbing->nama ?? 'Tidak ada pembimbing' }}" readonly>
+                                <input type="text" class="form-control" value="{{ $pembimbing->nama ?? 'Tidak ada pembimbing' }}" readonly>
                             </div>
 
                             <div class="form-group">

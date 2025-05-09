@@ -22,13 +22,13 @@
                                             <a class="nav-link" href="{{ route('artefak.index') }}">PENGUMPULAN BERKAS</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('feedback.show', Crypt::encrypt($item->id)) }}">FEEDBACK</a>
-                                        </li>
-                                        <li class="nav-item">
                                             <a class="nav-link" href="{{ route('status_perizinan') }}">STATUS PERIZINAN MAJU SEMINAR</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ route('jadwal.seminar') }}">JADWAL SEMINAR</a>
+                                        </li>
+                                         <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('feedback.show', Crypt::encrypt($item->id)) }}">FEEDBACK</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ route('revisi.index') }}">BERKAS FINAL</a>
@@ -67,6 +67,7 @@
                                             <th>Status</th>
                                             <td>{{ $tugas->status }}</td>
                                         </tr>
+                                        @if($hasSubmitted)
                                         <tr>
                                             <th>Feedback Koordinator</th>
                                             <td>{{ $existingSubmission->feedback ?? 'Belum terdapat tanggapan.' }}</td>
@@ -75,6 +76,7 @@
                                             <th>Feedback Pembimbing</th>
                                             <td>{{ $existingSubmission->feedback_pembimbing ?? 'Belum terdapat tanggapan.' }}</td>
                                         </tr>
+                                    @endif
                                     </table>
 
                                     {{-- Form Upload File --}}

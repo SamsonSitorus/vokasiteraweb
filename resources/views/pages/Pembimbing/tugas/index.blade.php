@@ -18,6 +18,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Judul Tugas</th>
+                                        <th>Kategori</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -27,6 +28,7 @@
                                         <tr>
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->Judul_Tugas }}</td>
+                                            <td>{{ $item->kategori_tugas }}</td>
                                             <td>{{ $item->status }}</td> 
                                             <td>
                                                 <div class="d-flex">

@@ -125,6 +125,8 @@ public function index(){
         '),
 
             )
+        ->leftJoin('kelompok as k', 'k.id', '=', 'km.kelompok_id')
+        ->where('k.status','=','Aktif')
         ->leftJoin('nilai_kelompok as nk', 'nk.kelompok_id', '=', 'km.kelompok_id')
         ->leftJoin('nilai_individu as ni', 'ni.user_id', '=', 'km.user_id')
         ->groupBy('km.user_id', 'km.kelompok_id')
