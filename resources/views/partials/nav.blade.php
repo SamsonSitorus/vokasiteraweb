@@ -9,7 +9,7 @@
             <div class="d-sm-none d-lg-inline-block">Hi, {{session ('name') }}</div></a>
             <div class="dropdown-menu dropdown-menu-right">
             <div class="dropdown-title">Halo, {{session ('name') }}</div>
-            <a href=" {{-- route('profile') --}} " class="dropdown-item has-icon"> 
+            <a href=" {{route('profile',['user_id' => session('user_id'), 'role' => session('role'), 'token' => session('token')])}} " class="dropdown-item has-icon"> 
                 <i class="far fa-user"></i> Profil
             </a>
             <div class="dropdown-divider"></div>

@@ -29,37 +29,13 @@ use Google\Client;
 use App\Models\Nilai_kelompok;
 use App\Models\Pengumuman;
 use App\Http\Controllers\PengajuanSeminarController;
-//untuk Google Drivenya
-Route::get('/generate-token', function () {
-    $client = new Client();
-    $client->setClientId('YOUR_CLIENT_ID');
-    $client->setClientSecret('YOUR_CLIENT_SECRET');
-    $client->setRedirectUri('http://localhost:8000/callback');
-    $client->addScope('https://www.googleapis.com/auth/drive');
-    $client->setAccessType('offline');
-    $client->setPrompt('consent');
-
-    $authUrl = $client->createAuthUrl();
-    return redirect($authUrl);
-});
-
-Route::get('/callback', function () {
-    $client = new Client();
-    $client->setClientId('YOUR_CLIENT_ID');
-    $client->setClientSecret('YOUR_CLIENT_SECRET');
-    $client->setRedirectUri('http://localhost:8000/callback');
-
-    $token = $client->fetchAccessTokenWithAuthCode(request('code'));
-
-    return response()->json($token);
-});
-
 //untuk login
 Route::get('/', fn () => redirect()->route('login.form'));
 
 // Login routes
 Route::get('/login', fn () => view('login'))->name('login.form');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/profile/{user_id}/{role}/{token}', [AuthController::class, 'profile'])->name('profile');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Route dengan middleware auth + role

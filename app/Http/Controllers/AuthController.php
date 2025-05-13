@@ -183,4 +183,39 @@ class AuthController extends Controller
         // Redirect ke halaman login dengan pesan sukses
         return redirect()->route('login.form')->with('success', 'Anda telah logout.');
     }
+
+
+    public function profile($user_id, $role, $token){
+         $url = env('API_URL') . ($role == 'Mahasiswa' ? "library-api/mahasiswa?userid=" : "library-api/pegawai?userid=") . $user_id;
+        $client = new Client();
+
+        try {
+     
+            // Melakukan request ke API untuk mengambil detail user
+            $response = $client->request('GET', $url, [
+                'headers' => ['Authorization' => 'Bearer ' . $token],
+            ]);
+
+            // Decode response body
+            $data = json_decode($response->getBody(), true);
+            $detailUser = $data['data'][$role == 'Mahasiswa' ? 'mahasiswa' : 'pegawai'] ?? [];
+
+            if (empty($detailUser)) {
+                return response()->json(['error' => 'Data user tidak ditemukan.'], 404);
+            }
+
+            // return response()->json([
+            //     'success' => 'User valid!',
+            //     'details' => $detailUser
+            // ], 200);
+             return view('pages.profile',compact('detailUser'));
+        } catch (RequestException $e) {
+            Log::error('RequestException: ' . $e->getMessage());
+            return response()->json(['error' => 'Gagal mendapatkan data user.'], $e->getResponse()->getStatusCode() ?? 500);
+        } catch (Exception $e) {
+            Log::error('Exception: ' . $e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan internal.'], 500);
+        }
+       
+    }
 }
