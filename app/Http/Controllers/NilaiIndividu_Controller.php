@@ -26,7 +26,7 @@ class NilaiIndividu_Controller extends Controller
        
         
         // Ambil data kelompok
-        $kelompoks = Kelompok::with(['pembimbing.dosenRoles', 'KelompokMahasiswa', 'nilais'])
+        $kelompoks = Kelompok::with(['pembimbing.dosenRoles', 'KelompokMahasiswa', 'nilais','kategoriPA','prodi'])
             ->whereHas('pembimbing.dosenRoles', function ($query) use ($userId,$roleId) {
                 $query->where('user_id', $userId);
             })->get();
@@ -190,7 +190,7 @@ class NilaiIndividu_Controller extends Controller
         $roleId = session('role_id');
         
         // Ambil data kelompok
-        $kelompoks = Kelompok::with(['pembimbing.dosenRoles', 'KelompokMahasiswa', 'nilais'])
+        $kelompoks = Kelompok::with(['pembimbing.dosenRoles', 'KelompokMahasiswa', 'nilais','kategoriPA','prodi'])
             ->whereHas('pembimbing.dosenRoles', function ($query) use ($userId,$roleId) {
                 $query->where('user_id', $userId);
             })
@@ -358,7 +358,7 @@ class NilaiIndividu_Controller extends Controller
         $roleId = session('role_id');
         
         // Ambil data kelompok
-        $kelompoks = Kelompok::with(['penguji.dosenRoles', 'KelompokMahasiswa', 'nilais'])
+        $kelompoks = Kelompok::with(['penguji.dosenRoles', 'KelompokMahasiswa', 'nilais','kategoriPA','prodi'])
             ->whereHas('penguji.dosenRoles', function ($query) use ($userId,$roleId) {
                 $query->where('user_id', $userId);
             })
@@ -524,7 +524,7 @@ class NilaiIndividu_Controller extends Controller
         $roleId = session('role_id');
         
         // Ambil data kelompok
-        $kelompoks = Kelompok::with(['penguji.dosenRoles', 'KelompokMahasiswa', 'nilais'])
+        $kelompoks = Kelompok::with(['penguji.dosenRoles', 'KelompokMahasiswa', 'nilais','kategoriPA','prodi'])
             ->whereHas('penguji.dosenRoles', function ($query) use ($userId,$roleId) {
                 $query->where('user_id', $userId);
             })

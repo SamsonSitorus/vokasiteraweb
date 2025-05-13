@@ -8,6 +8,8 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use App\Models\DosenRole;
+// use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use App\Models\Role;
 use App\Models\Tugas;
 use App\Models\Prodi;
@@ -94,6 +96,14 @@ public function store(Request $request)
         $filePath = $file->store('tugas_files', 'public'); // Save file to 'tugas_files' directory in the public disk
         $validated['file'] = $filePath;
     }
+    // if ($request->hasFile('file')) {
+    // $uploadedFileUrl = Cloudinary::upload($request->file('file')->getRealPath(), [
+    //     'folder' => 'tugas_files',
+    //     'resource_type' => 'auto'
+    // ])->getSecurePath();
+
+    // $validated['file'] = $uploadedFileUrl;
+// }
 
     Tugas::create($validated);
     return redirect()->route('koordinator.tugas.index')->with('success', 'Tugas berhasil disimpan.');

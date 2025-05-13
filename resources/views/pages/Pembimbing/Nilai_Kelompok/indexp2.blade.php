@@ -18,6 +18,8 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nomor Kelompok</th>
+                                        <th>Kategori PA</th>
+                                        <th>Prodi</th>
                                         <th>Komponen Penilaian </th>
                                         <th>Aksi</th>
                                     </tr>
@@ -30,6 +32,9 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $item->nomor_kelompok }}</td>
+                                            <td>{{ $item->kategoriPA->kategori_pa }}</td>
+                                            <td>{{ $item->prodi->nama_prodi}}</td>
+                                            <td>{{ $item-> }}</td>
                                             <td>
                                                 <form method="POST" action="{{ $nilai ? route('pembimbing2.NilaiKelompok.update', $nilai->id) : route('pembimbing2.NilaiKelompok.store') }}">
                                                     @csrf

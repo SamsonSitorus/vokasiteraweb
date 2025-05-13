@@ -239,25 +239,41 @@ public function showPengumumanBAAK($id)
         $pengumuman->nama = 'N/A'; // Tampilkan N/A jika API gagal
         
     }
-    
+
     // Return the view with the pengumuman data
     return view('pages.Koordinator.Pengumuman.show', compact('pengumuman'));
 }
 
 
 public function pembimbingIndex()
-    {   $prodi_id = session('prodi_id');
-        $KPA_id = session('KPA_id');
-        $TM_id = session('TM_id');
+    {  
+    
         $token = session('token');
+        $user_id = session('user_id');
+        $role_ids = [3,5];
+       $prodi_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->where('role_id', $role_ids)
+                          ->pluck('prodi_id');
+        $TM_ids = DosenRole::where('user_id', $user_id)
+                            ->where('status', 'Aktif')
+                            ->where('role_id', $role_ids)
+                          ->pluck('TM_id');
+        $KPA_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->where('role_id', $role_ids)
+                          ->pluck('KPA_id');
+        $prodi_ids = $prodi_ids->unique();
+        $TM_ids = $TM_ids->unique();
+        $KPA_ids = $KPA_ids->unique();
         // Mengambil pengumuman yang hanya terkait dengan prodi_id yang sesuai dan status 'aktif'
-        $pengumuman = Pengumuman::
-             where('prodi_id', $prodi_id)
-            ->where('KPA_id', $KPA_id)
-            ->where('TM_id', $TM_id)
+        $pengumuman = Pengumuman::with(['prodi','kategoriPA'])
+            ->wherein('prodi_id', $prodi_ids)
+            ->wherein('KPA_id', $KPA_ids)
+            ->wherein('TM_id', $TM_ids)
             ->where('status', 'aktif')
             ->get();
-
+// 
         $responseDosen = Http::withHeaders([
             'Authorization' =>"Bearer $token"
         ])->get(env('API_URL'). "library-api/dosen");
@@ -275,6 +291,7 @@ public function pembimbingIndex()
                 $item->nama = 'N/A'; // Tampilkan N/A jika API gagal
             });
         }
+            
         return view('pages.pembimbing.Pengumuman.index', compact('pengumuman'));
     }
 
@@ -409,5 +426,79 @@ public function pembimbingIndex()
         return redirect()->route('pengumuman.BAAK.index')->with('success', 'Data tugas berhasil dihapus.');
     }
 
+public function pengujiIndex()
+    {   
+        $token = session('token');
+        $user_id = session('user_id');
+        $role_ids = [2,4];
+       $prodi_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->where('role_id', $role_ids)
+                          ->pluck('prodi_id');
+        $TM_ids = DosenRole::where('user_id', $user_id)
+                            ->where('status', 'Aktif')
+                            ->where('role_id', $role_ids)
+                          ->pluck('TM_id');
+        $KPA_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->where('role_id', $role_ids)
+                          ->pluck('KPA_id');
+        $prodi_ids = $prodi_ids->unique();
+        $TM_ids = $TM_ids->unique();
+        $KPA_ids = $KPA_ids->unique();
+        // Mengambil pengumuman yang hanya terkait dengan prodi_id yang sesuai dan status 'aktif'
+        $pengumuman = Pengumuman::with(['prodi','kategoriPA'])
+            ->wherein('prodi_id', $prodi_ids)
+            ->wherein('KPA_id', $KPA_ids)
+            ->wherein('TM_id', $TM_ids)
+            ->where('status', 'aktif')
+            ->get();
+// 
+        $responseDosen = Http::withHeaders([
+            'Authorization' =>"Bearer $token"
+        ])->get(env('API_URL'). "library-api/dosen");
+        if ($responseDosen->successful()) {
+            $dosen_list = $responseDosen->json()['data']['dosen'] ?? [];
+            // Buat map user_id => nama
+            $dosen_map = collect($dosen_list)->keyBy('user_id');
+            
+            $pengumuman->each(function ($item) use ($dosen_map) {
+                $item->nama = $dosen_map[$item->user_id]['nama'] ?? 'N/A';
+            });
+        } else {
+            // Tangani jika API gagal
+            $pengumuman->each(function ($item) {
+                $item->nama = 'N/A'; // Tampilkan N/A jika API gagal
+            });
+        }
+            
+        return view('pages.penguji.Pengumuman.index', compact('pengumuman'));
+    }
+
+    public function showPengumumanpenguji($id)
+{
+    // Find the pengumuman by its ID
+    $pengumuman = Pengumuman::findOrFail($id);
+    $token = session('token');
+
+    $responseDosen = Http::withHeaders([
+        'Authorization' =>"Bearer $token"
+    ])->get(env('API_URL'). "library-api/dosen");
+    if ($responseDosen->successful()) {
+        $dosen_list = $responseDosen->json()['data']['dosen'] ?? [];
+        // Buat map user_id => nama
+        $dosen_map = collect($dosen_list)->keyBy('user_id');
+        
+        $pengumuman->nama = $dosen_map[$pengumuman->user_id]['nama'] ?? 'N/A';
+        
+    } else {
+        // Tangani jika API gagal
+        $pengumuman->nama = 'N/A'; // Tampilkan N/A jika API gagal
+        
+    }
+    
+    // Return the view with the pengumuman data
+    return view('pages.penguji.Pengumuman.show', compact('pengumuman'));
+}
 
 };

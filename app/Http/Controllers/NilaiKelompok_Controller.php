@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\kategoriPA;
 use App\Models\Kelompok;
 use App\Models\Nilai_kelompok;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class NilaiKelompok_Controller extends Controller
     $KPA_id = session('KPA_id');
     $TM_id = session('TM_id');
 
-    $kelompok = Kelompok::with('penguji')
+    $kelompok = Kelompok::with(['penguji','kategoriPA','prodi'])
     ->whereHas('penguji',function ($q) use ($userId){
         $q->where('user_id', $userId);
     })->get();
@@ -124,7 +125,7 @@ public function indexpenguji1(){
     $TM_id = session('TM_id');
 
 
-    $kelompok = Kelompok::with('penguji')
+    $kelompok = Kelompok::with(['penguji','kategoriPA','prodi'])
     ->whereHas('penguji', function ($q) use ($userId){
        $q->where('user_id',$userId);
     })->get();
@@ -228,7 +229,7 @@ public function destroypenguji1($id)
 public function indexpembimbing1(){
     $userId = session('user_id');
     
-    $kelompok = Kelompok::with('pembimbing')
+    $kelompok = Kelompok::with(['pembimbing','kategoriPA','prodi'])
     ->whereHas('pembimbing', function ($q) use($userId){
         $q->where('user_id', $userId);
     })->get();
@@ -236,6 +237,7 @@ public function indexpembimbing1(){
     $nilaiKelompok = Nilai_kelompok::whereIn('kelompok_id', $kelompok->pluck('id'))
     ->where('role_id', 3)
     ->where('user_id',$userId)->get()->keyBy('kelompok_id');
+    // dd($kelompok);
     return view('pages.pembimbing.Nilai_Kelompok.index', compact('kelompok', 'nilaiKelompok', 'userId'));
 
 }
@@ -331,7 +333,7 @@ public function destroypembimbing1($id){
 public function indexpembimbing2(){
     $userId = session('user_id');
     
-    $kelompok = Kelompok::with('pembimbing')
+    $kelompok = Kelompok::with(['pembimbing','kategoriPA','prodi'])
     ->whereHas('pembimbing', function ($q) use($userId){
         $q->where('user_id', $userId);
     })->get();

@@ -40,4 +40,8 @@ class Tugas extends Model
     public function pengumpulan(){
         return $this->hasMany(pengumpulan_tugas::class);
     }
+     public function dosenRoles()
+    {
+        return $this->hasOne(DosenRole::class, 'user_id', 'user_id');
+    }  
 }

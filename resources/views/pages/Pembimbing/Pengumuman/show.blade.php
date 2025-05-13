@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Show Pengumuman</h4>
-                        <a class="btn btn-primary btn-sm" href="{{ route('pengumuman.pembimbing.index') }}">Kembali</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('pembimbing.pengumuman.index') }}">Kembali</a>
                     </div>
                     <div class="card-body">
                         @include('partials.alert')
@@ -20,6 +20,7 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <p><strong><i class="fas fa-calendar-alt mr-1"></i> Tanggal:</strong> {{ $pengumuman->created_at->format('d-m-Y') }}</p>
+                                <p><strong>Pengirim:</strong>{{ $pengumuman->nama }}</p>
                             </div>
                             <div class="col-md-6">
                                 <p><strong><i class="fas fa-info-circle mr-1"></i> Status:</strong> 

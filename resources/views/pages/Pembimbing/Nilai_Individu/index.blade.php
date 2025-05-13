@@ -19,6 +19,8 @@
                                         {{-- <th>No</th> --}}
                                         <th>Nomor Kelompok</th>
                                         <th>Nama Mahasiswa</th>
+                                        <th>Kategori PA</th>
+                                        <th>Prodi</th>
                                         <th>Komponen Penilaian</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -30,9 +32,11 @@
                                                 $nilai = $nilaiindividu[$mhs->user_id] ?? null;
                                             @endphp
                                             <tr>
-                                                {{-- <td>{{ $index + 1 }}</td> --}}
+                                                {{-- <td>{{ $index + 1 }}</td> --}} 
                                                 <td>{{ $kelompok->nomor_kelompok }}</td>
                                                 <td>{{ $mhs->nama ?? 'Nama tidak ditemukan' }} ({{ $mhs->nim ?? 'NIM tidak ditemukan' }})</td>
+                                                <td>{{ $kelompok->kategoriPA->kategori_pa }}</td>
+                                                <td>{{ $kelompok->prodi->nama_prodi}}</td>
                                                 <td>
                                                     <form action="{{ $nilai ? route('pembimbing1.NilaiIndividu.update', $nilai->id) : route('pembimbing1.NilaiIndividu.store') }}" method="POST">
                                                         @csrf

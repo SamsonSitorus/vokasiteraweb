@@ -20,6 +20,7 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <p><strong><i class="fas fa-calendar-alt mr-1"></i> Tanggal:</strong> {{ $pengumuman->created_at->format('d-m-Y') }}</p>
+                                <p><strong>Pengirim:</strong>{{ $pengumuman->nama }}</p>
                             </div>
                             <div class="col-md-6">
                                 <p><strong><i class="fas fa-calendar-alt mr-1"></i> Tanggal:</strong> {{ $pengumuman->created_at->format('d-m-Y') }}</p>

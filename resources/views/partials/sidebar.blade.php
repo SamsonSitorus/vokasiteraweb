@@ -73,7 +73,7 @@
                     @endif
                 </ul>
             </li>
-            <li ><a class="nav-link" href="{{--route('pembimbing.pengumuman.index')--}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
+            <li ><a class="nav-link" href="{{route('penguji.pengumuman.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
 
             @endif
             {{-- Untuk  Pembimbing --}}
@@ -82,7 +82,7 @@
             <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li ><a class="nav-link" href="{{route('pembimbing.tugas.index')}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{route('pembimbing.bimbingan.index')}}"><i class="fas fa-bullhorn"></i> <span>Bimbingan</span></a></li>
-            <li ><a class="nav-link" href="{{route('pengumuman.pembimbing.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
+            <li ><a class="nav-link" href="{{route('pembimbing.pengumuman.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
             <li ><a class="nav-link" href="{{ route('pembimbing.jadwal.index') }}"><i class="fas fa-file"></i> <span>Jadwal</span></a></li>
             <li><a class="nav-link" href="{{ route('PembimbingPengajuanSeminar.index') }}"><i class="fas fa-calendar-check"></i> <span>Pengajuan Seminar</span></a></li>
             <li class="nav-item dropdown {{ request()->is('nilai*') ? 'active' : '' }}">
@@ -102,9 +102,6 @@
                 @endif
                   </ul>
             </li>  
-            <li ><a class="nav-link" href="{{route('pengumuman.pembimbing.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
-    
-            
             @endif
              {{-- Untuk  Mahasiswa --}}
             @elseif (session('role') == 'Mahasiswa')

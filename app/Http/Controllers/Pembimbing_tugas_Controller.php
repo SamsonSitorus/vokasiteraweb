@@ -2,22 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DosenRole;
 use Illuminate\Http\Request;
 use App\Models\Tugas;
 use App\Models\pengumpulan_tugas;
 class Pembimbing_tugas_Controller extends Controller
 {
     public function indexpembimbing(Request $request){
-
-        $prodi_id = session('prodi_id');
-        $KPA_id = session('KPA_id');
-        $TM_id = session('TM_id');
         $user_id = session('user_id');
-      $tugas = Tugas::with(['prodi', 'tahunMasuk', 'kategoriPA'])
-      ->where('prodi_id', $prodi_id)
-          ->where('TM_id', $TM_id)
-          ->where('KPA_id', $KPA_id)
-      ->get();
+        $role_ids = [3,5];
+       $prodi_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->whereIn('role_id', $role_ids)
+                          ->pluck('prodi_id');
+        $TM_ids = DosenRole::where('user_id', $user_id)
+                            ->where('status', 'Aktif')
+                            ->whereIn('role_id', $role_ids)
+                          ->pluck('TM_id');
+        $KPA_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->whereIn('role_id', $role_ids)
+                          ->pluck('KPA_id');
+        $prodi_ids = $prodi_ids->unique();
+        $TM_ids = $TM_ids->unique();
+        $KPA_ids = $KPA_ids->unique();
+        $tugas = Tugas::with(['prodi', 'tahunMasuk', 'kategoriPA','dosenRoles'])
+         ->whereIn('prodi_id', $prodi_ids)
+          ->whereIn('KPA_id', $KPA_ids)
+           ->whereIn('TM_id', $TM_ids)
+        ->get();  
+            //  dd($tugas);
     
       return view('pages.Pembimbing.tugas.index',compact('tugas'));
        

@@ -223,7 +223,7 @@ class Artefak_Controller extends Controller
         ]);
         if ($request->hasFile('file_path')) {
             $file = $request->file('file_path');
-            $path = $file->store('pengumpulan_tugas_files', 'public'); // Simpan di storage/app/public/pengumpulan_tugas_files
+            $path = $file->store('pengumpulan_tugas_files', 'public'); // Simpan di drive
             $validated['file_path'] = $path;
         }
     

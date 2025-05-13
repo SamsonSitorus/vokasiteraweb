@@ -18,6 +18,8 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Judul</th>
+                                        <th>Kategori PA</th>
+                                        <th>Prodi</th>
                                         <th>Pengirim</th>
                                         <th>Status</th>
                                     </tr>
@@ -26,8 +28,10 @@
                                     @foreach ($pengumuman as $index => $pengumuman)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td><a href="{{route('pengumuman.show',$pengumuman->id)}}">{{ $pengumuman->judul }}</a></td>
-                                        <td>{{ $pengumuman->pengirim }}</td>
+                                        <td><a href="{{route('pengumuman.pembimbing.show',$pengumuman->id)}}">{{ $pengumuman->judul }}</a></td>
+                                        <td>{{ $pengumuman->kategoriPA->kategori_pa }}</td>
+                                        <td>{{ $pengumuman->prodi->nama_prodi }}</td>
+                                        <td>{{ $pengumuman->nama}}</td>
                                         <td>
                                             <span class="badge {{ $pengumuman->status == 'aktif' ? 'bg-success' : 'bg-secondary' }}">
                                                 {{ ucfirst($pengumuman->status) }}

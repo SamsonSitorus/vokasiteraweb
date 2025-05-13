@@ -1,4 +1,4 @@
-<!-- @extends('layouts.main')
+@extends('layouts.main')
 @section('title', 'Pengumuman Mahasiswa')
 
 @section('content')
@@ -18,24 +18,24 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Judul</th>
+                                        <th>Kategori PA</th>
+                                        <th>Prodi</th>
                                         <th>Pengirim</th>
                                         <th>Status</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($pengumuman as $index => $pengumuman)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td><a href="{{ route('pengumuman.showMahasiswa', $pengumuman->pengumuman_id) }}">{{ $pengumuman->judul }}</a></td>
-                                        <td>{{ $pengumuman->pengirim }}</td>
+                                        <td><a href="{{route('pengumuman.penguji.show',$pengumuman->id)}}">{{ $pengumuman->judul }}</a></td>
+                                        <td>{{ $pengumuman->kategoriPA->kategori_pa }}</td>
+                                        <td>{{ $pengumuman->prodi->nama_prodi }}</td>
+                                        <td>{{ $pengumuman->nama}}</td>
                                         <td>
                                             <span class="badge {{ $pengumuman->status == 'aktif' ? 'bg-success' : 'bg-secondary' }}">
                                                 {{ ucfirst($pengumuman->status) }}
                                             </span>
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('pengumuman.showMahasiswa', $pengumuman->pengumuman_id) }}" class="btn btn-info btn-sm">Lihat</a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -48,4 +48,4 @@
         </div>
     </div>
 </section>
-@endsection -->
+@endsection

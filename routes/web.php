@@ -25,12 +25,36 @@ use App\Http\Controllers\TahunMasuk_Controller;
 use App\Http\Controllers\JadwalStaffController;
 use App\Http\Controllers\JadwalPengujiController;
 use App\Http\Controllers\JadwalPembimbingController;
-// use App\Http\Controllers\FeedbackController;
+use Google\Client;
 use App\Models\Nilai_kelompok;
 use App\Models\Pengumuman;
 use App\Http\Controllers\PengajuanSeminarController;
+//untuk Google Drivenya
+Route::get('/generate-token', function () {
+    $client = new Client();
+    $client->setClientId('YOUR_CLIENT_ID');
+    $client->setClientSecret('YOUR_CLIENT_SECRET');
+    $client->setRedirectUri('http://localhost:8000/callback');
+    $client->addScope('https://www.googleapis.com/auth/drive');
+    $client->setAccessType('offline');
+    $client->setPrompt('consent');
 
+    $authUrl = $client->createAuthUrl();
+    return redirect($authUrl);
+});
 
+Route::get('/callback', function () {
+    $client = new Client();
+    $client->setClientId('YOUR_CLIENT_ID');
+    $client->setClientSecret('YOUR_CLIENT_SECRET');
+    $client->setRedirectUri('http://localhost:8000/callback');
+
+    $token = $client->fetchAccessTokenWithAuthCode(request('code'));
+
+    return response()->json($token);
+});
+
+//untuk login
 Route::get('/', fn () => redirect()->route('login.form'));
 
 // Login routes
@@ -164,7 +188,10 @@ Route::prefix('pengumuman')->group(function(){
     Route::get('/mahasiswa/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.showMahasiswa');
     //Pengumuman Pembimbing 
     Route::get('/pembimbing/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pembimbing.pengumuman.index');
-    Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
+    Route::get('/pembimbing/pengumuman/{id}', [PengumumanController::class, 'showPengumumanpembimbing'])->name('pengumuman.pembimbing.show');
+   //Pengumuman Penguji 
+    Route::get('/penguji/pengumuman', [PengumumanController::class, 'pengujiIndex'])->name('penguji.pengumuman.index');
+    Route::get('/penguji/pengumuman/{id}', [PengumumanController::class, 'showPengumumanpenguji'])->name('pengumuman.penguji.show');
 
 });
 // CRUD Pengumuman by Koordinator
@@ -206,10 +233,7 @@ Route::prefix('pengumuman')->group(function(){
     //untuk koordinator
     Route::get('/show/koordinator',[PengumumanController::class,'showPengumumanKoordinator'])->name('pengumuman.koordinator.show');
     Route::get('/show/koordinator/{id}', [PengumumanController::class, 'showPengumumankoordinator'])->name('pengumuman.koordinator.show');
-    //untuk pembimbing
-    Route::get('/show/pembimbing/', [PengumumanController::class, 'pembimbingIndex'])->name('pengumuman.pembimbing.index');
-    Route::get('/show/pembimbing/{id}', [PengumumanController::class, 'showPengumumanpembimbing'])->name('pengumuman.pembimbing.show');
-    //Route untuk staff =>pengumuman
+     //Route untuk staff =>pengumuman
     Route::get('/BAAK',[PengumumanController::class, 'staffpengumuman'])->name('pengumuman.BAAK.index');
     Route::get('/BAAK/create',[PengumumanController::class, 'createpengumuman'])->name('pengumuman.BAAK.create');
     Route::post('/BAAK/store',[PengumumanController::class,'storepengumuman'])->name('pengumuman.BAAK.store');
@@ -233,18 +257,6 @@ Route::prefix('pengumuman')->group(function () {
 Route::prefix('mahasiswa')->group(function () {
     Route::get('/pengumuman', [PengumumanController::class, 'mahasiswaIndex'])->name('pengumuman.mahasiswa.index');
     Route::get('/pengumuman/{id}', [PengumumanController::class, 'showMahasiswa'])->name('pengumuman.mahasiswa.show');
-});
-
-// Route pengumuman untuk Koordinator
-Route::prefix('koordinator')->group(function () {
-    Route::get('/pengumuman', [PengumumanController::class, 'showPengumumanKoordinator'])->name('pengumuman.koordinator.index');
-    Route::get('/pengumuman/{id}', [PengumumanController::class, 'showPengumumankoordinator'])->name('pengumuman.koordinator.show');
-});
-
-// Route pengumuman untuk Pembimbing
-Route::prefix('pembimbing')->group(function () {
-    Route::get('/pengumuman', [PengumumanController::class, 'pembimbingIndex'])->name('pengumuman.pembimbing.index');
-    Route::get('/pengumuman/{id}', [PengumumanController::class, 'showpembimbing'])->name('pengumuman.pembimbing.show');
 });
 
 // Route pengumuman untuk BAAK (Staff)
