@@ -18,6 +18,8 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nomor Kelompok</th>
+                                        <th>Kategori PA</th>
+                                        <th>Prodi</th>
                                         <th>Keperluan</th>
                                         <th>Tanggal Mulai</th>
                                         <th>Tanggal Selesai</th>
@@ -31,6 +33,8 @@
                                         <tr>
                                             <td>{{ $loop->iteration}}</td>
                                             <td>{{ $item->kelompok->nomor_kelompok }}</td>
+                                            <td>{{ $item->kelompok->kategoriPA->kategori_pa}}</td>
+                                            <td>{{ $item->kelompok->prodi->nama_prodi}}</td>
                                             <td>{{ $item->keperluan }}</td>
                                             <td>{{ $item->rencana_mulai }}</td>    
                                             <td>{{ $item->rencana_selesai}}</td> 

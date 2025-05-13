@@ -31,6 +31,14 @@ class PengajuanSeminar extends Model
     {
         return $this->hasMany(PengajuanSeminarFile::class, 'pengajuan_seminar_id');
     }
+       public function prodi()
+    {
+        return $this->belongsTo(Prodi::class);
+    }
+    public function kategoriPA()
+    {
+        return $this->belongsTo(KategoriPA::class);
+    }
 }
 
 //🔎 Artinya: 1 pengajuan seminar bisa punya banyak file (1:N).

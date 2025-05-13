@@ -20,6 +20,8 @@
                                         <th>No</th>
                                         <th>Tanggal Pengajuan</th>
                                         <th>Kelompok</th>
+                                        <th>Kategori PA</th>
+                                        <th>Prodi</th>
                                         <th>File</th>
                                         <th>Status</th>
                                         <th>Catatan</th>
@@ -38,6 +40,8 @@
                                                 -
                                             @endif
                                         </td>
+                                        <td>{{ $pengajuan->kelompok->kategoriPA->kategori_pa }}</td>
+                                        <td>{{ $pengajuan->kelompok->prodi->nama_prodi }}</td>
                                         <td>
                                             @if($pengajuan->files->count() > 0)
                                                 <div class="dropdown">

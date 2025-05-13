@@ -327,7 +327,7 @@ public function update(Request $request, $id)
             // APPROACH 1: Get submissions directly by pembimbing_id if available
             if ($pembimbingId) {
                 $directSubmissions = PengajuanSeminar::where('pembimbing_id', $pembimbingId)
-                    ->with(['kelompok', 'files'])
+                    ->with(['kelompok', 'files','prodi','kategoriPA'])
                     ->orderBy('created_at', 'desc')
                     ->get();
                 
@@ -362,7 +362,7 @@ public function update(Request $request, $id)
                         $query->whereIn('pembimbing_id', $pembimbingIds)
                               ->orWhereIn('kelompok_id', $kelompokIds);
                     })
-                    ->with(['kelompok', 'files'])
+                    ->with(['kelompok', 'files','prodi','kategoriPA'])
                     ->orderBy('created_at', 'desc')
                     ->get();
                     
@@ -382,7 +382,7 @@ public function update(Request $request, $id)
                 $fallbackSubmissions = PengajuanSeminar::whereHas('pembimbing', function($query) use ($userId) {
                     $query->where('user_id', $userId);
                 })
-                ->with(['kelompok', 'files'])
+                ->with(['kelompok', 'files','prodi','kategoriPA'])
                 ->orderBy('created_at', 'desc')
                 ->get();
                 

@@ -148,10 +148,10 @@ class Artefak_Controller extends Controller
             ->where('prodi_id', $prodi_id)
             ->where('KPA_id', $KPA_id)
             ->where('TM_id', $TM_id)
-            ->where('kategori_tugas','Artefak')
+            ->where('kategori_tugas','Revisi')
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('pages.Mahasiswa.Artefak.revisi', compact('artefak','statusByTugas','artefak'));
+        return view('pages.Mahasiswa.Artefak.revisi', compact('artefak','statusByTugas'));
     }
 
   public function create( $encryptedId){

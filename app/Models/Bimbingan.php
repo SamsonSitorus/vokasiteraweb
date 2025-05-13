@@ -32,9 +32,15 @@ class Bimbingan extends Model
     {
         return $this->hasOne(KartuBimbingan::class, 'request_bimbingan_id');
     }
-
-    
     public function ruangan(){
         return $this->belongsTo(Ruangan::class,'ruangan_id');
+    }
+    public function prodi()
+    {
+        return $this->belongsTo(Prodi::class);
+    }
+    public function kategoriPA()
+    {
+        return $this->belongsTo(KategoriPA::class);
     }
 }

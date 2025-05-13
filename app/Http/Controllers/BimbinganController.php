@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use App\Models\Bimbingan;
+use App\Models\DosenRole;
 use App\Models\Kelompok;
 use Illuminate\Http\Request;
 use Exception;
@@ -200,15 +201,26 @@ class BimbinganController extends Controller
     //untuk dosen pembimbing
 
     public function indexpembimbing(){
-        $prodi_id = session('prodi_id');
-        $KPA_id = session('KPA_id');
-        $TM_id = session('TM_id');
-        
+       
+       $user_id = session('user_id');
+       $prodi_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->where('role_id', '3')
+                          ->pluck('prodi_id');
+        $TM_ids = DosenRole::where('user_id', $user_id)
+                            ->where('status', 'Aktif')
+                            ->where('role_id', '3')
+                          ->pluck('TM_id');
+        $KPA_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->where('role_id', '3')
+                          ->pluck('KPA_id');
 
-        $bimbingan = Bimbingan::whereHas('kelompok',function($query) use ($prodi_id,$KPA_id,$TM_id){
-            $query  ->where('prodi_id', $prodi_id)
-                    ->where('KPA_id', $KPA_id)
-                    ->where('TM_id', $TM_id);
+        $bimbingan = Bimbingan::with(['prodi','kategoriPA'])
+            ->whereHas('kelompok',function($query) use ($prodi_ids,$KPA_ids,$TM_ids){
+            $query  ->whereIn('prodi_id', $prodi_ids)
+                    ->whereIn('KPA_id', $KPA_ids)
+                    ->whereIn('TM_id', $TM_ids);
         })->with('kelompok')->get();
         
 
