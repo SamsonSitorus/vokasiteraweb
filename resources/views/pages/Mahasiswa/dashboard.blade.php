@@ -129,7 +129,7 @@
 </div>
 
         {{-- Jadwal Kelompok --}}
-<div class="row mt-4">
+{{-- <div class="row mt-4">
     <div class="col-12">
         <div class="card shadow-sm">
             <div class="card-header bg-light">
@@ -159,7 +159,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 
     </div>
