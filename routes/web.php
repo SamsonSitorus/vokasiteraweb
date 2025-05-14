@@ -4,6 +4,7 @@ use App\Http\Controllers\Artefak_Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BimbinganController;
+use App\Http\Controllers\dashboard_Controller;
 use App\Http\Controllers\Kelompok_Controller;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\ManajemenroleController;
@@ -40,16 +41,16 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Route dengan middleware auth + role
 Route::middleware(['auth.api'])->group(function () {
-    Route::get('/dashboard/mahasiswa', fn () => view('pages.mahasiswa.dashboard'))
+    Route::get('/dashboard/mahasiswa',[dashboard_Controller::class, 'mahasiswa'])
         ->name('dashboard.mahasiswa')->middleware('role:Mahasiswa');
 
-    Route::get('/dashboard/pembimbing', fn () => view('pages.pembimbing.dashboard'))
+    Route::get('/dashboard/pembimbing',[dashboard_Controller::class, 'pembimbing'])
         ->name('dashboard.pembimbing')->middleware('dosen_roles:3,5');
 
-    Route::get('/dashboard/penguji', fn () => view('pages.penguji.dashboard'))
+    Route::get('/dashboard/penguji',[dashboard_Controller::class, 'penguji'])
         ->name('dashboard.penguji')->middleware('dosen_roles:2,4');
 
-    Route::get('/dashboard/koordinator', fn () => view('pages.koordinator.dashboard'))
+    Route::get('/dashboard/koordinator',[dashboard_Controller::class, 'Koordinator'])
         ->name('dashboard.koordinator')->middleware('dosen_roles:1');
 
     Route::get('/dashboard/BAAK', fn () => view('pages.BAAK.dashboard'))

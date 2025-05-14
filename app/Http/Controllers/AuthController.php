@@ -208,7 +208,7 @@ class AuthController extends Controller
             //     'success' => 'User valid!',
             //     'details' => $detailUser
             // ], 200);
-             return view('pages.profile',compact('detailUser'));
+             return view('pages.profile',compact('detailUser','role'));
         } catch (RequestException $e) {
             Log::error('RequestException: ' . $e->getMessage());
             return response()->json(['error' => 'Gagal mendapatkan data user.'], $e->getResponse()->getStatusCode() ?? 500);

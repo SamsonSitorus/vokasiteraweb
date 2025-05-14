@@ -3,40 +3,49 @@
 @section('title', 'Profile')
 
 @section('content')
-<div class="section">
-    <div class="section-body">
-        <div class="row d-flex justify-content-center">
-            <div class="col-12 col-sm-8 col-lg-6">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
                 @include('partials.alert')
-
-                @foreach($detailUser as $user)
-                <div class="card profile-widget">
-                    <div class="profile-widget-header text-center pt-4">
-                        <img alt="image" src="{{ asset('assets/img/default-profile.png') }}" class="rounded-circle profile-widget-picture" width="100">
-                        <h4 class="mt-3">{{ $user['nama'] }}</h4>
-                        <div class="text-muted d-inline font-weight-normal">
-                            <div class="slash"></div> {{ $user['prodi_name'] }}
-                        </div>
-                    </div>
-                    <div class="profile-widget-description px-4 py-3">
-                        <ul class="list-unstyled">
-                            <li><strong>NIM:</strong> {{ $user['nim'] }}</li>
-                            <li><strong>Username:</strong> {{ $user['user_name'] }}</li>
-                            <li><strong>Email:</strong> {{ $user['email'] }}</li>
-                            <li><strong>Fakultas:</strong> {{ $user['fakultas'] }}</li>
-                            <li><strong>Angkatan:</strong> {{ $user['angkatan'] }}</li>
-                            <li><strong>Status:</strong> 
-                                <span class="badge {{ $user['status'] == 'Aktif' ? 'badge-success' : 'badge-danger' }}">
-                                    {{ $user['status'] }}
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
+                
+                <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+                    @foreach($detailUser as $user)
+                        @if ($role == 'Mahasiswa')
+                            <div class="card-body bg-light p-4">
+                                <h4 class="card-title text-center mb-4 text-primary">Profil Mahasiswa</h4>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><strong>Nama:</strong> {{ $user['nama'] }}</li>
+                                    <li class="list-group-item"><strong>NIM:</strong> {{ $user['nim'] }}</li>
+                                    <li class="list-group-item"><strong>Username:</strong> {{ $user['user_name'] }}</li>
+                                    <li class="list-group-item"><strong>Email:</strong> {{ $user['email'] }}</li>
+                                    <li class="list-group-item"><strong>Prodi:</strong> {{ $user['prodi_name'] }}</li>
+                                    <li class="list-group-item"><strong>Fakultas:</strong> {{ $user['fakultas'] }}</li>
+                                    <li class="list-group-item"><strong>Angkatan:</strong> {{ $user['angkatan'] }}</li>
+                                    <li class="list-group-item"><strong>Status:</strong> {{ $user['status'] }}</li>
+                                </ul>
+                            </div>
+                        @else
+                            <div class="card-body bg-light p-4">
+                                <div class="text-center mb-4">
+                                    <h4 class="mt-3 text-dark">{{ $user['nama'] }}</h4>
+                                    <p class="text-muted">{{ $user['posisi'] ?? '-' }}</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><strong>NIP:</strong> {{ $user['nip'] }}</li>
+                                    <li class="list-group-item"><strong>Username:</strong> {{ $user['user_name'] }}</li>
+                                    <li class="list-group-item"><strong>Email:</strong> {{ $user['email'] }}</li>
+                                    <li class="list-group-item"><strong>Alias:</strong> {{ $user['alias'] ?? '-' }}</li>
+                                    <li class="list-group-item"><strong>Status Pegawai:</strong> 
+                                        <span class="badge {{ $user['status_pegawai'] == 'A' ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $user['status_pegawai'] == 'A' ? 'Aktif' : 'Tidak Aktif' }}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
-                @endforeach
-
             </div>
         </div>
     </div>
-</div>
 @endsection

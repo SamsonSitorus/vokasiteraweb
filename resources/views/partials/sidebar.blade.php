@@ -16,7 +16,7 @@
 
             {{--  untuk Koordinator --}}
             @if (in_array(1, $dosenRoles)) 
-            <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
+            <li><a class="nav-link" href="{{route('dashboard.koordinator')}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li class="menu-header">Kordinator</li>
              <li ><a class="nav-link" href="{{ route('koordinator.tugas.index')}}"><i class="fas fa-file"></i><span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{ route('kelompok.index')}}"><i class="fas fa-users"></i> <span>Kelompok</span></a></li>
@@ -55,7 +55,8 @@
             @endif
             {{--  untuk Penguji --}}
             @if (in_array(2, $dosenRoles) || in_array(4, $dosenRoles)) 
-            <li class="menu-header">Penguji</li>            <li class="{{ request()->routeIs('siswa.dashboard.*') ? 'active' : '' }}"><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
+            <li class="menu-header">Penguji</li>    
+             <li><a class="nav-link" href="{{route('dashboard.penguji')}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li> 
             <li ><a class="nav-link" href="{{route('penguji.tugas.index')}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
            
             <li ><a class="nav-link" href="{{ route('penguji.jadwal.index') }}"><i class="fas fa-file"></i> <span>Jadwal</span></a></li>
@@ -79,7 +80,7 @@
             {{-- Untuk  Pembimbing --}}
             @if (in_array(3, $dosenRoles) || in_array(5, $dosenRoles)) 
             <li class="menu-header">Pembimbing</li>
-            <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
+            <li><a class="nav-link" href="{{route('dashboard.pembimbing')}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li ><a class="nav-link" href="{{route('pembimbing.tugas.index')}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{route('pembimbing.bimbingan.index')}}"><i class="fas fa-bullhorn"></i> <span>Bimbingan</span></a></li>
             <li ><a class="nav-link" href="{{route('pembimbing.pengumuman.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
@@ -106,7 +107,7 @@
              {{-- Untuk  Mahasiswa --}}
             @elseif (session('role') == 'Mahasiswa')
             <li class="menu-header">MahaSiswa</li>
-            <li class="{{ request()->routeIs('siswa.dashboard.*') ? 'active' : '' }}"><a class="nav-link" href="{{-- routesnya --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
+             <li><a class="nav-link" href="{{ route('dashboard.mahasiswa') }}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li ><a class="nav-link" href="{{route('Mahasiswa.tugas.index')}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{ route('artefak.index')}}"><i class="fas fa-file"></i> <span>Artefak</span></a></li>
             <li ><a class="nav-link" href="{{route('bimbingan.index')}}"><i class="fas fa-list"></i> <span>Bimbingan</span></a></li>
