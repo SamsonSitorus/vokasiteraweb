@@ -98,6 +98,6 @@ class Pembimbing_tugas_Controller extends Controller
                       ->where('TM_id', $TM_id);
             })
             ->get();
-        return view('pages.pembimbing.tugas.show_submission', compact('artefak'));
+        return view('pages.Pembimbing.tugas.show_submission', compact('artefak'));
     }
 }
