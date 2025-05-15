@@ -15,7 +15,7 @@ class NilaiMahasiswa_Controller extends Controller
         $prodi_id = session('prodi_id');
         $KPA_id = session('KPA_id');
         $TM_id = session('TM_id');
-        $token = session('token');
+        $token = session('token');  
 
         $data = DB::table('kelompok_mahasiswa as km')
         ->join('kelompok as k', 'km.kelompok_id', '=', 'k.id')
@@ -27,25 +27,27 @@ class NilaiMahasiswa_Controller extends Controller
             'km.user_id',
             'km.kelompok_id',
             'k.nomor_kelompok',
-                DB::raw('
-                    0.05 * COALESCE(na.Pameran, 0) +
+               DB::raw('
+                    0.05 * COALESCE(na.pameran, 0) +
                     0.45 * COALESCE(ns.nilai_seminar, 0) +
-                    0.1  * COALESCE(na.Administrasi, 0) +
-                    0.4  * COALESCE(nb.Total, 0) AS nilai_akhir
+                    0.1  * COALESCE(na.administrasi, 0) +
+                    0.4  * COALESCE(nb.total, 0) AS nilai_akhir
                 ')
             )
             ->leftJoin(DB::raw('(
-                SELECT kelompok_id, MAX(Pameran) AS Pameran, MAX(Administrasi) AS Administrasi
+                SELECT kelompok_id, MAX(pameran) AS pameran, MAX(administrasi) AS administrasi
                 FROM nilai_administrasi
                 GROUP BY kelompok_id
-            ) as na'),'na.kelompok_id', '=', 'km.kelompok_id')
+            ) as na'), 'na.kelompok_id', '=', 'km.kelompok_id')
+
             ->leftJoin(DB::raw('(
                 SELECT user_id, MAX(nilai_seminar) AS nilai_seminar
                 FROM nilai_seminar
                 GROUP BY user_id
             ) as ns'), 'ns.user_id', '=', 'km.user_id')
+
             ->leftJoin(DB::raw('(
-                SELECT user_id, MAX(Total) AS Total
+                SELECT user_id, MAX(total) AS total
                 FROM nilai_bimbingan
                 GROUP BY user_id
             ) as nb'), 'nb.user_id', '=', 'km.user_id')
