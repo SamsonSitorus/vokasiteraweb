@@ -154,64 +154,131 @@ class Artefak_Controller extends Controller
         return view('pages.Mahasiswa.Artefak.revisi', compact('artefak','statusByTugas'));
     }
 
-  public function create( $encryptedId){
-        try {
-            $id = Crypt::decrypt($encryptedId);
-            $tugas = Tugas::findOrFail($id);
-            $idTugas = $tugas->id;
-            // dd($idTugas);
-            $deadline = Carbon::parse($tugas->tanggal_pengumpulan);
-            $now = Carbon::now();
-            $diffInSeconds = $now->diffInSeconds($deadline, false);
+//   public function create( $encryptedId){
+//         try {
+//             $id = Crypt::decrypt($encryptedId);
+//             $tugas = Tugas::findOrFail($id);
+//             $idTugas = $tugas->id;
+//             // dd($idTugas);
+//             $deadline = Carbon::parse($tugas->tanggal_pengumpulan);
+//             $now = Carbon::now();
+//             $diffInSeconds = $now->diffInSeconds($deadline, false);
     
-            $tugas->formatted_deadline = $deadline->format('d M Y - h:i A');
+//             $tugas->formatted_deadline = $deadline->format('d M Y - h:i A');
     
-            if ($diffInSeconds > 0) {
-                // Masih ada waktu
-                if ($diffInSeconds >= 86400) {
-                    $days = floor($diffInSeconds / 86400);
-                    $tugas->time_remaining = "$days hari lagi";
-                } else {
-                    $hours = floor($diffInSeconds / 3600);
-                    $minutes = floor(($diffInSeconds % 3600) / 60);
-                    $tugas->time_remaining = "{$hours} jam {$minutes} menit lagi";
-                }
-                $tugas->status_class = 'text-warning';
-            } else {
-                // Sudah lewat deadline
-                $diffInSeconds = abs($diffInSeconds);
-                if ($diffInSeconds >= 86400) {
-                    $days = floor($diffInSeconds / 86400);
-                    $tugas->time_remaining = "Selesai $days hari yang lalu";
-                } else {
-                    $hours = floor($diffInSeconds / 3600);
-                    $minutes = floor(($diffInSeconds % 3600) / 60);
-                    $tugas->time_remaining = "Selesai {$hours} jam {$minutes} menit yang lalu";
-                }
-                $tugas->status_class = 'text-success';
-            }
-            $kelompokId = session('kelompok_id');
+//             if ($diffInSeconds > 0) {
+//                 // Masih ada waktu
+//                 if ($diffInSeconds >= 86400) {
+//                     $days = floor($diffInSeconds / 86400);
+//                     $tugas->time_remaining = "$days hari lagi";
+//                 } else {
+//                     $hours = floor($diffInSeconds / 3600);
+//                     $minutes = floor(($diffInSeconds % 3600) / 60);
+//                     $tugas->time_remaining = "{$hours} jam {$minutes} menit lagi";
+//                 }
+//                 $tugas->status_class = 'text-warning';
+//             } else {
+//                 // Sudah lewat deadline
+//                 $diffInSeconds = abs($diffInSeconds);
+//                 if ($diffInSeconds >= 86400) {
+//                     $days = floor($diffInSeconds / 86400);
+//                     $tugas->time_remaining = "Selesai $days hari yang lalu";
+//                 } else {
+//                     $hours = floor($diffInSeconds / 3600);
+//                     $minutes = floor(($diffInSeconds % 3600) / 60);
+//                     $tugas->time_remaining = "Selesai {$hours} jam {$minutes} menit yang lalu";
+//                 }
+//                 $tugas->status_class = 'text-success';
+//             }
+//             $kelompokId = session('kelompok_id');
             
-            //cek apakah kelompk sudah submit
-            $existingSubmission = pengumpulan_tugas::where('kelompok_id',$kelompokId)
-            ->where('tugas_id',$tugas->id)
-            ->first();
-            // dd($existingSubmission);
-            $hasSubmitted = $existingSubmission ? true : false;
-            $kelompokId = session('kelompok_id');
+//             //cek apakah kelompk sudah submit
+//             $existingSubmission = pengumpulan_tugas::where('kelompok_id',$kelompokId)
+//             ->where('tugas_id',$tugas->id)
+//             ->first();
+//             // dd($existingSubmission);
+//             $hasSubmitted = $existingSubmission ? true : false;
+//             $kelompokId = session('kelompok_id');
          
            
-            $status = pengumpulan_tugas::with(['Kelompok','tugas'])
-            ->where('kelompok_id', $kelompokId)
-            ->get();
-            $statusByTugas = $status->keyBy('tugas_id');
+//             $status = pengumpulan_tugas::with(['Kelompok','tugas'])
+//             ->where('kelompok_id', $kelompokId)
+//             ->get();
+//             $statusByTugas = $status->keyBy('tugas_id');
        
 
-            return view('pages.Mahasiswa.Artefak.create', compact('tugas','kelompokId','idTugas', 'hasSubmitted', 'existingSubmission','statusByTugas'));
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+//             return view('pages.Mahasiswa.Artefak.create', compact('tugas','kelompokId','idTugas', 'hasSubmitted', 'existingSubmission','statusByTugas'));
+//         } catch (Exception $e) {
+//             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+//         }
+//     }
+    public function create($encryptedId) {
+    try {
+        $id = Crypt::decrypt($encryptedId);
+        $tugas = Tugas::findOrFail($id);
+        $idTugas = $tugas->id;
+        
+        // Check if deadline has passed
+        $deadline = Carbon::parse($tugas->tanggal_pengumpulan);
+        $now = Carbon::now();
+        $isDeadlinePassed = $now->isAfter($deadline);
+        
+        // Calculate time remaining for display
+        $diffInSeconds = $now->diffInSeconds($deadline, false);
+        $tugas->formatted_deadline = $deadline->format('d M Y - h:i A');
+        
+        if ($diffInSeconds > 0) {
+            // Still time remaining
+            if ($diffInSeconds >= 86400) {
+                $days = floor($diffInSeconds / 86400);
+                $tugas->time_remaining = "$days hari lagi";
+            } else {
+                $hours = floor($diffInSeconds / 3600);
+                $minutes = floor(($diffInSeconds % 3600) / 60);
+                $tugas->time_remaining = "{$hours} jam {$minutes} menit lagi";
+            }
+            $tugas->status_class = 'text-warning';
+        } else {
+            // Deadline has passed
+            $diffInSeconds = abs($diffInSeconds);
+            if ($diffInSeconds >= 86400) {
+                $days = floor($diffInSeconds / 86400);
+                $tugas->time_remaining = "Selesai $days hari yang lalu";
+            } else {
+                $hours = floor($diffInSeconds / 3600);
+                $minutes = floor(($diffInSeconds % 3600) / 60);
+                $tugas->time_remaining = "Selesai {$hours} jam {$minutes} menit yang lagi";
+            }
+            $tugas->status_class = 'text-success';
         }
-    }
+        
+        $kelompokId = session('kelompok_id');
+        
+        // Check if group has already submitted
+        $existingSubmission = pengumpulan_tugas::where('kelompok_id', $kelompokId)
+            ->where('tugas_id', $tugas->id)
+            ->first();
+            
+        $hasSubmitted = $existingSubmission ? true : false;
+        
+        $status = pengumpulan_tugas::with(['Kelompok', 'tugas'])
+            ->where('kelompok_id', $kelompokId)
+            ->get();
+        $statusByTugas = $status->keyBy('tugas_id');
+        
+        return view('pages.Mahasiswa.Artefak.create', compact(
+            'tugas', 
+            'kelompokId', 
+            'idTugas', 
+            'hasSubmitted', 
+            'existingSubmission', 
+            'statusByTugas', 
+            'isDeadlinePassed'
+        ));
+            } catch (Exception $e) {
+                return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            }
+        }
     
     public function submit(Request $request){
        

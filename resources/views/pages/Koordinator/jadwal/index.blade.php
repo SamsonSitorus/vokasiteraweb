@@ -15,6 +15,21 @@
                     </div>                    
                     <div class="card-body">
                         @include('partials.alert')
+                        
+                        {{-- Display warning for unapproved seminar submissions --}}
+                        @if(session('warning'))
+                            <div class="alert alert-danger alert-dismissible show fade">
+                                <div class="alert-body">
+                                    <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                    {{ session('warning') }}
+                                    
+                                    @if(session('showUnapprovedAlert'))
+                                        <br><strong>Catatan:</strong> Pengajuan seminar harus disetujui oleh dosen pembimbing sebelum jadwal dapat dibuat.
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                        
                         <div class="table-responsive">
                             <table class="table table-striped" id="table-2">
                                 <thead>
@@ -35,8 +50,7 @@
                                             <td>{{ $item->pembimbing_nama ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->waktu_mulai)->format('d M Y H:i') }}</td>    
                                             <td>{{ \Carbon\Carbon::parse($item->waktu_selesai)->format('d M Y H:i') }}</td>    
-                                            <!-- <td>{{ $item->ruangan }}</td> -->
-                                             <td>{{ $item->ruangan->ruangan ?? '-'}}</td>
+                                            <td>{{ $item->ruangan->ruangan ?? '-'}}</td>
                                             <td>{!! $item->penguji_nama !!}</td>
                                             <td>
                                                 <div class="d-flex align-items-center">
@@ -75,7 +89,7 @@
         var name = $(this).data("name");
         event.preventDefault();
         swal({
-            title: `Yakin ingin menghapus data ini?`,
+            title: Yakin ingin menghapus data ini?,
             text: "Data akan terhapus secara permanen!",
             icon: "warning",
             buttons: true,

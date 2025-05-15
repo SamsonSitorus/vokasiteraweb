@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('status', ['Submitted', 'Late', 'Belum'])->default('Submitted');
             $table->text('feedback')->nullable();
             $table->text('feedback_pembimbing')->nullable();
+            $table->text('feedback_penguji')->nullable();
             $table->timestamps();
         });
     }

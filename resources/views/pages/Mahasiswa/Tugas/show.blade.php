@@ -55,6 +55,10 @@
                                 <th>Feedback Pembimbing</th>
                                 <td>{{ $existingSubmission->feedback_pembimbing ?? 'Feedback Null' }}</td>
                             </tr>
+                            <tr>
+                                <th>Feedback Penguji</th>
+                                <td>{{ $existingSubmission->feedback_penguji ?? 'Feedback Null' }}</td>
+                            </tr>
                         @elseif($existingSubmission && $existingSubmission->status === '')
                             <tr>
                                 <td colspan="2"><span class="text-muted">Belum terdapat tanggapan.</span></td>

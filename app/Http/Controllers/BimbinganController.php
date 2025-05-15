@@ -46,40 +46,76 @@ class BimbinganController extends Controller
         // dd($kelompokId);
     }
 
+    // public function store(Request $request){
+    //     $validated = $request->validate([
+    //         'kelompok_id' => 'required||exists:kelompok,id',
+    //         'ruangan_id' => 'required|exists:ruangan,id',
+    //         'keperluan' => 'required|string|max:1000',
+    //         'rencana_mulai' => 'required|date|after_or_equal:today',
+    //         'rencana_selesai' => 'required|date|after_or_equal:today',
+    //         'status' => 'required',
+    //     ]);
+    
+    //         Bimbingan::create($validated);
+    //         return redirect()->route('bimbingan.index')->with('success', 'Request Bimbingan  berhasil disimpan.');
+    // }
+
+    // public function edit($encryptedId){
+    //     try{
+    //         $id = Crypt::decrypt($encryptedId);
+
+    //         $bimbingan = Bimbingan::findOrFail($id);
+
+    //         if(in_array($bimbingan->status,['selesai', 'disetujui','ditolak'])){
+    //             // Tampilkan pesan kesalahan jika status masih Aktif
+    //             return back()->withErrors([
+    //                 'error' => 'Tidak dapat mengedit data Request Bimbingan.',
+    //             ]);
+    //         }
+            
+    //         // Ambil data ruangan untuk dropdown
+    //         $ruangan = Ruangan::all();
+            
+    //         return view('pages.Mahasiswa.Bimbingan.edit', compact('bimbingan', 'ruangan'));
+    //     } catch (Exception $e) {
+    //         return redirect()->back()->with('error', 'Gagal menampilkan data: ' . $e->getMessage());
+    //     }
+    // }
+
     public function store(Request $request){
         $validated = $request->validate([
-            'kelompok_id' => 'required||exists:kelompok,id',
+            'kelompok_id' => 'required|exists:kelompok,id',
             'ruangan_id' => 'required|exists:ruangan,id',
             'keperluan' => 'required|string|max:1000',
-            'rencana_mulai' => 'required|date|after_or_equal:today',
-            'rencana_selesai' => 'required|date|after_or_equal:today',
-            'status' => 'required',
-        ]);
-    
-            Bimbingan::create($validated);
-            return redirect()->route('bimbingan.index')->with('success', 'Request Bimbingan  berhasil disimpan.');
-    }
+            'rencana_mulai' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($request) {
+                    $mulai = new \DateTime($value);
+                    $selesai = new \DateTime($request->rencana_selesai);
+                    $now = new \DateTime();
+                    $diffFromNow = $now->diff($mulai);
+                    $diffInMinutes = $mulai->diff($selesai)->h * 60 + $mulai->diff($selesai)->i;
 
-    public function edit($encryptedId){
-        try{
-            $id = Crypt::decrypt($encryptedId);
+                    if ($diffFromNow->days < 1 || $diffFromNow->invert == 1) {
+                        $fail('Bimbingan harus diajukan minimal 1 hari sebelum tanggal pelaksanaan.');
+                    }
 
-            $bimbingan = Bimbingan::findOrFail($id);
+                    if ($diffInMinutes > 120) {
+                        $fail('Durasi bimbingan maksimal 2 jam.');
+                    }
 
-            if(in_array($bimbingan->status,['selesai', 'disetujui','ditolak'])){
-                // Tampilkan pesan kesalahan jika status masih Aktif
-                return back()->withErrors([
-                    'error' => 'Tidak dapat mengedit data Request Bimbingan.',
+                    if ($selesai <= $mulai) {
+                        $fail('Waktu selesai harus setelah waktu mulai.');
+                    }
+                }
+            ],
+            'rencana_selesai' => ['required', 'date']
                 ]);
-            }
-            
-            // Ambil data ruangan untuk dropdown
-            $ruangan = Ruangan::all();
-            
-            return view('pages.Mahasiswa.Bimbingan.edit', compact('bimbingan', 'ruangan'));
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menampilkan data: ' . $e->getMessage());
-        }
+    
+
+        Bimbingan::create($validated);
+        return redirect()->route('bimbingan.index')->with('success', 'Request Bimbingan berhasil disimpan.');
     }
 
     public function update(Request $request, $encryptedId){
@@ -155,12 +191,63 @@ class BimbinganController extends Controller
                     ->with('success', 'Hasil bimbingan berhasil disimpan!');
             } else {
                 // Ini adalah update untuk request bimbingan biasa
+                // $validated = $request->validate([
+                //     'ruangan_id' => 'required|exists:ruangan,id',
+                //     'keperluan' => 'required|string|max:1000',
+                //     'rencana_mulai' => 'required|date|after_or_equal:today',
+                //     'rencana_selesai' => 'required|date|after_or_equal:today',
+                // ]);
+
                 $validated = $request->validate([
-                    'ruangan_id' => 'required|exists:ruangan,id',
-                    'keperluan' => 'required|string|max:1000',
-                    'rencana_mulai' => 'required|date|after_or_equal:today',
-                    'rencana_selesai' => 'required|date|after_or_equal:today',
-                ]);
+                        'ruangan_id' => 'required|exists:ruangan,id',
+                        'keperluan' => 'required|string|max:1000',
+                        'rencana_mulai' => [
+                            'required',
+                            'date',
+                            function ($attribute, $value, $fail) use ($request) {
+                                $mulai = new \DateTime($value);
+                                $selesai = new \DateTime($request->rencana_selesai);
+                                $now = new \DateTime();
+                                $diff = $mulai->diff($selesai);
+                                $diffFromNow = $now->diff($mulai);
+                                
+                                // Validasi harus diajukan H-1 (minimal 1 hari sebelum bimbingan)
+                                if ($diffFromNow->days < 1 || $diffFromNow->invert == 1) {
+                                    $fail('Bimbingan harus diajukan minimal 1 hari sebelum tanggal pelaksanaan.');
+                                }
+                                
+                                // // Validasi durasi minimal 1 jam
+                                // if ($diff->h < 1 && $diff->days == 0) {
+                                //     $fail('Durasi bimbingan minimal 1 jam.');
+                                // }
+                                
+                                // // Validasi durasi maksimal 2 jam
+                                // if ($diff->h > 2 || $diff->days > 0) {
+                                //     $fail('Durasi bimbingan maksimal 2 jam.');
+                                // }
+
+                                // Validasi waktu selesai harus setelah waktu mulai
+                                // if($selesai <= $mulai){
+                                //     $fail('Waktu selesai harus setelah waktu dimulai.');
+                                // }
+                            }
+                        ],
+                        // 'rencana_selesai' => 'required|date|after_or_equal:rencana_mulai',
+                        'rencana_selesai' => [
+                            'required',
+                            'date',
+                            'after:rencana_mulai',
+                            function ($attribute, $value, $fail) use ($request) {
+                                $start = \Carbon\Carbon::parse($request->rencana_mulai);
+                                $end = \Carbon\Carbon::parse($value);
+                                $diff = $start->diff($end);
+
+                            if ($diff->h > 2 || $diff->days > 0) {
+                                    $fail('Durasi bimbingan maksimal 2 jam.');
+                                }
+                            }
+                        ],
+                    ]);
 
                 $bimbingan = Bimbingan::findOrFail($id);
                 $bimbingan->update($validated);

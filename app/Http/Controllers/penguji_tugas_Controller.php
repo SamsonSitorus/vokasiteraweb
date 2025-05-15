@@ -65,4 +65,36 @@ class penguji_tugas_Controller extends Controller
             ->get();
         return view('pages.penguji.tugas.show_submission', compact('artefak'));
     }
+    public function formFeedback($id){
+        $user_id = session('user_id');
+
+        $artefak = pengumpulan_tugas::with('kelompok.penguji')
+        ->where('id', $id)
+        ->whereHas('kelompok.penguji', function($query) use ($user_id){
+            $query->where('user_id', $user_id);
+        })
+        ->firstOrFail();
+        return view('pages.penguji.tugas.feedback_form', compact('artefak'));
+    }
+    public function submitFeedback(Request $request, $id)
+    {
+        $request->validate([
+            'feedback_penguji'=>'required|string|max:1000',
+        ]);
+
+        $user_id = session('user_id');
+
+        $artefak = pengumpulan_tugas :: with('kelompok.penguji')
+        ->where('id', $id)
+            ->whereHas('kelompok.penguji', function ($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            })
+            ->firstOrFail();
+
+        $artefak->feedback_penguji = $request -> feedback_penguji;
+        $artefak->save();
+
+        return redirect()->route('penguji.show.submitan', $artefak->tugas_id)
+            ->with('success', 'Feedback berhasil dikirim.');
+    }
 }

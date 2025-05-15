@@ -172,7 +172,7 @@
                 imgPreview.style.display = 'block';
             };
             reader.readAsDataURL(file);
-            fileTypeIcon.textContent = '🖼️';
+            fileTypeIcon.textContent = '🖼';
         } else {
             imgPreview.style.display = 'none';
             fileTypeIcon.textContent = '📄';

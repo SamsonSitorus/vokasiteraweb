@@ -150,7 +150,6 @@
     </div>
 </section>
 @endsection
-
 @push('script')
 <script>
     $(document).ready(function () {
@@ -172,12 +171,106 @@
                         const kelompokSelect = $('#kelompok_id');
                         kelompokSelect.empty();
                         kelompokSelect.append('<option value="">-- Pilih Kelompok --</option>');
-                        response.forEach(function (item) {
-                        kelompokSelect.append(`<option value="${item.id}">${item.text}</option>`);
-                    });
+
+                        if (response.length > 0) {
+                            response.forEach(function (item) {
+                                kelompokSelect.append(`<option value="${item.id}">${item.text}</option>`);
+                            });
+                        } else {
+                            // Tampilkan alert jika data kosong
+                            showAlert('Tidak ada kelompok yang ditemukan.', 'danger');
+                        }
                     },
                     error: function (xhr) {
-                        alert('Gagal mengambil data kelompok');
+                        let errorMessage = 'Gagal mengambil data kelompok';
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.error) {
+                            errorMessage = xhr.responseJSON.error;
+                        }
+
+                        showAlert(errorMessage, 'danger');
+
+                        // Kosongkan dropdown kelompok
+                        const kelompokSelect = $('#kelompok_id');
+                        kelompokSelect.empty();
+                        kelompokSelect.append('<option value="">-- Pilih Kelompok --</option>');
+                    }
+                });
+            }
+        }
+
+        // Fungsi untuk menampilkan alert
+        function showAlert(message, type = 'danger') {
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible show fade mt-3">
+                    <div class="alert-body">
+                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                        ${message}
+                    </div>
+                </div>
+            `;
+
+            // Hapus alert sebelumnya jika ada
+            $('.card-body .alert').remove();
+
+            // Sisipkan alert setelah judul form
+            $('.card-body').prepend(alertHtml);
+        }
+
+        $('#prodi_id, #KPA_id, #TM_id').change(loadKelompok);
+    });
+</script>
+@endpush
+{{-- @push('script')
+<script>
+    $(document).ready(function () {
+        function loadKelompok() {
+            const prodi_id = $('#prodi_id').val();
+            const KPA_id = $('#KPA_id').val();
+            const TM_id = $('#TM_id').val();
+
+            if (prodi_id && KPA_id && TM_id) {
+                $.ajax({
+                    url: "{{ route('baak.jadwal.getKelompok') }}",
+                    method: "GET",
+                    data: {
+                        prodi_id: prodi_id,
+                        KPA_id: KPA_id,
+                        TM_id: TM_id
+                    },
+                    success: function (response) {
+                        const kelompokSelect = $('#kelompok_id');
+                        kelompokSelect.empty();
+                        kelompokSelect.append('<option value="">-- Pilih Kelompok --</option>');
+                        response.forEach(function (item) {
+                            kelompokSelect.append(<option value="${item.id}">${item.text}</option>);
+                        });
+                    },
+                    error: function (xhr) {
+                        // Handle error response with alert
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.error) {
+                            // Create alert for seminar approval status
+                            const alertHtml = `
+                                <div class="alert alert-danger alert-dismissible show fade">
+                                    <div class="alert-body">
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                        ${xhr.responseJSON.error}
+                                    </div>
+                                </div>
+                            `;
+                            
+                            // Remove any existing alerts
+                            $('.alert-warning').remove();
+                            
+                            // Add the alert before the form
+                            $('.card-body form').before(alertHtml);
+                            
+                            // Clear the kelompok dropdown
+                            const kelompokSelect = $('#kelompok_id');
+                            kelompokSelect.empty();
+                            kelompokSelect.append('<option value="">-- Pilih Kelompok --</option>');
+                        } else {
+                            alert('Gagal mengambil data kelompok');
+                        }
                     }
                 });
             }
@@ -185,5 +278,5 @@
 
         $('#prodi_id, #KPA_id, #TM_id').change(loadKelompok);
     });
-</script>
-@endpush
+</script> --}}
+{{-- @endpush --}}

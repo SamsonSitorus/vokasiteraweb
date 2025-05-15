@@ -21,6 +21,7 @@
                                         <th>Waktu Submit</th>
                                         <th>File</th>
                                         <th>Status</th>
+                                        <th>Feedback</th>
                                         {{-- <th>Aksi</th> --}}
                                     </tr>
                                 </thead>
@@ -35,6 +36,13 @@
                                             </td>
                                             
                                             <td>{{ $item->status }}</td> 
+                                            <td>
+                                                <div class="d-flex">
+                                                <a href="{{ route('penguji.feedback.form', $item->id) }}" class="btn  btn-primary btn-sm">
+                                                    <i class="fas fa-comment"></i> Feedback
+                                                </a>
+                                                </div>
+                                            </td>
                                             {{-- <td>
                                                 <div class="d-flex">
                                                     <a href="{{route('tugas.show', $item->id)}}" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-comments"></i> &nbsp; FeedBack</a>&nbsp;&nbsp;

@@ -9,7 +9,8 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Detail Tugas</h4>
-                        <a class="btn btn-primary btn-sm" href="{{ route('artefak.index') }}">Kembali</a>
+                    
+
                     </div>
                     <div class="card-body">
                         @include('partials.alert')
@@ -49,78 +50,83 @@
                         </table>
 
                         {{-- Form Upload File --}}
-                        @if (!$hasSubmitted)
-                            <form method="POST" action="{{ route('artefak.submit', $tugas->id) }}" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="kelompok_id" value="{{ $kelompokId }}">
-                                <input type="hidden" name="tugas_id" value="{{ $idTugas }}"> 
+                        @if ($isDeadlinePassed)
+                            <div class="alert alert-danger">
+                                <strong>Waktu pengumpulan artefak habis. Tidak dapat dikumpulkan.</strong>
+                            </div>
+                        @else
+                            @if (!$hasSubmitted)
+                                <form method="POST" action="{{ route('artefak.submit', $tugas->id) }}" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="kelompok_id" value="{{ $kelompokId }}">
+                                    <input type="hidden" name="tugas_id" value="{{ $idTugas }}"> 
 
-                                <div class="form-group mt-4">
-                                    <label for="file_path"><strong>Upload Dokumen</strong></label>
-                                    <div id="drop-area" 
-                                        class="border p-4 text-center" 
-                                        style="border: 2px dashed #ccc; position: relative; transition: background-color 0.3s ease;"
-                                        ondragover="handleDragOver(event)" 
-                                        ondragleave="handleDragLeave(event)" 
-                                        ondrop="handleFileDrop(event)">
-                                        
-                                        <!-- Instruksi dan tombol -->
-                                        <div id="upload-instructions">
-                                            <i class="fas fa-upload fa-2x mb-2"></i>
-                                            <p>Drag Your File Here</p>
-                                            <p>Or</p>
-                                            <label class="btn btn-primary">
-                                                Select File
-                                                <input type="file" name="file_path" id="file_path" 
-                                                    class="d-none @error('file') is-invalid @enderror" 
-                                                    onchange="updateFileName(event)">
-                                            </label>
-                                        </div>
+                                    <div class="form-group mt-4">
+                                        <label for="file_path"><strong>Upload Dokumen</strong></label>
+                                        <div id="drop-area" 
+                                            class="border p-4 text-center" 
+                                            style="border: 2px dashed #ccc; position: relative; transition: background-color 0.3s ease;"
+                                            ondragover="handleDragOver(event)" 
+                                            ondragleave="handleDragLeave(event)" 
+                                            ondrop="handleFileDrop(event)">
+                                            
+                                            <!-- Instruksi dan tombol -->
+                                            <div id="upload-instructions">
+                                                <i class="fas fa-upload fa-2x mb-2"></i>
+                                                <p>Drag Your File Here</p>
+                                                <p>Or</p>
+                                                <label class="btn btn-primary">
+                                                    Select File
+                                                    <input type="file" name="file_path" id="file_path" 
+                                                        class="d-none @error('file') is-invalid @enderror" 
+                                                        onchange="updateFileName(event)">
+                                                </label>
+                                            </div>
 
-                                        <!-- Nama file -->
-                                        <div id="file-name" class="mt-2 text-muted">
-                                            <span>No file selected</span>
-                                        </div>
+                                            <!-- Nama file -->
+                                            <div id="file-name" class="mt-2 text-muted">
+                                                <span>No file selected</span>
+                                            </div>
 
-                                        <!-- Preview -->
-                                        <div id="file-preview" class="mt-3" style="display: none;">
-                                            <div class="dock-preview border rounded p-3 d-inline-block text-center" style="background-color: #f8f9fa;">
-                                                <div id="file-type-icon" class="mb-2" style="font-size: 24px;"></div>
-                                                <img id="file-image-preview" src="" alt="File Preview" style="max-width: 100px; max-height: 100px; display: none; border-radius: 10px;" />
-                                                <div id="file-name-preview" class="mt-2 font-weight-bold"></div>
+                                            <!-- Preview -->
+                                            <div id="file-preview" class="mt-3" style="display: none;">
+                                                <div class="dock-preview border rounded p-3 d-inline-block text-center" style="background-color: #f8f9fa;">
+                                                    <div id="file-type-icon" class="mb-2" style="font-size: 24px;"></div>
+                                                    <img id="file-image-preview" src="" alt="File Preview" style="max-width: 100px; max-height: 100px; display: none; border-radius: 10px;" />
+                                                    <div id="file-name-preview" class="mt-2 font-weight-bold"></div>
+                                                </div>
                                             </div>
                                         </div>
+                                        @error('file')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    @error('file')
-                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                    @enderror
-                                </div>
 
-                                <div class="text-right mt-3">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <div class="text-right mt-3">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            @else
+                                {{-- Jika sudah submit --}}
+                                @if($hasSubmitted)
+                                <div class="alert alert-success">
+                                    <strong>Sudah dikumpulkan</strong><br>
+                                    Waktu Submit: {{ \Carbon\Carbon::parse($existingSubmission->waktu_submit)->format('d M Y - H:i') }}<br>
+                                    File: 
+                                    <a href="{{ asset('storage/' . $existingSubmission->file_path) }}" target="_blank" class="btn btn-sm btn-primary mt-1">
+                                        Lihat File
+                                    </a>
                                 </div>
-                            </form>
-                        @else
-                            {{-- Jika sudah submit --}}
-                            @if($hasSubmitted)
-                            <div class="alert alert-success">
-                                <strong>Sudah dikumpulkan</strong><br>
-                                Waktu Submit: {{ \Carbon\Carbon::parse($existingSubmission->waktu_submit)->format('d M Y - H:i') }}<br>
-                                File: 
-                                <a href="{{ asset('storage/' . $existingSubmission->file_path) }}" target="_blank" class="btn btn-sm btn-primary mt-1">
-                                    Lihat File
-                                </a>
-                            </div>
-                        @else
-                            <div class="alert alert-warning">
-                                Belum mengumpulkan tugas ini.
-                            </div>
-                        @endif
-                        
-                            <div class="text-right">
-                                {{-- <a href="{{ route('artefak.edit', Crypt::encrypt($artefak->id)) }}" class="btn btn-warning">Edit File</a> --}}
-                                <a href="{{ route('artefak.edit', Crypt::encrypt($existingSubmission->id)) }}" class="btn btn-warning">Edit File</a>
-                            </div>
+                            @else
+                                <div class="alert alert-warning">
+                                    Belum mengumpulkan tugas ini.
+                                </div>
+                            @endif
+                            
+                                <div class="text-right">
+                                    <a href="{{ route('artefak.edit', Crypt::encrypt($existingSubmission->id)) }}" class="btn btn-warning">Edit File</a>
+                                </div>
+                            @endif
                         @endif
                     </div>
                 </div>
@@ -183,7 +189,7 @@
                 imgPreview.style.display = 'block';
             };
             reader.readAsDataURL(file);
-            fileTypeIcon.textContent = '🖼️';
+            fileTypeIcon.textContent = '🖼';
         } else {
             imgPreview.style.display = 'none';
             fileTypeIcon.textContent = '📄';

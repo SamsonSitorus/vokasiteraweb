@@ -107,9 +107,17 @@ Route::prefix('submitan')->group(function(){
         Route::post('/pembimbing/feedback/{id}', [Pembimbing_tugas_Controller::class, 'submitFeedback'])
         ->name('pembimbing.feedback.submit');
         //lihat submitan file untuk penguji
+        // Route::get('/penguji',[penguji_tugas_Controller::class, 'indexpenguji'])->name('penguji.tugas.index');
+        // Route::get('penguji/tugas/{id}',[penguji_tugas_Controller::class, 'showpenguji'])->name('penguji.tugas.show'); 
+        // Route::get('/penguji/{id}',[penguji_tugas_Controller::class,'index_penguji'])->name('penguji.show.submitan');
         Route::get('/penguji',[penguji_tugas_Controller::class, 'indexpenguji'])->name('penguji.tugas.index');
         Route::get('penguji/tugas/{id}',[penguji_tugas_Controller::class, 'showpenguji'])->name('penguji.tugas.show'); 
         Route::get('/penguji/{id}',[penguji_tugas_Controller::class,'index_penguji'])->name('penguji.show.submitan');
+        Route::get('/penguji/feedback/{id}', [penguji_tugas_Controller::class, 'formFeedback'])
+        ->name('penguji.feedback.form');
+        Route::post('/penguji/feedback/{id}', [penguji_tugas_Controller::class, 'submitFeedback'])
+        ->name('penguji.feedback.submit');
+
 });
 //  CRUD pembimbing oleh koordinator
 Route::prefix('pembimbing')->group(function(){

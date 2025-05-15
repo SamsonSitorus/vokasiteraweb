@@ -110,107 +110,45 @@ class JadwalController extends Controller
             $ruangan = Ruangan::all();
     
             if ($kelompok->isEmpty()) {
-                return redirect()->route('jadwal.index')
-                    ->with('warning', 'Tidak ada kelompok dengan pengajuan seminar yang disetujui atau semua kelompok sudah memiliki jadwal');
+                // Check if there are groups with unapproved submissions
+                $hasUnapprovedGroups = Kelompok::where('KPA_id', $KPA_id)
+                    ->where('prodi_id', $prodi_id)
+                    ->where('TM_id', $TM_id)
+                    ->whereHas('pengajuanSeminar', function($query) {
+                        $query->where('status', '!=', 'disetujui');
+                    })
+                    ->exists();
+
+                    // cek apakah  semua kelompok yang disetujui sudah mempunyai kelompok 
+
+               // Cek apakah semua kelompok yang disetujui sudah memiliki jadwal
+            $allApprovedHaveSchedules = Kelompok::where('KPA_id', $KPA_id)
+                ->where('prodi_id', $prodi_id)
+                ->where('TM_id', $TM_id)
+                ->whereHas('pengajuanSeminar', function($query) {
+                    $query->where('status', 'disetujui');
+                })
+                ->whereHas('jadwal')
+                ->exists();
+            
+            if ($hasUnapprovedGroups) {
+                $message = 'Pengajuan Seminar belum disetujui oleh dosen pembimbing.';
+            } elseif ($allApprovedHaveSchedules) {
+                $message = 'Semua kelompok dengan pengajuan seminar yang disetujui sudah memiliki jadwal.';
+            } else {
+                $message = 'Tidak ada kelompok yang tersedia.';
             }
-    
-            return view('pages.Koordinator.jadwal.create', compact('kelompok','kategoriPA','prodi','tahunMasuk', 'ruangan'));
-    
-        } catch (Exception $e) {
-            Log::error('Error loading create form: ' . $e->getMessage());
-            return back()->with('error', 'Gagal memuat form');
-        }
-    }
 
-    public function store(Request $request)
-{
-    try {
-        $userID = session('user_id');
-        if (!$userID) {
-            return redirect()->route('login')->with('error', 'Sesi telah berakhir');
+            return redirect()->route('jadwal.index')
+                ->with('warning', $message)
+                ->with('showUnapprovedAlert', $hasUnapprovedGroups);
         }
 
-        $validated = $request->validate([
-            'kelompok_id' => [
-                'required', 
-                function($attribute, $value, $fail) use($request) {
-                    // Check if schedule already exists
-                    if (Jadwal::where('kelompok_id', $value)
-                        ->where('KPA_id', $request->KPA_id)
-                        ->where('prodi_id', $request->prodi_id)
-                        ->where('TM_id', $request->TM_id)
-                        ->exists()) {
-                        $fail('Jadwal untuk kelompok ini sudah ada.');
-                    }
-                    
-                    // Check if group has approved seminar submission
-                    $hasApprovedSubmission = PengajuanSeminar::where('kelompok_id', $value)
-                        ->where('status', 'disetujui')
-                        ->exists();
+        return view('pages.Koordinator.jadwal.create', compact('kelompok','kategoriPA','prodi','tahunMasuk', 'ruangan'));
 
-                    if (!$hasApprovedSubmission) {
-                        $fail('Kelompok ini belum memiliki pengajuan seminar yang disetujui.');
-                    }
-                }
-            ],
-            'ruangan_id' => 'required|exists:ruangan,id',
-            'waktu_mulai' => [
-                'required', 'date', 'after:now',
-                function($attribute, $value, $fail) use($request) {
-                    $waktuMulai = $value;
-                    $waktuSelesai = $request->waktu_selesai;
-
-                    if (!$waktuSelesai) return;
-
-                    $bentrok = Jadwal::where('KPA_id', $request->KPA_id)
-                        ->where('prodi_id', $request->prodi_id)
-                        ->where('TM_id', $request->TM_id)
-                        ->where(function ($query) use ($waktuMulai, $waktuSelesai) {
-                            $query->whereBetween('waktu_mulai', [$waktuMulai, $waktuSelesai])
-                                ->orWhereBetween('waktu_selesai', [$waktuMulai, $waktuSelesai])
-                                ->orWhere(function ($q) use ($waktuMulai, $waktuSelesai) {
-                                    $q->where('waktu_mulai', '<=', $waktuMulai)
-                                    ->where('waktu_selesai', '>=', $waktuSelesai);
-                                });
-                        })
-                        ->exists();
-
-                    if ($bentrok) {
-                        $fail("Sudah ada jadwal untuk waktu ini pada program dan tahun masuk yang sama.");
-                    }
-                }
-            ],
-            'waktu_selesai' => 'required|date|after:waktu_mulai',
-            'KPA_id' => 'required|exists:kategori_pa,id',
-            'prodi_id' => 'required|exists:prodi,id',
-            'TM_id' => 'required|exists:tahun_masuk,id',
-        ]);
-        
-        Jadwal::create([
-            'kelompok_id' => $validated['kelompok_id'],
-            'ruangan_id' => $validated['ruangan_id'],
-            'waktu_mulai' => $validated['waktu_mulai'],
-            'waktu_selesai' => $validated['waktu_selesai'],
-            'user_id' => $userID,
-            'KPA_id' => $validated['KPA_id'],
-            'prodi_id' => $validated['prodi_id'],
-            'TM_id' => $validated['TM_id'],
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        // Optionally update the seminar submission status to 'terjadwal'
-        PengajuanSeminar::where('kelompok_id', $validated['kelompok_id'])
-            ->where('status', 'disetujui')
-            ->update(['status' => 'terjadwal']);
-
-        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil dibuat');
-
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return back()->withErrors($e->validator)->withInput();
     } catch (Exception $e) {
-        Log::error('Error storing jadwal: ' . $e->getMessage());
-        return back()->with('error', 'Gagal menyimpan jadwal')->withInput();
+        Log::error('Error loading create form: ' . $e->getMessage());
+        return back()->with('error', 'Gagal memuat form');
     }
 }
 
@@ -244,6 +182,203 @@ class JadwalController extends Controller
             return back()->with('error', 'Gagal memuat form edit');
         }
     }
+
+
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         $userID = session('user_id');
+    //     if (!$userID) {
+    //         return redirect()->route('login')->with('error', 'Sesi telah berakhir');
+    //     }
+    //         $validated = $request->validate([
+    //             'kelompok_id' => [
+    //                 'required', 
+    //                 function($attribute, $value, $fail) use($request) {
+    //                     if (Jadwal::where('kelompok_id', $value)
+    //                         ->where('KPA_id', $request->KPA_id)
+    //                         ->where('prodi_id', $request->prodi_id)
+    //                         ->where('TM_id', $request->TM_id)
+    //                         ->exists()) {
+    //                         $fail('Jadwal untuk kelompok ini sudah ada.');
+    //                     }
+                        
+    //                     $hasApprovedSubmission = PengajuanSeminar::where('kelompok_id', $value)
+    //                         ->where('status', 'disetujui')
+    //                         ->exists();
+    
+    //                     if (!$hasApprovedSubmission) {
+    //                         $fail('Kelompok ini belum memiliki pengajuan seminar yang disetujui.');
+    //                     }
+    //                 }
+    //             ],
+    //             'ruangan_id' => 'required|exists:ruangan,id',
+    //             'waktu_mulai' => 'required|date|after:now',
+    //             'waktu_selesai' => 'required|date|after:waktu_mulai',
+    //             'KPA_id' => 'required|exists:kategori_pa,id',
+    //             'prodi_id' => 'required|exists:prodi,id',
+    //             'TM_id' => 'required|exists:tahun_masuk,id',
+    //         ]);
+    
+
+    //         Jadwal::create([
+    //             'kelompok_id' => $validated['kelompok_id'],
+    //             'ruangan_id' => $validated['ruangan_id'],
+    //             'waktu_mulai' => $validated['waktu_mulai'],
+    //             'waktu_selesai' => $validated['waktu_selesai'],
+    //             'user_id' => $userID,
+    //             'KPA_id' => $validated['KPA_id'],
+    //             'prodi_id' => $validated['prodi_id'],
+    //             'TM_id' => $validated['TM_id'],
+    //             'created_at' => now(),
+    //             'updated_at' => now()
+    //         ]);    
+            
+    //         // // Handle attachment if present
+    //         // if ($request->hasFile('attachment')) {
+    //         //     $jadwal->attachment_path = $this->storeAttachment($request->file('attachment'));
+    //         // }
+            
+    //         $jadwal->save();
+
+    //         return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil dibuat');
+            
+    //     } catch (\Illuminate\Validation\ValidationException $e) {
+    //         return back()->withErrors($e->validator)->withInput();
+    //     } catch (Exception $e) {
+    //         Log::error('Error creating jadwal: ' . $e->getMessage());
+    //         return back()->with('error', 'Gagal membuat jadwal: ' . $e->getMessage())->withInput();
+    //     }
+    // }
+    public function store(Request $request)
+    {
+        try {
+            $userID = session('user_id');
+        if (!$userID) {
+            return redirect()->route('login')->with('error', 'Sesi telah berakhir');
+        }
+            $validated = $request->validate([
+                'kelompok_id' => [
+                    'required', 
+                    function($attribute, $value, $fail) use($request) {
+                        if (Jadwal::where('kelompok_id', $value)
+                            ->where('KPA_id', $request->KPA_id)
+                            ->where('prodi_id', $request->prodi_id)
+                            ->where('TM_id', $request->TM_id)
+                            ->exists()) {
+                            $fail('Jadwal untuk kelompok ini sudah ada.');
+                        }
+                        
+                        $hasApprovedSubmission = PengajuanSeminar::where('kelompok_id', $value)
+                            ->where('status', 'disetujui')
+                            ->exists();
+    
+                        if (!$hasApprovedSubmission) {
+                            $fail('Kelompok ini belum memiliki pengajuan seminar yang disetujui.');
+                        }
+                    }
+                ],
+                // 'ruangan_id' => 'required|exists:ruangan,id',
+                // 'waktu_mulai' => 'required|date|after:now',
+                // 'waktu_selesai' => 'required|date|after:waktu_mulai',
+                'ruangan_id' => [
+                    'required',
+                    'exists:ruangan,id',
+                        function ($attribute, $value, $fail) use ($request) {
+                            $waktuMulai = $request->input('waktu_mulai');
+                            $waktuSelesai = $request->input('waktu_selesai');
+                            if (!$waktuMulai || !$waktuSelesai) return;
+                            $bentrokRuangan = Jadwal::where('ruangan_id', $value)
+                                ->where(function ($query) use ($waktuMulai, $waktuSelesai) {
+                                    $query->whereBetween('waktu_mulai', [$waktuMulai, $waktuSelesai])
+                                        ->orWhereBetween('waktu_selesai', [$waktuMulai, $waktuSelesai])
+                                        ->orWhere(function ($q) use ($waktuMulai, $waktuSelesai) {
+                                            $q->where('waktu_mulai', '<=', $waktuMulai)
+                                            ->where('waktu_selesai', '>=', $waktuSelesai);
+                                        });
+                                })
+                                ->exists();
+                            if ($bentrokRuangan) {
+                                $fail('Ruangan sudah terpakai pada waktu tersebut.');
+                            }
+                        }
+                    ],
+                    'waktu_mulai' => [
+                        'required', 'date', 'after:now',
+                        function($attribute, $value, $fail) use($request) {
+                            $waktuMulai = $value;
+                            $waktuSelesai = $request->waktu_selesai;
+
+                            if (!$waktuSelesai) return;
+
+                            $bentrok = Jadwal::where('KPA_id', $request->KPA_id)
+                                ->where('prodi_id', $request->prodi_id)
+                                ->where('TM_id', $request->TM_id)
+                                ->where(function ($query) use ($waktuMulai, $waktuSelesai) {
+                                    $query->whereBetween('waktu_mulai', [$waktuMulai, $waktuSelesai])
+                                        ->orWhereBetween('waktu_selesai', [$waktuMulai, $waktuSelesai])
+                                        ->orWhere(function ($q) use ($waktuMulai, $waktuSelesai) {
+                                            $q->where('waktu_mulai', '<=', $waktuMulai)
+                                            ->where('waktu_selesai', '>=', $waktuSelesai);
+                                        });
+                                })
+                                ->exists();
+
+                            if ($bentrok) {
+                                $fail("Sudah ada jadwal untuk waktu ini pada program dan tahun masuk yang sama.");
+                            }
+                        }
+                    ],
+                    'waktu_selesai' => [
+                        'required', 'date', 'after:waktu_mulai',
+                        function($attribute, $value, $fail) use ($request) {
+                            $mulai = strtotime($request->waktu_mulai);
+                            $selesai = strtotime($value);
+                            $diffInMinutes = ($selesai - $mulai) / 60;
+
+                            if ($diffInMinutes < 60) {
+                                $fail("Waktu selesai minimal harus 1 jam setelah waktu mulai.");
+                            } elseif ($diffInMinutes > 120) {
+                                $fail("Waktu selesai maksimal hanya boleh 2 jam setelah waktu mulai.");
+                            }
+                        }
+                    ],
+                'KPA_id' => 'required|exists:kategori_pa,id',
+                'prodi_id' => 'required|exists:prodi,id',
+                'TM_id' => 'required|exists:tahun_masuk,id',
+            ]);
+    
+
+            Jadwal::create([
+                'kelompok_id' => $validated['kelompok_id'],
+                'ruangan_id' => $validated['ruangan_id'],
+                'waktu_mulai' => $validated['waktu_mulai'],
+                'waktu_selesai' => $validated['waktu_selesai'],
+                'user_id' => $userID,
+                'KPA_id' => $validated['KPA_id'],
+                'prodi_id' => $validated['prodi_id'],
+                'TM_id' => $validated['TM_id'],
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);    
+            
+            // // Handle attachment if present
+            // if ($request->hasFile('attachment')) {
+            //     $jadwal->attachment_path = $this->storeAttachment($request->file('attachment'));
+            // }
+            
+            // $jadwal->save();
+
+            return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil dibuat');
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return back()->withErrors($e->validator)->withInput();
+        } catch (Exception $e) {
+            Log::error('Error creating jadwal: ' . $e->getMessage());
+            return back()->with('error', 'Gagal membuat jadwal: ' . $e->getMessage())->withInput();
+        }
+    }
+
     public function update(Request $request, $id)
     {
         try {
@@ -252,8 +387,48 @@ class JadwalController extends Controller
             $validated = $request->validate([
                 'kelompok_id' => 'required|exists:kelompok,id',
                 'ruangan_id' => 'required|exists:ruangan,id',
-                'waktu_mulai' => 'required|date|after:now',
-                'waktu_selesai'=>'required|date|after:waktu_mulai'
+                // 'waktu_mulai' => 'required|date|after:now',
+                // 'waktu_selesai'=>'required|date|after:waktu_mulai'
+                'waktu_mulai' => [
+                        'required', 'date', 'after:now',
+                        function($attribute, $value, $fail) use($request) {
+                            $waktuMulai = $value;
+                            $waktuSelesai = $request->waktu_selesai;
+
+                            if (!$waktuSelesai) return;
+
+                            $bentrok = Jadwal::where('KPA_id', $request->KPA_id)
+                                ->where('prodi_id', $request->prodi_id)
+                                ->where('TM_id', $request->TM_id)
+                                ->where(function ($query) use ($waktuMulai, $waktuSelesai) {
+                                    $query->whereBetween('waktu_mulai', [$waktuMulai, $waktuSelesai])
+                                        ->orWhereBetween('waktu_selesai', [$waktuMulai, $waktuSelesai])
+                                        ->orWhere(function ($q) use ($waktuMulai, $waktuSelesai) {
+                                            $q->where('waktu_mulai', '<=', $waktuMulai)
+                                            ->where('waktu_selesai', '>=', $waktuSelesai);
+                                        });
+                                })
+                                ->exists();
+
+                            if ($bentrok) {
+                                $fail("Sudah ada jadwal untuk waktu ini pada program dan tahun masuk yang sama.");
+                            }
+                        }
+                    ],
+                    'waktu_selesai' => [
+                        'required', 'date', 'after:waktu_mulai',
+                        function($attribute, $value, $fail) use ($request) {
+                            $mulai = strtotime($request->waktu_mulai);
+                            $selesai = strtotime($value);
+                            $diffInMinutes = ($selesai - $mulai) / 60;
+
+                            if ($diffInMinutes < 60) {
+                                $fail("Waktu selesai minimal harus 1 jam setelah waktu mulai.");
+                            } elseif ($diffInMinutes > 120) {
+                                $fail("Waktu selesai maksimal hanya boleh 2 jam setelah waktu mulai.");
+                            }
+                        }
+                    ],
             ]);
 
             $jadwal = Jadwal::findOrFail($id);
