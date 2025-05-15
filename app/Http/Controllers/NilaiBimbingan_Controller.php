@@ -58,7 +58,7 @@ class NilaiBimbingan_Controller extends Controller
                 $mhs->nilai_individu = $nilaiindividu->get($mhs->user_id)->nilai ?? null;
             });
         });
-        return view('pages.pembimbing.Nilai_Individu.indexp3', [
+        return view('pages.Pembimbing.Nilai_Individu.indexp3', [
             'kelompoks' => $kelompoks,
              'nilaiindividu' => $nilaiindividu
         ]);
