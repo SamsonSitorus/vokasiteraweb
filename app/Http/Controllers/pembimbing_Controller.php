@@ -185,9 +185,10 @@ public function createpembimbing2(){
         ->where('prodi_id', $prodi_id)
         ->where('KPA_id', $KPA_id)
         ->where('TM_id', $TM_id)
-        ->whereHas('role', function ($query) {
-          $query->where('role_name', 'pembimbing 2');
-      })
+         ->where('role_id','5')
+      //   ->whereHas('role', function ($query) {
+      //     $query->where('role_name', 'pembimbing 2');
+      // })
         ->get();
     // Ambil nama dosen dari data API berdasarkan user_id
     $dosenFinal = $dosen->map(function ($dr) use ($dosenApiMap) {
@@ -289,9 +290,10 @@ return !in_array($klmpk->id, $kelompokIdSudahPunyaP2);
             ->where('prodi_id', $prodi_id)
             ->where('KPA_id', $KPA_id)
             ->where('TM_id', $TM_id)
-            ->whereHas('role', function ($query) {
-                $query->where('role_name', 'pembimbing 1');
-            })
+             ->where('role_id','3')
+            // ->whereHas('role', function ($query) {
+            //     $query->where('role_name', 'pembimbing 1');
+            // })
             ->get();
 
         // Format data dosen final
@@ -362,9 +364,10 @@ public function editpembimbing2($encryptedId)
             ->where('prodi_id', $prodi_id)
             ->where('KPA_id', $KPA_id)
             ->where('TM_id', $TM_id)
-            ->whereHas('role', function ($query) {
-                $query->where('role_name', 'pembimbing 2');
-            })
+             ->where('role_id','5')
+            // ->whereHas('role', function ($query) {
+            //     $query->where('role_name', 'pembimbing 2');
+            // })
             ->get();
 
         // Format data dosen final
