@@ -126,9 +126,10 @@ class pembimbing_Controller extends Controller
           ->where('prodi_id', $prodi_id)
           ->where('KPA_id', $KPA_id)
           ->where('TM_id', $TM_id)
-          ->whereHas('role', function ($query) {
-            $query->where('role_name', 'pembimbing 1');
-        })
+          ->where('role_id','3')
+        //   ->whereHas('role', function ($query) {
+        //     $query->where('role_name', 'pembimbing 1');
+        // })
           ->get();
       // Ambil nama dosen dari data API berdasarkan user_id
       $dosenFinal = $dosen->map(function ($dr) use ($dosenApiMap) {
