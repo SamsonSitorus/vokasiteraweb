@@ -52,7 +52,7 @@ class ManajemenroleController extends Controller
         }
     
         // Kembalikan view dengan data dosenroles
-        return view('pages.BAAK.kordinator.index', compact('dosenroles'));
+        return view('pages.BAAK.Kordinator.index', compact('dosenroles'));
     }
     
     public function create()
