@@ -29,7 +29,8 @@ class JadwalMahasiswaController extends Controller
         $jadwalUtama = $kelompok->jadwal;
 
         if (!$jadwalUtama) {
-            return view('pages.Mahasiswa.jadwal.index', compact('kelompok'))
+           
+            return view('pages.Mahasiswa.Jadwal.index', compact('kelompok'))
                 ->with('error', 'Jadwal belum tersedia untuk kelompok Anda.');
         }
 
