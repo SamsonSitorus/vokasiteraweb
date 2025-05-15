@@ -90,7 +90,7 @@ class dashboard_Controller extends Controller
         ];
     });
 
-   return view('pages.pembimbing.dashboard',compact('jumlah_kelompok','jumlah_pengumuman','events','jumlah_tugas'));
+   return view('pages.Pembimbing.dashboard',compact('jumlah_kelompok','jumlah_pengumuman','events','jumlah_tugas'));
 
 }
  public function penguji() {
