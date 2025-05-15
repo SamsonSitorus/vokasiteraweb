@@ -83,7 +83,7 @@ class JadwalMahasiswaController extends Controller
             }
             $jadwal->penguji_nama = !empty($pengujiLainNama) ? implode('<br>', $pengujiLainNama) : '-';
         }
-        return view('pages.Mahasiswa.jadwal.index', [
+        return view('pages.Mahasiswa.Jadwal.index', [
             'jadwalUtama' => $jadwalUtama,
             'jadwalLain' => $jadwalLain,
             'kelompok' => $kelompok,
