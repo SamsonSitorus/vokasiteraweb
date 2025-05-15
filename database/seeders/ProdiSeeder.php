@@ -13,7 +13,7 @@ class ProdiSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('Prodi')->insert([
+        DB::table('prodi')->insert([
             [
                 'id' => 4,
                 'nama_prodi' => 'DIV Teknologi Rekayasa Perangkat Lunak',
