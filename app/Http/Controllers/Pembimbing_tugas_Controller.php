@@ -53,7 +53,7 @@ class Pembimbing_tugas_Controller extends Controller
             })
             ->firstOrFail();
 
-        return view('pages.pembimbing.tugas.feedback_form', compact('artefak'));
+        return view('pages.Pembimbing.tugas.feedback_form', compact('artefak'));
     }
 
     public function submitFeedback(Request $request, $id)
