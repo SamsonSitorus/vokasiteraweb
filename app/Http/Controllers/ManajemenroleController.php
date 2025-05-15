@@ -72,7 +72,7 @@ class ManajemenroleController extends Controller
         $tahun_masuk = TahunMasuk::where('Status','Aktif')->get();
         $kategoripa =kategoriPA::all();
     
-        return view('pages.BAAK.kordinator.create', compact('dosen', 'prodi', 'role', 'tahun_masuk','kategoripa'));
+        return view('pages.BAAK.Kordinator.create', compact('dosen', 'prodi', 'role', 'tahun_masuk','kategoripa'));
     }
     public function store(Request $request)
     {
@@ -193,7 +193,7 @@ class ManajemenroleController extends Controller
         $kategoripa =kategoriPA::all();
     
     
-        return view('pages.BAAK.kordinator.edit', compact('dosenRole', 'dosen', 'prodi', 'role', 'tahun_masuk','kategoripa'));
+        return view('pages.BAAK.Kordinator.edit', compact('dosenRole', 'dosen', 'prodi', 'role', 'tahun_masuk','kategoripa'));
     }
     public function update(Request $request, $id)
 {

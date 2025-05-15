@@ -217,7 +217,7 @@ public function showPengumumanBAAK($id)
     }
     
     // Return the view with the pengumuman data
-    return view('pages.BAAK.Pengumuman.show', compact('pengumuman'));
+    return view('pages.BAAK.pengumuman.show', compact('pengumuman'));
 }public function showPengumumanKoordinator($id)
 {
     // Find the pengumuman by its ID
@@ -326,7 +326,7 @@ public function pembimbingIndex()
     public function staffpengumuman(){
         $pengumuman = Pengumuman::all();
 
-        return view('pages.BAAK.Pengumuman.index', compact('pengumuman'));
+        return view('pages.BAAK.pengumuman.index', compact('pengumuman'));
     }
 
  // create pengumuman oleh staff
@@ -336,7 +336,7 @@ public function pembimbingIndex()
         $TM = TahunMasuk::all();
         $KPA = kategoriPA::all();
 
-        return view('pages.BAAK.Pengumuman.create',compact('user_id','TM','prodi','KPA'));
+        return view('pages.BAAK.pengumuman.create',compact('user_id','TM','prodi','KPA'));
         
     }
 
