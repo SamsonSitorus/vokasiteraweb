@@ -471,8 +471,7 @@ public function pengujiIndex()
                 $item->nama = 'N/A'; // Tampilkan N/A jika API gagal
             });
         }
-            
-        return view('pages.penguji.Pengumuman.index', compact('pengumuman'));
+        return view('pages.Penguji.Pengumuman.index', compact('pengumuman'));
     }
 
     public function showPengumumanpenguji($id)
@@ -498,7 +497,7 @@ public function pengujiIndex()
     }
     
     // Return the view with the pengumuman data
-    return view('pages.penguji.Pengumuman.show', compact('pengumuman'));
+    return view('pages.Penguji.Pengumuman.show', compact('pengumuman'));
 }
 
 };
