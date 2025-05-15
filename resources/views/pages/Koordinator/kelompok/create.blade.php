@@ -59,9 +59,7 @@
 
                         {{--  status --}}
                         <div class="form-group">
-                            <select name="status" id="status" class="form-control" hidden>
-                                <input type="hidden" name="status" value="Aktif">
-                            </select>
+                            <input type="hidden" name="status" value="Aktif">
                         </div>
                             <button type="submit" class="btn btn-primary">Tambah</button>
                         </form>
