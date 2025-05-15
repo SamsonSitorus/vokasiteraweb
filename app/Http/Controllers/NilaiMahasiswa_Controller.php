@@ -46,11 +46,12 @@ class NilaiMahasiswa_Controller extends Controller
                 GROUP BY user_id
             ) as ns'), 'ns.user_id', '=', 'km.user_id')
 
-            ->leftJoin(DB::raw('(
-                SELECT user_id, MAX(total) AS total
+           ->leftJoin(DB::raw('(
+                SELECT user_id, MAX("Total") AS total
                 FROM nilai_bimbingan
                 GROUP BY user_id
             ) as nb'), 'nb.user_id', '=', 'km.user_id')
+
             ->get();
       
             foreach ($data as $item){
