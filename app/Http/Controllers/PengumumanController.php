@@ -318,7 +318,7 @@ public function pembimbingIndex()
     }
     
     // Return the view with the pengumuman data
-    return view('pages.pembimbing.Pengumuman.show', compact('pengumuman'));
+    return view('pages.Pembimbing.Pengumuman.show', compact('pengumuman'));
 }
 
 
