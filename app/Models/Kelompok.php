@@ -56,5 +56,6 @@ class Kelompok extends Model
         'KPA_id',
         'prodi_id',
         'TM_id',
+        'status',
     ];
 }
