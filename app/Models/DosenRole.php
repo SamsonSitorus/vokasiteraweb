@@ -18,7 +18,7 @@ public function role()
 }
 public function tahunMasuk()
 {
-    return $this->belongsTo(tahunMasuk::class, 'TM_id');
+    return $this->belongsTo(TahunMasuk::class, 'TM_id');
 }
 public function kategoriPA()
 {
