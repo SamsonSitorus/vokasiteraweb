@@ -22,10 +22,10 @@ public function tahunMasuk()
 }
 public function kategoriPA()
 {
-    return $this->belongsTo(KategoriPA::class, 'KPA_id');
+    return $this->belongsTo(kategoriPA::class, 'KPA_id');
 }
 public function pembimbing(){
-    return $this->belongsTo(Pembimbing::class, 'pembimbing_id');
+    return $this->belongsTo(pembimbing::class, 'pembimbing_id');
 }
 
     use HasFactory;
