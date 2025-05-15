@@ -79,9 +79,9 @@
             <div class="login-card">
                 <!-- Logo -->
                 <div class="login-brand">
-                    {{-- <img src="{{ file_exists(public_path('assets/img/logovokasi.png')) ? asset('assets/img/logovokasi.png') : 'https://via.placeholder.com/300' }}" alt="logo">
-                     <img src="{{ asset('assets/img/Logovokasi.png') }}" style="width: 130px" alt="Logo Vokasi">
-                </div>                                 --}}
+                    {{-- <img src="{{ file_exists(public_path('assets/img/logovokasi.png')) ? asset('assets/img/logovokasi.png') : 'https://via.placeholder.com/300' }}" alt="logo">   --}}
+                     <img src="{{ asset('assets/img/Logovokasi.png') }}" style="width: 130px" alt="Logo Vokasi">    
+                </div>                              
                 <h5 class="mb-4" style="font-weight: bold;">Martuhan - Marroha - Marbisuk</h5>
 
                 @yield('content')
