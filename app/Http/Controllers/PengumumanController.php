@@ -292,7 +292,7 @@ public function pembimbingIndex()
             });
         }
             
-        return view('pages.pembimbing.Pengumuman.index', compact('pengumuman'));
+        return view('pages.Pembimbing.Pengumuman.index', compact('pengumuman'));
     }
 
     public function showPengumumanpembimbing($id)
