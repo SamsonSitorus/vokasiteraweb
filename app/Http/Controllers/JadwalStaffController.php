@@ -11,7 +11,7 @@ use App\Models\Jadwal;
 use App\Models\Kelompok;
 use App\Models\Prodi;
 use App\Models\DosenRole;
-use App\Models\KategoriPA;
+use App\Models\kategoriPA;
 use App\Models\TahunMasuk;
 use App\Models\Role;
 use App\Models\Ruangan;
@@ -114,7 +114,7 @@ public function getKelompok(Request $request)
                 return redirect()->route('login')->with('error', 'Sesi telah berakhir');
             }
             
-            $kategori_pa = KategoriPA::all();
+            $kategori_pa = kategoriPA::all();
             $prodi = Prodi::all();
             $tahun_masuk = TahunMasuk::all();
             $ruangan = Ruangan::all();
