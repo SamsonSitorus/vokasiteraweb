@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\PengajuanSeminar;
 use App\Models\PengajuanSeminarFile;
 use App\Models\Kelompok;
-use App\Models\Pembimbing;
+use App\Models\pembimbing;
 use Illuminate\Http\Request;
 use App\Models\Tugas;
 use Illuminate\Support\Facades\Crypt;
@@ -342,7 +342,7 @@ public function update(Request $request, $id)
             // APPROACH 2: If no results or no pembimbing_id, try with user_id
             if ($pengajuanSeminars->isEmpty() && $userId) {
                 // Get all pembimbing records associated with this user_id
-                $pembimbingRecords = Pembimbing::where('user_id', $userId)->get();
+                $pembimbingRecords = pembimbing::where('user_id', $userId)->get();
                 
                 if ($pembimbingRecords->isNotEmpty()) {
                     // Get all pembimbing IDs for this user

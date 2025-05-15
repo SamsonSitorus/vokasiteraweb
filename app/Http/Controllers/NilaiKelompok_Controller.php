@@ -26,7 +26,7 @@ class NilaiKelompok_Controller extends Controller
     $nilaiKelompok = Nilai_kelompok::whereIn('kelompok_id', $kelompok->pluck('id'))
     ->where('role_id', 4)
     ->where('user_id',$userId)->get()->keyBy('kelompok_id');
-    return view('pages.penguji.Nilai_Kelompok.indexp2', compact('kelompok', 'nilaiKelompok', 'userId'));
+    return view('pages.Penguji.Nilai_Kelompok.indexp2', compact('kelompok', 'nilaiKelompok', 'userId'));
 }
 public function storepenguji2(Request $request)
 {
@@ -134,7 +134,7 @@ public function indexpenguji1(){
     $nilaiKelompok = Nilai_kelompok::whereIn('kelompok_id', $kelompok->pluck('id'))
     ->where('role_id', 2)
     ->where('user_id',$userId)->get()->keyBy('kelompok_id');
-    return view('pages.penguji.Nilai_Kelompok.index', compact('kelompok', 'nilaiKelompok', 'userId'));
+    return view('pages.Penguji.Nilai_Kelompok.index', compact('kelompok', 'nilaiKelompok', 'userId'));
 
 }
 public function storepenguji1(Request $request){
@@ -238,7 +238,7 @@ public function indexpembimbing1(){
     ->where('role_id', 3)
     ->where('user_id',$userId)->get()->keyBy('kelompok_id');
     // dd($kelompok);
-    return view('pages.pembimbing.Nilai_Kelompok.index', compact('kelompok', 'nilaiKelompok', 'userId'));
+    return view('pages.Pembimbing.Nilai_Kelompok.index', compact('kelompok', 'nilaiKelompok', 'userId'));
 
 }
 public function storepembimbing1(Request $request){
@@ -341,7 +341,7 @@ public function indexpembimbing2(){
     $nilaiKelompok = Nilai_kelompok::whereIn('kelompok_id', $kelompok->pluck('id'))
     ->where('role_id', 5)
     ->where('user_id',$userId)->get()->keyBy('kelompok_id');
-    return view('pages.pembimbing.Nilai_Kelompok.indexp2', compact('kelompok', 'nilaiKelompok', 'userId'));
+    return view('pages.Pembimbing.Nilai_Kelompok.indexp2', compact('kelompok', 'nilaiKelompok', 'userId'));
 
 }
 public function storepembimbing2(Request $request){

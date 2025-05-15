@@ -65,8 +65,8 @@ class NilaiIndividu_Controller extends Controller
                 $mhs->nilai_individu = $nilaiindividu->get($mhs->user_id)->nilai ?? null;
             });
         });
-//dd($roleId);
-        return view('pages.pembimbing.Nilai_Individu.index', [
+//dd($roleId);pages.Pembimbing.Nilai_Individu.index
+        return view('pages.Pembimbing.Nilai_Individu.index', [
             'kelompoks' => $kelompoks,
              'nilaiindividu' => $nilaiindividu
         ]);
@@ -231,7 +231,7 @@ class NilaiIndividu_Controller extends Controller
             });
         });
 
-        return view('pages.pembimbing.Nilai_Individu.indexp2', [
+        return view('pages.Pembimbing.Nilai_Individu.indexp2', [
             'kelompoks' => $kelompoks,
              'nilaiindividu' => $nilaiindividu
         ]);
@@ -398,8 +398,8 @@ class NilaiIndividu_Controller extends Controller
                 $mhs->nilai_individu = $nilaiindividu->get($mhs->user_id)->nilai ?? null;
             });
         });
-//dd($roleId);
-        return view('pages.penguji.Nilai_Individu.index', [
+//dd($roleId);pages.Penguji.Nilai_Individu
+        return view('pages.Penguji.Nilai_Individu.index', [
             'kelompoks' => $kelompoks,
              'nilaiindividu' => $nilaiindividu
         ]);
@@ -565,7 +565,7 @@ class NilaiIndividu_Controller extends Controller
             });
         });
 //dd($roleId);
-        return view('pages.penguji.Nilai_Individu.indexp2', [
+        return view('pages.Penguji.Nilai_Individu.indexp2', [
             'kelompoks' => $kelompoks,
              'nilaiindividu' => $nilaiindividu
         ]);
