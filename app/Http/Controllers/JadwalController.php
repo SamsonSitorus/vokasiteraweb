@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use App\Models\Jadwal;
 use App\Models\Kelompok;
-use App\Models\KategoriPA;
 use App\Models\Prodi;
 use App\Models\DosenRole;
+use App\Models\kategoriPA;
 use App\Models\TahunMasuk;
 use App\Models\Ruangan;
 use App\Models\Role;
@@ -104,7 +104,7 @@ class JadwalController extends Controller
                 ->with('pengajuanSeminar') // Eager load pengajuanSeminar
                 ->get();
     
-            $kategoriPA = KategoriPA::find($KPA_id);
+            $kategoriPA = kategoriPA::find($KPA_id);
             $prodi = Prodi::find($prodi_id);
             $tahunMasuk = TahunMasuk::find($TM_id);
             $ruangan = Ruangan::all();
