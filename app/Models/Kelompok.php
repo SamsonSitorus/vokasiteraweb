@@ -29,7 +29,7 @@ class Kelompok extends Model
     }
     public function pembimbing()
     {
-        return $this->hasMany(Pembimbing::class, 'kelompok_id');
+        return $this->hasMany(pembimbing::class, 'kelompok_id');
     }
     public function nilais()
     {

@@ -58,7 +58,7 @@ class dashboard_Controller extends Controller
     ];
 });
 
-    return view('pages.koordinator.dashboard', compact('jumlah_mahasiswa', 'jumlah_pengumuman','jumlah_dosen','jumlah_tugas','events'));
+    return view('pages.Koordinator.dashboard', compact('jumlah_mahasiswa', 'jumlah_pengumuman','jumlah_dosen','jumlah_tugas','events'));
 }
   public function pembimbing() {
     $KPA_id = session('KPA_id');

@@ -29,7 +29,7 @@ class Jadwal extends Model
 
     public function kategoriPA()
     {
-        return $this->belongsTo(KategoriPA::class, 'KPA_id');
+        return $this->belongsTo(kategoriPA::class, 'KPA_id');
     }
 
     public function prodi()

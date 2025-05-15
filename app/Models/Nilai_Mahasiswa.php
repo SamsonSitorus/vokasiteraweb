@@ -20,7 +20,7 @@ class Nilai_Mahasiswa extends Model
     }
     public function kategoriPA()
     {
-        return $this->belongsTo(KategoriPA::class, 'KPA_id');
+        return $this->belongsTo(kategoriPA::class, 'KPA_id');
     }
     public function KelompokMahasiswa() {
         return $this->hasMany(KelompokMahasiswa::class);

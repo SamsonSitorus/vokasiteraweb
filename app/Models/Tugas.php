@@ -35,7 +35,7 @@ class Tugas extends Model
     }
     public function kategoriPA()
     {
-        return $this->belongsTo(KategoriPA::class, 'KPA_id');
+        return $this->belongsTo(kategoriPA::class, 'KPA_id');
     }
     public function pengumpulan(){
         return $this->hasMany(pengumpulan_tugas::class);

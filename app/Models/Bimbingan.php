@@ -41,6 +41,6 @@ class Bimbingan extends Model
     }
     public function kategoriPA()
     {
-        return $this->belongsTo(KategoriPA::class);
+        return $this->belongsTo(kategoriPA::class);
     }
 }

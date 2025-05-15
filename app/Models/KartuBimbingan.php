@@ -35,7 +35,7 @@ class KartuBimbingan extends Model
      */
     public function pembimbing()
     {
-        return $this->belongsTo(Pembimbing::class, 'pembimbing_id');
+        return $this->belongsTo(pembimbing::class, 'pembimbing_id');
     }
 
     /**

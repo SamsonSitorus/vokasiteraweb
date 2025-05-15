@@ -25,7 +25,7 @@ class Pengumuman extends Model
     }
     public function kategoriPA()
     {
-        return $this->belongsTo(KategoriPA::class, 'KPA_id');
+        return $this->belongsTo(kategoriPA::class, 'KPA_id');
     }
     // Menentukan kolom yang dapat diisi mass-assignment
     protected $fillable = [

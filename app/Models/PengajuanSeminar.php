@@ -24,7 +24,7 @@ class PengajuanSeminar extends Model
     
     public function pembimbing()
     {
-        return $this->belongsTo(Pembimbing::class);
+        return $this->belongsTo(pembimbing::class);
     }
     
     public function files()
@@ -37,7 +37,7 @@ class PengajuanSeminar extends Model
     }
     public function kategoriPA()
     {
-        return $this->belongsTo(KategoriPA::class);
+        return $this->belongsTo(kategoriPA::class);
     }
 }
 
