@@ -40,10 +40,17 @@
                             </div>
                         </div>
 
-                        @if ($pengumuman->file)
+                        {{-- @if ($pengumuman->file)
                         <div class="text-center mt-5">
                             <a href="{{ asset('storage/' . $pengumuman->file) }}" class="btn btn-success btn-lg" download>
                                 <i class="fas fa-file-download"></i> Download File
+                            </a>
+                        </div>
+                        @endif --}}
+                        @if ($pengumuman->file)
+                        <div class="text-center mt-5">
+                             <a href="{{ asset('storage/' . $pengumuman->file) }}" class="btn btn-primary btn-sm" target="_blank">
+                                <i class="fas fa-file"></i> Lihat File
                             </a>
                         </div>
                         @endif

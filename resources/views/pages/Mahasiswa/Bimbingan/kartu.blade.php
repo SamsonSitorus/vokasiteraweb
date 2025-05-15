@@ -67,8 +67,17 @@
                         <!-- Hasil Bimbingan -->
                         <div class="form-group">
                             <label for="hasil_bimbingan">Hasil Bimbingan</label>
-                            <textarea class="form-control" id="hasil_bimbingan" rows="6" name="hasil_bimbingan">{{ $bimbingan->hasil_bimbingan }}</textarea>
+                            <textarea class="form-control" id="hasil_bimbingan" rows="6" name="hasil_bimbingan" required>{{ $bimbingan->hasil_bimbingan }}</textarea>
                         </div>
+                        {{-- <div class="form-group">
+                                <label for="hasil_bimbingan">Hasil Bimbingan</label>
+                                <textarea class="form-control @error('hasil_bimbingan') is-invalid @enderror" id="hasil_bimbingan" rows="6" name="hasil_bimbingan" required>{{ old('hasil_bimbingan', $bimbingan->hasil_bimbingan) }}</textarea>
+                                @error('hasil_bimbingan')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div> --}}
 
                         <!-- Tanda Tangan Pembimbing -->
                         <div class="form-group">
@@ -78,11 +87,14 @@
 
                         <div class="d-flex justify-content-end">
                             <!-- Tombol Simpan -->
-                             @if()
+                             {{-- @if() --}}
                             <button type="submit" class="btn btn-primary mr-2">Simpan</button>
                            
                             <!-- Tombol Download -->
-                            <a href="{{ route('bimbingan.exportPdf', Crypt::encrypt($bimbingan->id)) }}" class="btn btn-success">Download File</a>
+                            {{-- <a href="{{ route('bimbingan.exportPdf', Crypt::encrypt($bimbingan->id)) }}" class="btn btn-success">Download File</a> --}}
+                            @if(!empty($bimbingan->hasil_bimbingan))
+                                    <a href="{{ route('bimbingan.exportPdf', Crypt::encrypt($bimbingan->id)) }}" class="btn btn-success">Download File</a>
+                                @endif
                         </div>
                     </form>
 
