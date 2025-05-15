@@ -157,8 +157,6 @@ class pembimbing_Controller extends Controller
     $kelompokbelummasuk =  $Kelompok->filter(function($klmpk)use($kelompokIdsudahpunyapembimbing){
         return !in_array($klmpk['id'],$kelompokIdsudahpunyapembimbing);
     })->values();
-dd($dosenFinal);
-dd($dosenApiMap);
     return view('pages.Koordinator.pembimbing.create',[
       'dosen' => $dosenFinal,
       'kelompok' => $kelompokbelummasuk,
