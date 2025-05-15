@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Models\KartuBimbingan;
 use Mpdf\Mpdf;
 use App\Models\KelompokMahasiswa;
-use App\Models\Pembimbing;
+use App\Models\pembimbing;
 use App\Models\Ruangan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -398,7 +398,7 @@ class BimbinganController extends Controller
             $mahasiswakelompoks = KelompokMahasiswa::where('kelompok_id', $kelompokId)->get();
          
             // Ambil Pembimbing yang sudah ditetapkan untuk kelompok ini
-            $pembimbing = Pembimbing::where('kelompok_id', $kelompokId)->first();
+            $pembimbing = pembimbing::where('kelompok_id', $kelompokId)->first();
          
             // Jika pembimbing tidak ada, set default value
             if (!$pembimbing) {
