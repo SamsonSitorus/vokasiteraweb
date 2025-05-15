@@ -35,7 +35,7 @@ class NilaiMahasiswa_Controller extends Controller
                 ')
             )
             ->leftJoin(DB::raw('(
-                SELECT kelompok_id, MAX(pameran) AS pameran, MAX(administrasi) AS administrasi
+                SELECT kelompok_id, MAX("Pameran") AS pameran, MAX("Administrasi") AS administrasi
                 FROM nilai_administrasi
                 GROUP BY kelompok_id
             ) as na'), 'na.kelompok_id', '=', 'km.kelompok_id')
