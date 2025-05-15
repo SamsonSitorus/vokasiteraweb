@@ -43,32 +43,63 @@
                                                     <input type="hidden" name="kelompok_id" value="{{ $item->id }}">
                                                     <input type="hidden" name="user_id" value="{{ $userId }}">
                                             
-                                                    <div class="row" style="width: 100%;">
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Produk: Mencakup seluruh requirements dalam laporan</label>
-                                                            <input type="number" name="A11" class="form-control form-control-sm" value="{{ old('A11', $nilai->A11 ?? '') }}" min="0" max="100" required>
+                                                   <div class="row" style="width: 100%;">
+                                                        <div class="col-12 mb-3 row align-items-center">
+                                                            <label class="col-md-8 col-form-label" style="font-size: 12px;">
+                                                                Kualitas Produk: Mencakup seluruh requirements dalam laporan
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="number" name="A11" class="form-control form-control-sm"
+                                                                    value="{{ old('A11', $nilai->A11 ?? '') }}" min="0" max="100" required>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Produk: Bebas dari error</label>
-                                                            <input type="number" name="A12" class="form-control form-control-sm" value="{{ old('A12', $nilai->A12 ?? '') }}" min="0" max="100" required>
+                                                        <div class="col-12 mb-3 row align-items-center">
+                                                            <label class="col-md-8 col-form-label" style="font-size: 12px;">
+                                                                Kualitas Produk: Bebas dari error
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="number" name="A12" class="form-control form-control-sm"
+                                                                    value="{{ old('A12', $nilai->A12 ?? '') }}" min="0" max="100" required>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Produk: Dapat digunakan dengan baik dan mudah</label>
-                                                            <input type="number" name="A13" class="form-control form-control-sm" value="{{ old('A13', $nilai->A13 ?? '') }}" min="0" max="100" required>
+                                                        <div class="col-12 mb-3 row align-items-center">
+                                                            <label class="col-md-8 col-form-label" style="font-size: 12px;">
+                                                                Kualitas Produk: Dapat digunakan dengan baik dan mudah
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="number" name="A13" class="form-control form-control-sm"
+                                                                    value="{{ old('A13', $nilai->A13 ?? '') }}" min="0" max="100" required>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Laporan: Desain menggambarkan produk dengan sesuai</label>
-                                                            <input type="number" name="A21" class="form-control form-control-sm" value="{{ old('A21', $nilai->A21 ?? '') }}" min="0" max="100" required>
+                                                        <div class="col-12 mb-3 row align-items-center">
+                                                            <label class="col-md-8 col-form-label" style="font-size: 12px;">
+                                                                Kualitas Laporan: Desain menggambarkan produk dengan sesuai
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="number" name="A21" class="form-control form-control-sm"
+                                                                    value="{{ old('A21', $nilai->A21 ?? '') }}" min="0" max="100" required>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Laporan: Ditulis menurut kaidah bahasa Indonesia yang baik</label>
-                                                            <input type="number" name="A22" class="form-control form-control-sm" value="{{ old('A22', $nilai->A22 ?? '') }}" min="0" max="100" required>
+                                                        <div class="col-12 mb-3 row align-items-center">
+                                                            <label class="col-md-8 col-form-label" style="font-size: 12px;">
+                                                                Kualitas Laporan: Ditulis menurut kaidah bahasa Indonesia yang baik
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="number" name="A22" class="form-control form-control-sm"
+                                                                    value="{{ old('A22', $nilai->A22 ?? '') }}" min="0" max="100" required>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-6 col-md-4 mb-3">
-                                                            <label class="form-label" style="font-size: 12px; min-height: 40px;">Kualitas Laporan: Sesuai kaidah penulisan dokumen dan template</label>
-                                                            <input type="number" name="A23" class="form-control form-control-sm" value="{{ old('A23', $nilai->A23 ?? '') }}" min="0" max="100" required>
+                                                        <div class="col-12 mb-3 row align-items-center">
+                                                            <label class="col-md-8 col-form-label" style="font-size: 12px;">
+                                                                Kualitas Laporan: Sesuai kaidah penulisan dokumen dan template
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="number" name="A23" class="form-control form-control-sm"
+                                                                    value="{{ old('A23', $nilai->A23 ?? '') }}" min="0" max="100" required>
+                                                            </div>
                                                         </div>
                                                     </div>
+
                                             </td>
                                             <td>
                                                 <button class="btn btn-success btn-sm" type="submit" style="height: 40px; padding: 10px 15px;">

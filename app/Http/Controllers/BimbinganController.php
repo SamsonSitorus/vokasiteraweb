@@ -225,27 +225,26 @@ class BimbinganController extends Controller
         
 
         // Ambil data dosen dari API
-        $token = session('token');
-        $responseDosen = Http::withHeaders([
-            'Authorization' => "Bearer $token"
-        ])->get(env('API_URL'). "library-api/dosen");
+        // $token = session('token');
+        // $responseDosen = Http::withHeaders([
+        //     'Authorization' => "Bearer $token"
+        // ])->get(env('API_URL'). "library-api/dosen");
         
-        if ($responseDosen->successful()) {
-            $dosen_list = $responseDosen->json()['data']['dosen'] ?? [];
-            // Buat map user_id => nama
-            $dosen_map = collect($dosen_list)->keyBy('user_id');
+        // if ($responseDosen->successful()) {
+        //     $dosen_list = $responseDosen->json()['data']['dosen'] ?? [];
+        //     // Buat map user_id => nama
+        //     $dosen_map = collect($dosen_list)->keyBy('user_id');
             
-            $bimbingan->each(function ($item) use ($dosen_map) {
-                $item->nama = $dosen_map[$item->user_id]['nama'] ?? 'N/A';
-            });
-        } else {
-            // Tangani jika API gagal
-            $bimbingan->each(function ($item) {
-                $item->nama = 'N/A'; // Tampilkan N/A jika API gagal
-            });
-        }
+        //     $bimbingan->each(function ($item) use ($dosen_map) {
+        //         $item->nama = $dosen_map[$item->user_id]['nama'] ?? 'N/A';
+        //     });
+        // } else {
+        //     // Tangani jika API gagal
+        //     $bimbingan->each(function ($item) {
+        //         $item->nama = 'N/A'; // Tampilkan N/A jika API gagal
+        //     });
+        // }
         
-
         foreach($bimbingan as $bimbinganItem){
             if($bimbinganItem->rencana_selesai <=now() && $bimbinganItem->status !=='selesai'){
                 $bimbinganItem->status = 'selesai';
