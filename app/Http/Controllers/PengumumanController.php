@@ -241,7 +241,7 @@ public function showPengumumanBAAK($id)
     }
 
     // Return the view with the pengumuman data
-    return view('pages.Koordinator.Pengumuman.show', compact('pengumuman'));
+    return view('pages.Koordinator.pengumuman.show', compact('pengumuman'));
 }
 
 
