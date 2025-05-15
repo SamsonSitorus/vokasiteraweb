@@ -63,7 +63,7 @@ class penguji_tugas_Controller extends Controller
                       ->where('TM_id', $TM_id);
             })
             ->get();
-        return view('pages.penguji.tugas.show_submission', compact('artefak'));
+        return view('pages.Penguji.tugas.show_submission', compact('artefak'));
     }
     public function formFeedback($id){
         $user_id = session('user_id');
