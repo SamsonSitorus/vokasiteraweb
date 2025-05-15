@@ -377,7 +377,7 @@ Route::prefix('jadwal')->group(function() {
     Route::delete('/{id}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
     Route::get('/{id}/show',[JadwalController::class, 'show'])->name('jadwal.show');
     // Jadwal Penguji 
-    Route::get('/penguji',  [JadwalPengujiController::class, 'index'])->name('penguji.jadwal.index');
+    Route::get('/penguji', [JadwalPengujiController::class, 'index'])->name('penguji.jadwal.index');
     // Jadwal Pembimbing
     Route::get('pembimbing', [JadwalPembimbingController::class, 'index'])->name('pembimbing.jadwal.index');
     // Untuk mahasiswa lihat jadwal

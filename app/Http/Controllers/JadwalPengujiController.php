@@ -70,7 +70,7 @@ class JadwalPengujiController extends Controller
             return back()->with('error', 'Gagal mengambil data jadwal.');
         }
     }
-    
+}
     // public function index(Request $request){
     //     try{
     //         $userID = session('user_id');
@@ -138,4 +138,4 @@ class JadwalPengujiController extends Controller
     //     }
     // }
 // }
-}
+// }
