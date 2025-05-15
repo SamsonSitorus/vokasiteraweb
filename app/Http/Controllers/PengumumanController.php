@@ -30,7 +30,7 @@ class PengumumanController extends Controller
             ->where('KPA_id', $KPA_id)
             ->where('TM_id', $TM_id)
             ->get();
-        return view('pages.koordinator.pengumuman.index', compact('pengumuman'));
+        return view('pages.Koordinator.pengumuman.index', compact('pengumuman'));
     }
 
     //create pengumuman oleh koordinator
