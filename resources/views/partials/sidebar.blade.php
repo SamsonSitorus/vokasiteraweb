@@ -1,7 +1,8 @@
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand mt-3">
-            <img src="{{ file_exists(public_path('assets/img/logovokasi.png')) ? asset('assets/img/logovokasi.png') : 'https://via.placeholder.com/300' }}" style="width: 130px">
+            {{-- <img src="{{ file_exists(public_path('assets/img/logovokasi.png')) ? asset('assets/img/logovokasi.png') : 'https://via.placeholder.com/300' }}" style="width: 130px"> --}}
+            <img src="{{ asset('assets/img/Logovokasi.png') }}" style="width: 130px" alt="Logo Vokasi">
         @if (session('isLoggin'))
             <p>User Logged In as: {{ session('role') }}</p>
         @else

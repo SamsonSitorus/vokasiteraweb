@@ -22,7 +22,8 @@
         /* Container utama dengan background */
         .login-container {
             height: 100vh;
-            background: img ('{{ asset("assets/img/bg/bg-removebg-preview.png") }}') no-repeat center center;
+            /* background: img ('{{ asset("assets/img/bg/bg-removebg-preview.png") }}') no-repeat center center; */
+            background: url('{{ asset("assets/img/bg/bg-removebg-preview.png") }}') no-repeat center center;
             background-size: cover;
             display: flex;
             align-items: center;
