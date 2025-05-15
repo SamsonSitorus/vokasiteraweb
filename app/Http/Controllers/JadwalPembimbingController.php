@@ -60,8 +60,7 @@ class JadwalPembimbingController extends Controller
                 $item->penguji_nama = !empty($pengujiNama) ? implode('<br>', $pengujiNama) : '-';
             }
     
-            return view('pages.Pembimbing.jadwal.index', compact('jadwal', 'namaDosen'));
-    
+            return view('pages.Pembimbing.Jadwal.index', compact('jadwal', 'namaDosen'));
         } catch (\Exception $e) {
             Log::error('Error fetching jadwal penguji: ' . $e->getMessage());
             return back()->with('error', 'Gagal mengambil data jadwal.');

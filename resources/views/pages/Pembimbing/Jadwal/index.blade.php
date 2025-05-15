@@ -32,7 +32,7 @@
                                             <td>{{ $item->tahunMasuk->Tahun_Masuk ?? '-' }}</td>
                                             <td>{{ $item->KategoriPA->kategori_pa ?? '-' }}</td>
                                             <td>{{ $item->kelompok->nomor_kelompok ?? '-' }}</td>
-                                            <td>{!! $item->penguji_nama ?? '-' !!}</td> {{-- TAMBAH INI --}}
+                                            <td>{!! $item->penguji_nama ?? '-' !!}</td> 
                                             <td>{{ \Carbon\Carbon::parse($item->waktu)->format('d M Y H:i') }}</td>
                                             <td>{{ $item->ruangan->ruangan }}</td>
                                         </tr>

@@ -10,7 +10,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Proyek Akhir 2</h4>
+                        <h4>Kartu Bimbingan</h4>
                         
                     </div>
                     <div class="card-body">
@@ -78,8 +78,9 @@
 
                         <div class="d-flex justify-content-end">
                             <!-- Tombol Simpan -->
+                             @if()
                             <button type="submit" class="btn btn-primary mr-2">Simpan</button>
-
+                           
                             <!-- Tombol Download -->
                             <a href="{{ route('bimbingan.exportPdf', Crypt::encrypt($bimbingan->id)) }}" class="btn btn-success">Download File</a>
                         </div>
