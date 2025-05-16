@@ -74,7 +74,7 @@ class penguji_tugas_Controller extends Controller
             $query->where('user_id', $user_id);
         })
         ->firstOrFail();
-        return view('pages.penguji.tugas.feedback_form', compact('artefak'));
+        return view('pages.Penguji.tugas.feedback_form', compact('artefak'));
     }
     public function submitFeedback(Request $request, $id)
     {
