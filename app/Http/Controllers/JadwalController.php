@@ -349,7 +349,7 @@ class JadwalController extends Controller
             ]);
     
 
-            Jadwal::create([
+            $jadwal=Jadwal::create([
                 'kelompok_id' => $validated['kelompok_id'],
                 'ruangan_id' => $validated['ruangan_id'],
                 'waktu_mulai' => $validated['waktu_mulai'],
@@ -368,8 +368,30 @@ class JadwalController extends Controller
             // }
             
             // $jadwal->save();
+         
+            if ($jadwal){
+       $response = Http::post('http://localhost:8080/jadwal-mhs', [
+    'kelompok_id'   => (int) $jadwal->kelompok_id,
+    'ruangan_id'    => (int) $jadwal->ruangan_id,
+    'waktu_mulai'   => $jadwal->waktu_mulai,
+    'waktu_selesai' => $jadwal->waktu_selesai,
+    'user_id'       => (int) $jadwal->user_id,
+    'KPA_id'        => (int) $jadwal->KPA_id,
+    'prodi_id'      => (int) $jadwal->prodi_id,
+    'TM_id'         => (int) $jadwal->TM_id,
+]);
 
-            return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil dibuat');
+
+        if ($response->successful()) {
+    Log::info('Berhasil mengirim data ke Golang', $response->json());
+} else {
+    Log::error('Gagal mengirim data ke Golang', [
+        'status' => $response->status(),
+        'body' => $response->body(),
+    ]);
+}
+            }
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil dibuat');
             
         } catch (\Illuminate\Validation\ValidationException $e) {
             return back()->withErrors($e->validator)->withInput();
