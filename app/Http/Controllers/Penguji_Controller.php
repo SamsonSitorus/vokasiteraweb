@@ -123,9 +123,9 @@ $dosenApiMap = collect();
       ->where('KPA_id', $KPA_id)
       ->where('TM_id', $TM_id)
        ->where('role_id','2')
-    //   ->whereHas('role', function ($query) {
-    //     $query->where('role_name', 'penguji 1');
-    // })
+      ->whereHas('role', function ($query) {
+        $query->where('id', '2');
+    })
       ->get();
   // Ambil nama dosen dari data API berdasarkan user_id
   $dosenFinal = $dosen->map(function ($dr) use ($dosenApiMap) {
@@ -147,7 +147,7 @@ $Kelompok = Kelompok::with(['prodi', 'tahunMasuk', 'kategoripa'])
 $kelompokIdsudahpunyapenguji = DB ::table('penguji')
 ->join('dosen_roles', 'penguji.user_id', '=','dosen_roles.user_id')
 ->join('roles','dosen_roles.role_id', '=', 'roles.id')
-->where('roles.role_name','penguji 1')
+->where('roles.id','2')
 ->pluck('kelompok_id')->toArray();
 $kelompokbelummasuk =  $Kelompok->filter(function($klmpk)use($kelompokIdsudahpunyapenguji){
     return !in_array($klmpk['id'],$kelompokIdsudahpunyapenguji);
@@ -183,9 +183,9 @@ if ($responseDosen->successful()){
     ->where('KPA_id', $KPA_id)
     ->where('TM_id', $TM_id)
      ->where('role_id','4')
-//     ->whereHas('role', function ($query) {
-//       $query->where('role_name', 'penguji 2');
-//   })
+    ->whereHas('role', function ($query) {
+      $query->where('id', '4');
+  })
     ->get();
 // Ambil nama dosen dari data API berdasarkan user_id
 $dosenFinal = $dosen->map(function ($dr) use ($dosenApiMap) {
@@ -210,7 +210,7 @@ $Kelompok = Kelompok::with(['prodi', 'tahunMasuk', 'kategoripa'])
 $kelompokIdSudahPunyaP2 = DB::table('penguji')
 ->join('dosen_roles', 'penguji.user_id', '=', 'dosen_roles.user_id')
 ->join('roles', 'dosen_roles.role_id', '=', 'roles.id')
-->where('roles.role_name', 'penguji 2')
+->where('roles.id', '4')
 ->pluck('penguji.kelompok_id')
 ->toArray();
 

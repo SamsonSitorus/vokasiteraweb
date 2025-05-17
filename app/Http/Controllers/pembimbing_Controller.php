@@ -186,9 +186,9 @@ public function createpembimbing2(){
         ->where('KPA_id', $KPA_id)
         ->where('TM_id', $TM_id)
          ->where('role_id','5')
-      //   ->whereHas('role', function ($query) {
-      //     $query->where('role_name', 'pembimbing 2');
-      // })
+        ->whereHas('role', function ($query) {
+          $query->where('id', '5');
+      })
         ->get();
     // Ambil nama dosen dari data API berdasarkan user_id
     $dosenFinal = $dosen->map(function ($dr) use ($dosenApiMap) {
@@ -213,7 +213,7 @@ $Kelompok = Kelompok::with(['prodi', 'tahunMasuk', 'kategoripa'])
 $kelompokIdSudahPunyaP2 = DB::table('pembimbing')
 ->join('dosen_roles', 'pembimbing.user_id', '=', 'dosen_roles.user_id')
 ->join('roles', 'dosen_roles.role_id', '=', 'roles.id')
-->where('roles.role_name', 'pembimbing 2')
+->where('roles.id', '5')
 ->pluck('pembimbing.kelompok_id')
 ->toArray();
 
