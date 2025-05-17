@@ -128,7 +128,7 @@ class pembimbing_Controller extends Controller
           ->where('TM_id', $TM_id)
           ->where('role_id','3')
           ->whereHas('role', function ($query) {
-            $query->where('role_name', 'pembimbing 1');
+            $query->where('id', '3');
         })
           ->get();
       // Ambil nama dosen dari data API berdasarkan user_id
