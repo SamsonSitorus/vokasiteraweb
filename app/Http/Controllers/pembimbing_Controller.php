@@ -127,9 +127,9 @@ class pembimbing_Controller extends Controller
           ->where('KPA_id', $KPA_id)
           ->where('TM_id', $TM_id)
           ->where('role_id','3')
-        //   ->whereHas('role', function ($query) {
-        //     $query->where('role_name', 'pembimbing 1');
-        // })
+          ->whereHas('role', function ($query) {
+            $query->where('role_name', 'pembimbing 1');
+        })
           ->get();
       // Ambil nama dosen dari data API berdasarkan user_id
       $dosenFinal = $dosen->map(function ($dr) use ($dosenApiMap) {
@@ -151,12 +151,13 @@ class pembimbing_Controller extends Controller
     $kelompokIdsudahpunyapembimbing = DB ::table('pembimbing')
     ->join('dosen_roles', 'pembimbing.user_id','=','dosen_roles.user_id')
     ->join('roles','dosen_roles.role_id', '=', 'roles.id' )
-    ->where('roles.role_name', '=','pembimbing 1')
+    ->where('roles.id', '=','3')
     ->pluck('kelompok_id')
     ->toArray();
     $kelompokbelummasuk =  $Kelompok->filter(function($klmpk)use($kelompokIdsudahpunyapembimbing){
         return !in_array($klmpk['id'],$kelompokIdsudahpunyapembimbing);
     })->values();
+    dd('kelompok','dosen');
     return view('pages.Koordinator.pembimbing.create',[
       'dosen' => $dosenFinal,
       'kelompok' => $kelompokbelummasuk,
