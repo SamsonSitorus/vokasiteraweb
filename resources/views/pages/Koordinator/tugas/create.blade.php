@@ -56,6 +56,7 @@
                             <div class="form-group">
                                 <label for="kategori_tugas">Kategori </label>
                                 <select name="kategori_tugas" id="kategori_tugas" class="form-control">
+                                    <option value="">--Pilih Kategori Tugas--</option>
                                     <option value="Tugas" >Tugas(submitan Progres)</option>
                                     <option value="Artefak">Artefak(Submitan Final)</option>
                                     <option value="Revisi">Revisi(Submitan Perbaikan)</option>
