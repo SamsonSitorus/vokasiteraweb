@@ -34,7 +34,7 @@
                                             <td>{{ $item->nomor_kelompok }}</td>
                                             <td>{{ $item->kategoriPA->kategori_pa }}</td>
                                             <td>{{ $item->prodi->nama_prodi}}</td>
-                                            <td>{{ $item-> }}</td>
+                                            {{-- <td>{{ $item-> }}</td> --}}
                                             <td>
                                                 <form method="POST" action="{{ $nilai ? route('pembimbing2.NilaiKelompok.update', $nilai->id) : route('pembimbing2.NilaiKelompok.store') }}">
                                                     @csrf
