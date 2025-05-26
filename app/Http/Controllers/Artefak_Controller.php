@@ -419,11 +419,11 @@ class Artefak_Controller extends Controller
 
         return redirect()->route('artefak.index.koordinator', $pengumpulan->tugas_id)->with('success', 'Feedback berhasil disimpan.');
     }
-    public function editFeedbackPembimbing($id)
-    {
-        $pengumpulan = pengumpulan_tugas::with(['kelompok', 'tugas'])->findOrFail($id);
-        return view('pages.feedback.create_pembimbing', compact('pengumpulan'));
-    }
+    // public function editFeedbackPembimbing($id)
+    // {
+    //     $pengumpulan = pengumpulan_tugas::with(['kelompok', 'tugas'])->findOrFail($id);
+    //     return view('pages.feedback.create_pembimbing', compact('pengumpulan'));
+    // }
     public function updateFeedbackPembimbing(Request $request, $id)
     {
         $request->validate([

@@ -227,20 +227,39 @@ return view('pages.Koordinator.penguji.createp2',[
 ]);
 }
 
-public function store(Request $request){
-  $validated = $request->validate([
-    'user_id'   => 'required|numeric',
-    'kelompok_id'  => 'required|array',
-    'kelompok_id.*' => 'exists:kelompok,id',
-  ]);
-
-  foreach ($validated['kelompok_id'] as $kelompokId) {
-    Penguji::create([
-        'user_id' => $validated['user_id'],
-        'kelompok_id' => $kelompokId,
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'user_id'        => 'required|numeric',
+        'kelompok_id'    => 'required|array',
+        'kelompok_id.*'  => 'exists:kelompok,id',
     ]);
-  }
-  return redirect()->route('penguji.index')->with('succes', 'Data Berhasil disimpan');
+
+    foreach ($validated['kelompok_id'] as $kelompokId) {
+        // Cek apakah user sudah jadi pembimbing di kelompok tersebut
+        $isAlreadyPembimbing = DB::table('pembimbing')
+            ->where('user_id', $validated['user_id'])
+            ->where('kelompok_id', $kelompokId)
+            ->exists();
+
+        if ($isAlreadyPembimbing) {
+            // Ambil data kelompok untuk nomor kelompok
+            $kelompok = DB::table('kelompok')->where('id', $kelompokId)->first();
+            $nomorKelompok = $kelompok ? $kelompok->nomor_kelompok : $kelompokId;
+
+            return redirect()->back()->withErrors([
+                'user_id' => "Dosen sudah menjadi pembimbing di kelompok nomor $nomorKelompok dan tidak bisa menjadi penguji !.",
+            ])->withInput();
+        }
+
+        // Simpan ke tabel penguji
+        Penguji::create([
+            'user_id' => $validated['user_id'],
+            'kelompok_id' => $kelompokId,
+        ]);
+    }
+
+    return redirect()->route('penguji.index')->with('success', 'Data Berhasil disimpan');
 }
 
 public function storepenguji2(Request $request){
@@ -250,11 +269,28 @@ public function storepenguji2(Request $request){
       'kelompok_id.*' => 'exists:kelompok,id',
     ]);
   
-    foreach ($validated['kelompok_id'] as $kelompokId) {
-      Penguji::create([
-          'user_id' => $validated['user_id'],
-          'kelompok_id' => $kelompokId,
-      ]);
+       foreach ($validated['kelompok_id'] as $kelompokId) {
+        // Cek apakah user sudah jadi pembimbing di kelompok tersebut
+        $isAlreadyPembimbing = DB::table('pembimbing')
+            ->where('user_id', $validated['user_id'])
+            ->where('kelompok_id', $kelompokId)
+            ->exists();
+
+        if ($isAlreadyPembimbing) {
+            // Ambil data kelompok untuk nomor kelompok
+            $kelompok = DB::table('kelompok')->where('id', $kelompokId)->first();
+            $nomorKelompok = $kelompok ? $kelompok->nomor_kelompok : $kelompokId;
+
+            return redirect()->back()->withErrors([
+                'user_id' => "Dosen sudah menjadi pembimbing di kelompok nomor $nomorKelompok dan tidak bisa menjadi penguji !.",
+            ])->withInput();
+        }
+
+        // Simpan ke tabel penguji
+        Penguji::create([
+            'user_id' => $validated['user_id'],
+            'kelompok_id' => $kelompokId,
+        ]);
     }
     return redirect()->route('penguji2.index')->with('succes', 'Data Berhasil disimpan');
   }
@@ -420,18 +456,21 @@ $validated = $request->validate([
 ]);
 
 // Ambil data pembimbing berdasarkan ID
-$penguji = Penguji::findOrFail($id); // Gantilah ini sesuai nama model kamu
+$penguji = Penguji::findOrFail($id); 
+ // Cek apakah dosen sudah jadi pembimbing di kelompok yang dimaksud
+    $isAlreadyPembimbing = DB::table('pembimbing')
+        ->where('user_id', $validated['user_id'])
+        ->where('kelompok_id', $validated['kelompok_id'])
+        ->exists();
+         if ($isAlreadyPembimbing) {
+        // Ambil nomor kelompok
+        $kelompok = DB::table('kelompok')->where('id', $validated['kelompok_id'])->first();
+        $nomorKelompok = $kelompok ? $kelompok->nomor_kelompok : $validated['kelompok_id'];
 
-// Cek apakah kelompok sudah dibimbing oleh dosen lain
-// $sudahAda = Penguji::where('kelompok_id', $request->kelompok_id)
-//     ->where('id', '!=', $id)
-//     ->exists();
-
-// if ($sudahAda) {
-//     return back()->withErrors(['kelompok_id' => 'Kelompok sudah dibimbing oleh dosen lain.'])->withInput();
-// }
-
-// Update pembimbing
+        return redirect()->back()->withErrors([
+            'user_id' => "Dosen sudah menjadi pembimbing di kelompok nomor $nomorKelompok dan tidak bisa menjadi penguji!",
+        ])->withInput();
+    }
 $penguji->user_id = $request->user_id;
 $penguji->kelompok_id = $request->kelompok_id;
 $penguji->save();
@@ -454,14 +493,20 @@ $validated = $request->validate([
 // Ambil data pembimbing berdasarkan ID
 $penguji = Penguji::findOrFail($id); // Gantilah ini sesuai nama model kamu
 
-// Cek apakah kelompok sudah dibimbing oleh dosen lain
-// $sudahAda = Penguji::where('kelompok_id', $request->kelompok_id)
-//     ->where('id', '!=', $id)
-//     ->exists();
+// Cek apakah dosen sudah jadi pembimbing di kelompok yang dimaksud
+    $isAlreadyPembimbing = DB::table('pembimbing')
+        ->where('user_id', $validated['user_id'])
+        ->where('kelompok_id', $validated['kelompok_id'])
+        ->exists();
+         if ($isAlreadyPembimbing) {
+        // Ambil nomor kelompok
+        $kelompok = DB::table('kelompok')->where('id', $validated['kelompok_id'])->first();
+        $nomorKelompok = $kelompok ? $kelompok->nomor_kelompok : $validated['kelompok_id'];
 
-// if ($sudahAda) {
-//     return back()->withErrors(['kelompok_id' => 'Kelompok sudah dibimbing oleh dosen lain.'])->withInput();
-// }
+        return redirect()->back()->withErrors([
+            'user_id' => "Dosen sudah menjadi pembimbing di kelompok nomor $nomorKelompok dan tidak bisa menjadi penguji!",
+        ])->withInput();
+    }
 
 // Update pembimbing
 $penguji->user_id = $request->user_id;
