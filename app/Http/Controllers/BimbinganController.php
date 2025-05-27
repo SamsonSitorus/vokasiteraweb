@@ -60,27 +60,27 @@ class BimbinganController extends Controller
     //         return redirect()->route('bimbingan.index')->with('success', 'Request Bimbingan  berhasil disimpan.');
     // }
 
-    // public function edit($encryptedId){
-    //     try{
-    //         $id = Crypt::decrypt($encryptedId);
+    public function edit($encryptedId){
+        try{
+            $id = Crypt::decrypt($encryptedId);
 
-    //         $bimbingan = Bimbingan::findOrFail($id);
+            $bimbingan = Bimbingan::findOrFail($id);
 
-    //         if(in_array($bimbingan->status,['selesai', 'disetujui','ditolak'])){
-    //             // Tampilkan pesan kesalahan jika status masih Aktif
-    //             return back()->withErrors([
-    //                 'error' => 'Tidak dapat mengedit data Request Bimbingan.',
-    //             ]);
-    //         }
+            if(in_array($bimbingan->status,['selesai', 'disetujui','ditolak'])){
+                // Tampilkan pesan kesalahan jika status masih Aktif
+                return back()->withErrors([
+                    'error' => 'Tidak dapat mengedit data Request Bimbingan.',
+                ]);
+            }
             
-    //         // Ambil data ruangan untuk dropdown
-    //         $ruangan = Ruangan::all();
+            // Ambil data ruangan untuk dropdown
+            $ruangan = Ruangan::all();
             
-    //         return view('pages.Mahasiswa.Bimbingan.edit', compact('bimbingan', 'ruangan'));
-    //     } catch (Exception $e) {
-    //         return redirect()->back()->with('error', 'Gagal menampilkan data: ' . $e->getMessage());
-    //     }
-    // }
+            return view('pages.Mahasiswa.Bimbingan.edit', compact('bimbingan', 'ruangan'));
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menampilkan data: ' . $e->getMessage());
+        }
+    }
 
     public function store(Request $request){
         $validated = $request->validate([
