@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Edit Penguji')
+@section('title', 'Edit Penguji 1')
 
 @section('content')
 <section class="section">

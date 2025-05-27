@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Edit Pembimbing')
+@section('title', 'Edit Pembimbing 2')
 
 @section('content')
 <section class="section">
@@ -9,7 +9,7 @@
                 @include('partials.alert')
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4>Edit Pembimbing</h4>
+                        <h4>Edit Pembimbing 2</h4>
                         <a href="{{route('pembimbing2.index')}}" class="btn btn-primary">Kembali</a>
                     </div>
                     <div class="card-body">

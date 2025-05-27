@@ -10,7 +10,7 @@
                     <div class="card-header d-flex justify-content-between">
                         <h4>Penguji 2</h4>
                         <a href="{{route('penguji2.create')}}" class="btn btn-primary">
-                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Penguji
+                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Penguji 2
                         </a>
                     </div>                    
                     <div class="card-body">

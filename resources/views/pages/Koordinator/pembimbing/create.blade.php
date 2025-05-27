@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Create    Kordinator')
+@section('title', 'Create pembimbing 1')
 
 @section('content')
 <section class="section custom-section">
@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4>Tambah Kordinator</h4>
+                        <h4>Tambah Pembimbing 1</h4>
                         <a class="btn btn-primary btn-sm" href="{{route('pembimbing.index')}}">Kembali</a>
                     </div>  
                     <div class="card-body">

@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'List Penguji')
+@section('title', 'List Penguji 1')
 
 @section('content')
 <section class="section custom-section">
@@ -10,7 +10,7 @@
                     <div class="card-header d-flex justify-content-between">
                         <h4>Penguji 1</h4>
                         <a href="{{route('penguji.create')}}" class="btn btn-primary">
-                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Penguji
+                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Penguji 1
                         </a>
                     </div>                    
                     <div class="card-body">

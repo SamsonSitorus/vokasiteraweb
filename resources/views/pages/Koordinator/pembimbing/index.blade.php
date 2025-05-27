@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'List Kordinator')
+@section('title', 'List pembimbing 1')
 
 @section('content')
 <section class="section custom-section">
@@ -8,9 +8,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4>Pembimbing</h4>
+                        <h4>Pembimbing 1</h4>
                         <a href="{{route('pembimbing.create')}}" class="btn btn-primary">
-                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Pembimbing
+                            <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Pembimbing 1
                         </a>
                     </div>                    
                     <div class="card-body">

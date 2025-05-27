@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Create    Kordinator')
+@section('title', 'Create penguji 2')
 
 @section('content')
 <section class="section custom-section">
