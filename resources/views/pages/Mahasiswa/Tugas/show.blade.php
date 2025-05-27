@@ -49,15 +49,15 @@
                             @if($existingSubmission && $existingSubmission->status === 'Submitted')
                             <tr>
                                 <th>Feedback Koordinator</th>
-                                <td>{{ $existingSubmission->feedback ?? 'Feedback Null' }}</td>
+                                <td>{{ $existingSubmission->feedback ?? 'Belum terdapat tanggapan.' }}</td>
                             </tr>
                             <tr>
                                 <th>Feedback Pembimbing</th>
-                                <td>{{ $existingSubmission->feedback_pembimbing ?? 'Feedback Null' }}</td>
+                                <td>{{ $existingSubmission->feedback_pembimbing ?? 'Belum terdapat tanggapan.' }}</td>
                             </tr>
                             <tr>
                                 <th>Feedback Penguji</th>
-                                <td>{{ $existingSubmission->feedback_penguji ?? 'Feedback Null' }}</td>
+                                <td>{{ $existingSubmission->feedback_penguji ?? 'Belum terdapat tanggapan.' }}</td>
                             </tr>
                         @elseif($existingSubmission && $existingSubmission->status === '')
                             <tr>
