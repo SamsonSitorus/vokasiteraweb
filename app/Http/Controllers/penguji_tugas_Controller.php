@@ -14,15 +14,15 @@ class penguji_tugas_Controller extends Controller
        $role_ids = [2,4];
        $prodi_ids = DosenRole::where('user_id', $user_id)
                           ->where('status', 'Aktif')
-                          ->where('role_id', $role_ids)
+                          ->whereIn('role_id', $role_ids)
                           ->pluck('prodi_id');
         $TM_ids = DosenRole::where('user_id', $user_id)
                             ->where('status', 'Aktif')
-                            ->where('role_id', $role_ids)
+                            ->whereIn('role_id', $role_ids)
                           ->pluck('TM_id');
         $KPA_ids = DosenRole::where('user_id', $user_id)
                           ->where('status', 'Aktif')
-                          ->where('role_id', $role_ids)
+                          ->whereIn('role_id', $role_ids)
                           ->pluck('KPA_id');
         $prodi_ids = $prodi_ids->unique();
         $TM_ids = $TM_ids->unique();
