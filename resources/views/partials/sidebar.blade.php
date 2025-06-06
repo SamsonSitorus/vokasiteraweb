@@ -42,7 +42,7 @@
             </li>        
             <li class="nav-item dropdown {{ request()->is('nilai*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
-                    <i class="fas fa-calendar"></i> <span>Nilai</span>
+                    <i class="fas fa-clipboard-check"></i> <span>Nilai</span>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link {{--  --}}" href="{{route('koordinator.NilaiAdministrasi.index')}}">Nilai Administrasi </a></li>
@@ -60,10 +60,10 @@
              <li><a class="nav-link" href="{{route('dashboard.penguji')}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li> 
             <li ><a class="nav-link" href="{{route('penguji.tugas.index')}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
            
-            <li ><a class="nav-link" href="{{ route('penguji.jadwal.index') }}"><i class="fas fa-file"></i> <span>Jadwal</span></a></li>
+            <li ><a class="nav-link" href="{{ route('penguji.jadwal.index') }}"><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown {{ request()->is('nilai*') ? 'active' : '' }}" data-toggle="dropdown">
-                    <i class="fas fa-calendar"></i> <span>Nilai</span>
+                    <i class="fas fa-clipboard-check"></i> <span>Nilai</span>
                 </a>
                 <ul class="dropdown-menu">
                     @if (in_array(2, $dosenRoles))
@@ -75,7 +75,7 @@
                     @endif
                 </ul>
             </li>
-            <li ><a class="nav-link" href="{{route('penguji.pengumuman.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
+            {{-- <li ><a class="nav-link" href="{{route('penguji.pengumuman.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li> --}}
 
             @endif
             {{-- Untuk  Pembimbing --}}
@@ -84,12 +84,12 @@
             <li><a class="nav-link" href="{{route('dashboard.pembimbing')}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li ><a class="nav-link" href="{{route('pembimbing.tugas.index')}}"><i class="fas fa-file"></i> <span>Tugas</span></a></li>
             <li ><a class="nav-link" href="{{route('pembimbing.bimbingan.index')}}"><i class="fas fa-bullhorn"></i> <span>Bimbingan</span></a></li>
-            <li ><a class="nav-link" href="{{ route('pembimbing.jadwal.index') }}"><i class="fas fa-file"></i> <span>Jadwal</span></a></li>
+            <li ><a class="nav-link" href="{{ route('pembimbing.jadwal.index') }}"><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
             <li><a class="nav-link" href="{{ route('PembimbingPengajuanSeminar.index') }}"><i class="fas fa-calendar-check"></i> <span>Pengajuan Seminar</span></a></li>
             <li class="nav-item dropdown {{ request()->is('nilai*') ? 'active' : '' }}">
            <li class="nav-item dropdown {{ request()->is('nilai*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
-                    <i class="fas fa-calendar"></i> <span>Nilai</span>
+                    <i class="fas fa-clipboard-check"></i> <span>Nilai</span>
                 </a>
                 <ul class="dropdown-menu">
                     @if  (in_array(3,$dosenRoles))
@@ -103,7 +103,7 @@
                 @endif
                   </ul>
             </li>  
-            <li ><a class="nav-link" href="{{route('pembimbing.pengumuman.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>
+            {{-- <li ><a class="nav-link" href="{{route('pembimbing.pengumuman.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li> --}}
      
             @endif
              {{-- Untuk  Mahasiswa --}}
@@ -119,7 +119,7 @@
             {{-- Untuk Staff --}}
             @elseif (session('role') == 'Staff')
             <li class="menu-header">Staff</li>
-            <li><a class="nav-link" href="{{-- {{ route('admin.dashboard') }} --}}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
+            <li><a class="nav-link" href="{{ route('dashboard.BAAK') }}"><i class="fas fa-columns"></i> <span>Dashboard</span></a></li>
             <li ><a class="nav-link" href="{{route('manajemen-role.index')}}"><i class="fas fa-user"></i> <span>Manajemen-Role</span></a></li>
             <li ><a class="nav-link" href="{{route('baak.jadwal.index')}}"><i class="fas fa-calendar"></i> <span>Jadwal</span></a></li>
             <li ><a class="nav-link" href="{{ route('pengumuman.BAAK.index')}}"><i class="fas fa-bell"></i> <span>Pengumuman</span></a></li>

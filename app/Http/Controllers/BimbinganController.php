@@ -81,42 +81,61 @@ class BimbinganController extends Controller
             return redirect()->back()->with('error', 'Gagal menampilkan data: ' . $e->getMessage());
         }
     }
-
-    public function store(Request $request){
-        $validated = $request->validate([
-            'kelompok_id' => 'required|exists:kelompok,id',
-            'ruangan_id' => 'required|exists:ruangan,id',
-            'keperluan' => 'required|string|max:1000',
-            'rencana_mulai' => [
-                'required',
-                'date',
-                function ($attribute, $value, $fail) use ($request) {
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'kelompok_id' => 'required|exists:kelompok,id',
+        'ruangan_id' => 'required|exists:ruangan,id',
+        'keperluan' => 'required|string|max:1000',
+        'rencana_mulai' => [
+            'required',
+            'date',
+            function ($attribute, $value, $fail) use ($request) {
+                try {
                     $mulai = new \DateTime($value);
                     $selesai = new \DateTime($request->rencana_selesai);
                     $now = new \DateTime();
-                    $diffFromNow = $now->diff($mulai);
-                    $diffInMinutes = $mulai->diff($selesai)->h * 60 + $mulai->diff($selesai)->i;
 
+                    // Validasi minimal H-1
+                    $diffFromNow = $now->diff($mulai);
                     if ($diffFromNow->days < 1 || $diffFromNow->invert == 1) {
                         $fail('Bimbingan harus diajukan minimal 1 hari sebelum tanggal pelaksanaan.');
                     }
 
+                    // Validasi durasi
+                    $diffInMinutes = ($mulai->diff($selesai)->h * 60) + $mulai->diff($selesai)->i;
                     if ($diffInMinutes > 120) {
                         $fail('Durasi bimbingan maksimal 2 jam.');
                     }
+                    if ($diffInMinutes < 30) {
+                        $fail('Durasi bimbingan minimal 30 menit.');
+                    }
 
+                    // Validasi waktu selesai harus setelah mulai
                     if ($selesai <= $mulai) {
                         $fail('Waktu selesai harus setelah waktu mulai.');
                     }
-                }
-            ],
-            'rencana_selesai' => ['required', 'date']
-                ]);
-    
 
-        Bimbingan::create($validated);
-        return redirect()->route('bimbingan.index')->with('success', 'Request Bimbingan berhasil disimpan.');
-    }
+                    // Validasi waktu bimbingan antara 08:00 dan 18:00
+                    $startTime = $mulai->format('H:i');
+                    $endTime = $selesai->format('H:i');
+
+                    if ($startTime < '08:00' || $endTime > '18:00') {
+                        $fail('Waktu bimbingan hanya diperbolehkan antara pukul 08:00 hingga 18:00.');
+                    }
+                } catch (\Exception $e) {
+                    $fail('Terjadi kesalahan dalam memproses tanggal/waktu.');
+                }
+            }
+        ],
+        'rencana_selesai' => 'required|date',
+    ]);
+
+    Bimbingan::create($validated);
+
+    return redirect()->route('bimbingan.index')->with('success', 'Request Bimbingan berhasil disimpan.');
+}
+
 
     public function update(Request $request, $encryptedId){
         try {

@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Show Pengumuman</h4>
-                        <a class="btn btn-primary btn-sm" href="{{ route('pembimbing.pengumuman.index') }}">Kembali</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('dashboard.penguji') }}">Kembali</a>
                     </div>
                     <div class="card-body">
                         @include('partials.alert')

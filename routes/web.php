@@ -53,7 +53,7 @@ Route::middleware(['auth.api'])->group(function () {
     Route::get('/dashboard/koordinator',[dashboard_Controller::class, 'Koordinator'])
         ->name('dashboard.koordinator')->middleware('dosen_roles:1');
 
-    Route::get('/dashboard/BAAK', fn () => view('pages.BAAK.dashboard'))
+    Route::get('/dashboard/BAAK',[dashboard_Controller::class, 'BAAK'])
         ->name('dashboard.BAAK')->middleware('role:Staff');
 });
 

@@ -46,7 +46,7 @@
                                                     <a href="{{ route('baak.jadwal.edit', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm me-2">
                                                         <i class="nav-icon fas fa-edit"></i>&nbsp;Edit
                                                     </a>
-                                                    <form method="POST" action="{{ route('baak.jadwal.destroy', $item->id) }}">
+                                                    <form method="POST" action="{{ route('baak.jadwal.destroy', Crypt::encrypt($item->id)) }}">
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn btn-danger btn-sm show_confirm" data-toggle="tooltip" title="Hapus">

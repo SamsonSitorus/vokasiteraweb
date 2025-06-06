@@ -30,7 +30,7 @@
                                 <tbody>
                                     @foreach($penguji as $item)
                                     <tr>
-                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->nama}}</td>
                                        <td>Penguji 1</td>
                                        <td>{{ $item->kelompok->nomor_kelompok }}</td>

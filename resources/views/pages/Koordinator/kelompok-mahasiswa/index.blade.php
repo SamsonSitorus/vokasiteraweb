@@ -8,7 +8,8 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4>List Kelompok Mahasiswa </h4>
+                        <h4>Detail Kelompok</h4>
+                        
                         <a href="{{ route('kelompokMahasiswa.create',['id' => $kelompok->id]) }}" class="btn btn-primary">
                             <i class="nav-icon fas fa-folder-plus"></i>&nbsp; Tambah Anggota Kelompok
                         </a><br>
@@ -32,7 +33,7 @@
                                 <tbody>
                                      @foreach($mahasiswakelompoks as $item)
                                         <tr>
-                                            <td>{{ $item->id }}</td>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->nim }}</td>
                                             <td>{{ $item->nama }}</td>
                                             <td>{{ $item->angkatan }}</td>

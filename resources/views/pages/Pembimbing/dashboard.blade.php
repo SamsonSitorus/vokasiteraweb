@@ -59,14 +59,39 @@
                         </div>
                     </div>
                 </div>
-                <div class="container">
-                <h2 class="text-center mb-4">Kalender Jadwal Seminar</h2>
-                <div class="card shadow">
-                    <div class="card-body">
+               <!-- Kolom Kalender -->
+                    <div class="col-lg-8 col-md-6 col-sm-12 mb-4">
+                        <h2 class="text-center mb-4">Kalender Jadwal Seminar</h2>
+                    <div class="card shadow h-100">
+                        <div class="card-body">
+                        
                         <div id="calendar"></div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                    </div>
+
+                    <!-- Kolom Konten Lain -->
+                   <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <h2 class="text-center mb-4">Pengumuman</h2>
+                    <div class="card h-100">
+                        <div class="card-body">
+                        @if($pengumuman->isEmpty())
+                            <p class="text-muted">Belum ada pengumuman.</p>
+                        @else
+                            <ul class="list-group list-group-flush">
+                            @foreach ($pengumuman as $index => $item)
+                                <li class="list-group-item">
+                                <strong>{{ $index + 1 }}.</strong>
+                                <a href="{{ route('pengumuman.penguji.show', $item->id) }}">
+                                    {{ $item->judul }}
+                                </a>
+                                </li>
+                            @endforeach
+                            </ul>
+                        @endif
+                        </div>
+                    </div>
+                    </div>
             </div>
         </div>
     </section>

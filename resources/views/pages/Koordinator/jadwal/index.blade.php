@@ -89,7 +89,7 @@
         var name = $(this).data("name");
         event.preventDefault();
         swal({
-            title: Yakin ingin menghapus data ini?,
+            title: `Yakin ingin menghapus data ini?`,
             text: "Data akan terhapus secara permanen!",
             icon: "warning",
             buttons: true,

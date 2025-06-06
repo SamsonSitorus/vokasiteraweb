@@ -29,7 +29,7 @@
                                 <tbody>
                                      @foreach($tugas as $item)
                                         <tr>
-                                            <td>{{ $item->id }}</td>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->Judul_Tugas }}</td>
                                             <td>{{ $item->kategori_tugas }}</td>
                                             <td>{{ $item->status }}</td> 

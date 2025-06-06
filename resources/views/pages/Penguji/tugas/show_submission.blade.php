@@ -28,7 +28,7 @@
                                 <tbody>
                                      @foreach($artefak as $item)
                                         <tr>
-                                            <td>{{ $item->id }}</td>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->kelompok->nomor_kelompok }}</td>
                                             <td>{{ $item->waktu_submit }}</td>
                                             <td>

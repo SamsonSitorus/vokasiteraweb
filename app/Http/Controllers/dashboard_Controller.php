@@ -89,8 +89,51 @@ class dashboard_Controller extends Controller
             'end' => Carbon::parse($item->waktu_selesai)->toIso8601String(),
         ];
     });
+     $token = session('token');
+        $user_id = session('user_id');
+        $role_ids = [3,5];
+       $prodi_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->where('role_id', $role_ids)
+                          ->pluck('prodi_id');
+        $TM_ids = DosenRole::where('user_id', $user_id)
+                            ->where('status', 'Aktif')
+                            ->where('role_id', $role_ids)
+                          ->pluck('TM_id');
+        $KPA_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->where('role_id', $role_ids)
+                          ->pluck('KPA_id');
+        $prodi_ids = $prodi_ids->unique();
+        $TM_ids = $TM_ids->unique();
+        $KPA_ids = $KPA_ids->unique();
+        // Mengambil pengumuman yang hanya terkait dengan prodi_id yang sesuai dan status 'aktif'
+        $pengumuman = Pengumuman::with(['prodi','kategoriPA'])
+            ->wherein('prodi_id', $prodi_ids)
+            ->wherein('KPA_id', $KPA_ids)
+            ->wherein('TM_id', $TM_ids)
+            ->where('status', 'aktif')
+            ->get();
+// 
+        $responseDosen = Http::withHeaders([
+            'Authorization' =>"Bearer $token"
+        ])->get(env('API_URL'). "library-api/dosen");
+        if ($responseDosen->successful()) {
+            $dosen_list = $responseDosen->json()['data']['dosen'] ?? [];
+            // Buat map user_id => nama
+            $dosen_map = collect($dosen_list)->keyBy('user_id');
+            
+            $pengumuman->each(function ($item) use ($dosen_map) {
+                $item->nama = $dosen_map[$item->user_id]['nama'] ?? 'N/A';
+            });
+        } else {
+            // Tangani jika API gagal
+            $pengumuman->each(function ($item) {
+                $item->nama = 'N/A'; // Tampilkan N/A jika API gagal
+            });
+        }
 
-   return view('pages.Pembimbing.dashboard',compact('jumlah_kelompok','jumlah_pengumuman','events','jumlah_tugas'));
+   return view('pages.Pembimbing.dashboard',compact('jumlah_kelompok','jumlah_pengumuman','events','jumlah_tugas','pengumuman'));
 
 }
  public function penguji() {
@@ -122,8 +165,52 @@ class dashboard_Controller extends Controller
             'end' => Carbon::parse($item->waktu_selesai)->toIso8601String(),
         ];
     });
+     $token = session('token');
+        $user_id = session('user_id');
+        $role_ids = [2,4];
+       $prodi_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->where('role_id', $role_ids)
+                          ->pluck('prodi_id');
+        $TM_ids = DosenRole::where('user_id', $user_id)
+                            ->where('status', 'Aktif')
+                            ->where('role_id', $role_ids)
+                          ->pluck('TM_id');
+        $KPA_ids = DosenRole::where('user_id', $user_id)
+                          ->where('status', 'Aktif')
+                          ->where('role_id', $role_ids)
+                          ->pluck('KPA_id');
+        $prodi_ids = $prodi_ids->unique();
+        $TM_ids = $TM_ids->unique();
+        $KPA_ids = $KPA_ids->unique();
+        // Mengambil pengumuman yang hanya terkait dengan prodi_id yang sesuai dan status 'aktif'
+        $pengumuman = Pengumuman::with(['prodi','kategoriPA'])
+            ->wherein('prodi_id', $prodi_ids)
+            ->wherein('KPA_id', $KPA_ids)
+            ->wherein('TM_id', $TM_ids)
+            ->where('status', 'aktif')
+            ->orderBy('created_at', 'desc')
+            ->get();
+// 
+        $responseDosen = Http::withHeaders([
+            'Authorization' =>"Bearer $token"
+        ])->get(env('API_URL'). "library-api/dosen");
+        if ($responseDosen->successful()) {
+            $dosen_list = $responseDosen->json()['data']['dosen'] ?? [];
+            // Buat map user_id => nama
+            $dosen_map = collect($dosen_list)->keyBy('user_id');
+            
+            $pengumuman->each(function ($item) use ($dosen_map) {
+                $item->nama = $dosen_map[$item->user_id]['nama'] ?? 'N/A';
+            });
+        } else {
+            // Tangani jika API gagal
+            $pengumuman->each(function ($item) {
+                $item->nama = 'N/A'; // Tampilkan N/A jika API gagal
+            });
+        }
 
-   return view('pages.Penguji.dashboard',compact('jumlah_kelompok','jumlah_pengumuman','events','jumlah_tugas'));
+   return view('pages.Penguji.dashboard',compact('jumlah_kelompok','jumlah_pengumuman','events','jumlah_tugas','pengumuman'));
 
 }
 public function mahasiswa(){
@@ -206,5 +293,18 @@ return view('pages.Mahasiswa.dashboard', compact('mahasiswa_kelompok', 'pembimbi
 
     }
   
+public function BAAK(){
+ $jadwal = Jadwal::all();
+  $events = $jadwal->map(function ($item) {
+    return [
+        'title' => 'Kelompok ' . $item->kelompok->nomor_kelompok. 'seminar  ',
+        'start' => Carbon::parse($item->waktu_mulai)->toIso8601String(),
+        'end' => Carbon::parse($item->waktu_selesai)->toIso8601String(),
+    ];
+});
+
+    return view('pages.BAAK.dashboard', compact('events'));
+
+    }
     
 }

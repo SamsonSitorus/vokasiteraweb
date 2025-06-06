@@ -63,12 +63,12 @@
                                                                 <i class="fas fa-trash"></i> Hapus
                                                             </button>
                                                         </form>
-                                                        @else
-                                                    {{-- @else($item->status == 'selesai')  --}}
+                                        
+                                                    @elseif($item->status == 'selesai') 
                                                     <a href="{{ route('bimbingan.kartu', Crypt::encrypt($item->id)) }}" class="btn btn-success btn-sm mr-2">
                                                         <i class="nav-icon fas fa-eye"></i> &nbsp;Kartu bimbingan
                                                     </a>
-                                                    {{-- @else badge-warning --}}
+                                                   
                                                     @endif    
                                                 </div>
                                             </td>

@@ -24,10 +24,12 @@ class penguji_tugas_Controller extends Controller
                           ->where('status', 'Aktif')
                           ->whereIn('role_id', $role_ids)
                           ->pluck('KPA_id');
+        $kategoritugas = ['Revisi','Artefak']; 
         $prodi_ids = $prodi_ids->unique();
         $TM_ids = $TM_ids->unique();
         $KPA_ids = $KPA_ids->unique();
         $tugas = Tugas::with(['prodi', 'tahunMasuk', 'kategoriPA','dosenRoles'])
+        ->whereIn('kategori_tugas',$kategoritugas)
          ->whereIn('prodi_id', $prodi_ids)
           ->whereIn('KPA_id', $KPA_ids)
            ->whereIn('TM_id', $TM_ids)
